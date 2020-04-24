@@ -16,7 +16,7 @@ bool error_nodef = false;
 bool error_bool_derecha = false;
 bool cmp=false;
 bool str = false;
-bool str_error = false;
+bool error_str = false;
 
 Tabla* tabla;
 tipo_datoTS* var;
@@ -37,7 +37,7 @@ void reset_flags(){
       error_bool_derecha = false;
       cmp=false;
       str = false;
-      str_error = false;
+      error_str = false;
 }
 
 string check_tipo(){
@@ -121,7 +121,7 @@ lista_instrucciones: 		{}
       |lista_instrucciones asignacion
       ;
 
-asignacion:VARIABLE '=' expr '\n'     	{if(!str_error&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
                                                 if(tabla->buscar($1, var)){
                                                       if(var->tipo == check_tipo_num()){
@@ -193,7 +193,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!str_error&&!error_mod&&!error_log&&!
                                                       }
       }
 
-      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!str_error){
+      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
                                                 if(tabla->buscar($1, var)){
                                                       if(var->tipo == check_tipo_num()){
@@ -227,7 +227,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!str_error&&!error_mod&&!error_log&&!
                                     reset_flags();
                                     }
       |ESCRIBIR CADENA '\n' {cout << "cad " << $2 <<endl;reset_flags();}
-      |ESCRIBIR expr '\n'     {if(!str_error&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+      |ESCRIBIR expr '\n'     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
                                     }
@@ -267,9 +267,9 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                     }
                               }  
        | '(' expr ')'         {$$=$2;}           
-       | expr '+' expr 		{if(!str) $$=$1+$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}              
-       | expr '-' expr    	{if(!str) $$=$1-$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}            
-       | expr '*' expr        {if(!str) $$=$1*$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}} 
+       | expr '+' expr 		{if(!str) $$=$1+$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}              
+       | expr '-' expr    	{if(!str) $$=$1-$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}            
+       | expr '*' expr        {if(!str) $$=$1*$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}} 
        | expr '/' expr        {if(!str){ 
                                     if(real){
                                           $$=(float)($1/$3);
@@ -279,10 +279,10 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           $$=(int)($1/$3);
                                           };
                                     }
-                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl; str_error = true;}
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl; error_str = true;}
                               
                               }
-       | expr '^' expr        {if(!str) $$=pow($1,$3);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       | expr '^' expr        {if(!str) $$=pow($1,$3);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
        | expr '%' expr        {if(!str) {if(!real){
                                           $$=(int)$1%(int)$3;
                                           }
@@ -291,18 +291,18 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador % no se puede usar con datos de tipo real" <<endl;
                                           }
                                     }
-                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}
                               } 
-       |'-' expr %prec menos  {if(!str) $$= -$2;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |'-' expr %prec menos  {if(!str) $$= -$2;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
        ;
 expr_logica: BOOL                 {cmp=true;$$=$1;}
        | '(' expr_logica ')'         {$$=$2;}
-       |expr '<' expr         {cmp=true;if(!str) {if($1 < $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
-       |expr '>' expr         {cmp=true;if(!str) {if($1 > $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
-       |expr LE expr         {cmp=true;if(!str) {if($1 <= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
-       |expr GE expr         {cmp=true;if(!str) {if($1 >= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
-       |expr EQ expr         {cmp=true;if(!str) {if($1 == $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
-       |expr NE expr         {cmp=true;if(!str) {if($1 != $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr '<' expr         {cmp=true;if(!str) {if($1 < $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr '>' expr         {cmp=true;if(!str) {if($1 > $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr LE expr         {cmp=true;if(!str) {if($1 <= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr GE expr         {cmp=true;if(!str) {if($1 >= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr EQ expr         {cmp=true;if(!str) {if($1 == $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr NE expr         {cmp=true;if(!str) {if($1 != $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
        |expr_logica AND expr_logica		{
                               cmp=true;
                               if(($1==1||$1==0)&&($3==1||$3==0))

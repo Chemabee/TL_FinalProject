@@ -21,6 +21,10 @@ real_not_cientifica {real}[e][+-]?{entero}
 <STR>[^"]*					strcpy(yylval.c_cadena,yytext);return CADENA;
 <STR>["]					BEGIN(0);
 
+DEFINICIONES            {return DEFINICIONES;}
+CONFIGURACION           {return CONFIGURACION;}
+OBSTACULOS              {return OBSTACULOS;}
+EJEMPLOS                {return EJEMPLOS;}
 
 {entero}                    yylval.c_entero = atoi(yytext);return ENTERO;
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
