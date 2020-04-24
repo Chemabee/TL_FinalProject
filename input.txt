@@ -14,6 +14,7 @@ escribir 3*5+1
 escribir "1adfoas"
 escribir true && (1>2)
 cad = "esto"
+cad = "otro"
+tT = cad + 1
 escribir aa
-escribir Cc #Fallo raro
-escribir cad #Esto lo escribe mal, revisar en calculadora.y linea 244
+escribir cad

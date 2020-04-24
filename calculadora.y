@@ -3,6 +3,7 @@
 #include <fstream>
 #include <math.h>
 #include "tabla.c"
+#include "string.h"
  
 
 using namespace std;
@@ -14,6 +15,8 @@ bool error_log=false;
 bool error_nodef = false;
 bool error_bool_derecha = false;
 bool cmp=false;
+bool str = false;
+bool str_error = false;
 
 Tabla* tabla;
 tipo_datoTS* var;
@@ -33,6 +36,8 @@ void reset_flags(){
       error_nodef = false;
       error_bool_derecha = false;
       cmp=false;
+      str = false;
+      str_error = false;
 }
 
 string check_tipo(){
@@ -41,7 +46,8 @@ string check_tipo(){
       else return "entero";
 }
 int check_tipo_num(){
-      if(cmp) return 2;
+      if(str) return 3;
+      else if(cmp) return 2;
       else if(real_final) return 1;
       else return 0;
 }
@@ -115,7 +121,7 @@ lista_instrucciones: 		{}
       |lista_instrucciones asignacion
       ;
 
-asignacion:VARIABLE '=' expr '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+asignacion:VARIABLE '=' expr '\n'     	{if(!str_error&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
                                                 if(tabla->buscar($1, var)){
                                                       if(var->tipo == check_tipo_num()){
@@ -187,7 +193,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_mod&&!error_log&&!error_nodef&
                                                       }
       }
 
-      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!str_error){
                                                 
                                                 if(tabla->buscar($1, var)){
                                                       if(var->tipo == check_tipo_num()){
@@ -220,8 +226,14 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_mod&&!error_log&&!error_nodef&
                                           };
                                     reset_flags();
                                     }
-      |ESCRIBIR CADENA '\n' {cout << "cad " << $2 <<endl;}
-      |ESCRIBIR expr '\n' {cout << $2 <<endl;reset_flags();}
+      |ESCRIBIR CADENA '\n' {cout << "cad " << $2 <<endl;reset_flags();}
+      |ESCRIBIR expr '\n'     {if(!str_error&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+                                    if(str){
+                                          cout << var->valor.valor_cad <<endl;
+                                    }
+                                    else cout <<$2<<endl;
+                              }
+                              reset_flags();}
       |ESCRIBIR expr_logica '\n' {
                                     if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 if(cmp){	
@@ -235,19 +247,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_mod&&!error_log&&!error_nodef&
                                     }
                                     reset_flags();
       }
-      |ESCRIBIR VARIABLE            {
-                                          if(tabla->buscar($1, var) && var->init == true){
-                                                      switch (var->tipo){
-                                                                  case 0: cout<<var->valor.valor_entero<<endl;break;
-                                                                  case 1: cout<<var->valor.valor_real<<endl;break;
-                                                                  case 2: cout<<var->valor.valor_logico<<endl;break;
-                                                                  case 3: cout<<var->valor.valor_cad<<endl;break;
-                                                            }
-                                          }
-                                          else cout<<"Variable no inicializada"<<endl;
-                                          reset_flags();
-
-      }
+      
       |error '\n' {yyerrok;reset_flags();}       
 	;
 
@@ -258,6 +258,7 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           case 0: $$=var->valor.valor_entero;break;
                                           case 1: $$=var->valor.valor_real;real=true;real_final=true;break;
                                           case 2: cout<<"Error semántico en la linea \033[1;31m"<<n_lineas+1<<"\033[0m, la variable "<<$1<<" de tipo logico no puede estar en la parte derecha de la asignacion"<<endl;error_bool_derecha=true;break;
+                                          case 3: str = true;break;
                                     }    
                               }
                               else{
@@ -266,36 +267,42 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                     }
                               }  
        | '(' expr ')'         {$$=$2;}           
-       | expr '+' expr 		{$$=$1+$3;}              
-       | expr '-' expr    	{$$=$1-$3;}            
-       | expr '*' expr        {$$=$1*$3;} 
-       | expr '/' expr        {if(real){
-                                    $$=(float)($1/$3);
-                                    real=false;
+       | expr '+' expr 		{if(!str) $$=$1+$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}              
+       | expr '-' expr    	{if(!str) $$=$1-$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}            
+       | expr '*' expr        {if(!str) $$=$1*$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}} 
+       | expr '/' expr        {if(!str){ 
+                                    if(real){
+                                          $$=(float)($1/$3);
+                                          real=false;
+                                          }
+                                    else{
+                                          $$=(int)($1/$3);
+                                          };
                                     }
-                              else{
-                                    $$=(int)($1/$3);
-                                    };
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl; str_error = true;}
+                              
                               }
-       | expr '^' expr        {$$=pow($1,$3);}
-       | expr '%' expr        {if(!real){
-                                    $$=(int)$1%(int)$3;
+       | expr '^' expr        {if(!str) $$=pow($1,$3);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       | expr '%' expr        {if(!str) {if(!real){
+                                          $$=(int)$1%(int)$3;
+                                          }
+                                    else {
+                                          error_mod=true;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador % no se puede usar con datos de tipo real" <<endl;
+                                          }
                                     }
-                              else {
-                                    error_mod=true;
-                                    cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador % no se puede usar con datos de tipo real" <<endl;
-                                    }
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}
                               } 
-       |'-' expr %prec menos  {$$= -$2;}
+       |'-' expr %prec menos  {if(!str) $$= -$2;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
        ;
 expr_logica: BOOL                 {cmp=true;$$=$1;}
        | '(' expr_logica ')'         {$$=$2;}
-       |expr '<' expr         {cmp=true; if($1 < $3)$$=1;else $$=0;}
-       |expr '>' expr         {cmp=true; if($1 > $3)$$=1;else $$=0;}
-       |expr LE expr         {cmp=true; if($1 <= $3)$$=1;else $$=0;}
-       |expr GE expr         {cmp=true; if($1 >= $3)$$=1;else $$=0;}
-       |expr EQ expr         {cmp=true; if($1 == $3)$$=1;else $$=0;}
-       |expr NE expr         {cmp=true; if($1 != $3)$$=1;else $$=0;}
+       |expr '<' expr         {cmp=true;if(!str) {if($1 < $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr '>' expr         {cmp=true;if(!str) {if($1 > $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr LE expr         {cmp=true;if(!str) {if($1 <= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr GE expr         {cmp=true;if(!str) {if($1 >= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr EQ expr         {cmp=true;if(!str) {if($1 == $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
+       |expr NE expr         {cmp=true;if(!str) {if($1 != $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;str_error = true;}}
        |expr_logica AND expr_logica		{
                               cmp=true;
                               if(($1==1||$1==0)&&($3==1||$3==0))

@@ -5,5 +5,5 @@
 **Bb            Float        25.4
 **Cc            Bool         False
 **aa            Int          2
-**cad            String       esto
+**cad            String       otro
 *********************************

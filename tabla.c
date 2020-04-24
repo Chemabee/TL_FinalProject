@@ -72,6 +72,11 @@ bool Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
                     if(act->dato.tipo == 2){
                         (*identificador).valor.valor_logico = act->dato.valor.valor_logico;
                     }
+                    else{
+                        if(act->dato.tipo == 3){
+                        strcpy((*identificador).valor.valor_cad, act->dato.valor.valor_cad);
+                        }   
+                    }
                 }
             }
         }
