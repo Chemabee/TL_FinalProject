@@ -14,12 +14,6 @@ bool Tabla::insertar(tipo_datoTS *identificador){//inserta un dato si no existe,
         primero = (nodo*)malloc(sizeof(nodo));
         primero->dato=*identificador;
         primero->sig=NULL;
-        if (identificador->init == true)
-        {
-            primero->dato.init = true;
-        }
-        else primero->dato.init = false;
-        
         insertado = true;
     }
     else{//Buscar el nombre del identificador, y si no se encuentra añadirlo al final
@@ -33,7 +27,7 @@ bool Tabla::insertar(tipo_datoTS *identificador){//inserta un dato si no existe,
                 found=true;
         }
 
-        if(!found){
+        if(!found){//Insertando por primera vez la variable
             aux=(nodo*)malloc(sizeof(nodo));
             aux->dato=*identificador;
             aux->sig=NULL;
@@ -41,9 +35,11 @@ bool Tabla::insertar(tipo_datoTS *identificador){//inserta un dato si no existe,
             insertado = true;
         }
         else{//Encontrado, comprobar tipo variable y, si se puede, cambiarlo
-            if(identificador->tipo == act->dato.tipo){
-                //Tipo correcto
+            if(identificador->tipo == act->dato.tipo && !act->dato.cte){
+                //Tipo correcto y no es constante
                 act->dato.valor=identificador->valor;
+                //Además indicar que se le ha asignado un valor?
+                act->dato.init=true;
                 insertado=true;
             }
         }
@@ -51,7 +47,15 @@ bool Tabla::insertar(tipo_datoTS *identificador){//inserta un dato si no existe,
     return insertado;
 }
 
-bool Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
+/**
+ * 
+ *Busca un elemento dado el nombre, y lo devuelve en la variable identificador. 
+ *Si no encontrado = 0
+ *Si encontrado pero !inicializado = -1
+ *Si encontrado e inicializado = 1
+ *  
+ **/
+int Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
     nodo * act = getFirst();
     bool found = false;
     while (act!=NULL && !found)
@@ -61,21 +65,32 @@ bool Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
             found=true;
             strcpy((*identificador).nombre, act->dato.nombre);
             (*identificador).tipo = act->dato.tipo;
-            if(act->dato.tipo == 0){
+            (*identificador).init = act->dato.init;
+            (*identificador).cte = act->dato.cte;
+            if(act->dato.cte == true){
+                if(act->dato.tipo == 0){
                 (*identificador).valor.valor_entero = act->dato.valor.valor_entero;
-            }
-            else{
-                if(act->dato.tipo == 1){
-                    (*identificador).valor.valor_real = act->dato.valor.valor_real;
                 }
                 else{
-                    if(act->dato.tipo == 2){
-                        (*identificador).valor.valor_logico = act->dato.valor.valor_logico;
+                    if(act->dato.tipo == 1){
+                        (*identificador).valor.valor_real = act->dato.valor.valor_real;
                     }
                     else{
-                        if(act->dato.tipo == 3){
-                        strcpy((*identificador).valor.valor_cad, act->dato.valor.valor_cad);
-                        }   
+                        if(act->dato.tipo == 2){
+                            (*identificador).valor.valor_logico = act->dato.valor.valor_logico;
+                        }
+                        else{
+                            if(act->dato.tipo == 3){
+                                strcpy((*identificador).valor.valor_cad, act->dato.valor.valor_cad);
+                            }
+                            else{
+                                if (act->dato == 4)
+                                {
+                                    (*identificador).valor.valor_pos = act->dato.valor.valor_pos;
+                                }
+                                
+                            }  
+                        }
                     }
                 }
             }
@@ -83,5 +98,14 @@ bool Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
         else
             act = act->sig;
     }
-    return found;
+    if (found)
+    {
+        if (act->dato.init == true)
+        {
+            return 1;
+        }
+        else return -1;
+    }
+    else return 0;
+    
 }

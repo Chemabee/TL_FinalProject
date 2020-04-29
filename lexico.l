@@ -21,6 +21,13 @@ real_not_cientifica {real}[e][+-]?{entero}
 <STR>[^"]*					strcpy(yylval.c_cadena,yytext);return CADENA;
 <STR>["]					BEGIN(0);
 
+escribir        strcpy(yylval.c_cadena, yytext);return ESCRIBIR;
+
+entero          {return INT};
+real            {return FLOAT;}
+cadena          {return STRING;}
+posicion        {return POS;}
+
 DEFINICIONES            {return DEFINICIONES;}
 CONFIGURACION           {return CONFIGURACION;}
 OBSTACULOS              {return OBSTACULOS;}
@@ -30,7 +37,6 @@ EJEMPLOS                {return EJEMPLOS;}
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
 \n				n_lineas++; return (yytext[0]);
 [\t ]			;
-escribir        strcpy(yylval.c_cadena, yytext);return ESCRIBIR;
 true            yylval.c_bool = 1; return BOOL;
 false           yylval.c_bool = 0; return BOOL;
 [A-Za-z_][_A-Za-z0-9]*    strcpy(yylval.c_cadena, yytext);return VARIABLE;

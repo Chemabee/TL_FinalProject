@@ -56,7 +56,13 @@ void yyerror(const char* s){         /*    llamada por cada error sintactico de 
       reset_flags();
 } 
 
-bool insertar(tipo_datoTS *var){
+bool insertar(tipo_datoTS *var, bool init, bool cte){
+      if(init) var->init = true;
+      else var->init = false;
+
+      if(cte) var->cte = true;
+      else var-> cte = false;
+
       return tabla->insertar(var);
 }
 
@@ -98,7 +104,7 @@ void printTabla(ofstream &out){
 
 %token <c_bool> BOOL
 %token <c_entero> ENTERO
-%token <c_cadena> VARIABLE ESCRIBIR CADENA
+%token <c_cadena> VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS
 %token REAL
 %token OR AND NOT LE GE EQ NE
 
@@ -118,12 +124,13 @@ void printTabla(ofstream &out){
 
 %%
 lista_instrucciones: 		{}
-      |lista_instrucciones asignacion
+      |DEFINICIONES bloque_definiciones CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos 
+      |CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos
       ;
 
 asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
-                                                if(tabla->buscar($1, var)){
+                                                if(tabla->buscar($1, var) != 0){
                                                       if(var->tipo == check_tipo_num()){
                                                             strcpy(var->nombre, $1);
                                                             var->tipo = check_tipo_num();
@@ -131,7 +138,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 0: var->valor.valor_entero = $3; break;
                                                                   case 1: var->valor.valor_real = $3; break;
                                                             }
-                                                            if(!insertar(var))
+                                                            if(!insertar(var, true, false))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
                                                       else{
@@ -157,7 +164,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 0: var->valor.valor_entero = $3; break;
                                                                   case 1: var->valor.valor_real = $3; break;
                                                             }
-                                                      if(!insertar(var))
+                                                      if(!insertar(var,true, true))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
                                                       
@@ -167,12 +174,12 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                     reset_flags();
                                     }
       |VARIABLE '=' CADENA '\n'           {
-                                                if(tabla->buscar($1, var)){
+                                                if(tabla->buscar($1, var)!=0){
                                                       if(var->tipo == 3){
                                                             strcpy(var->nombre, $1);
                                                             var->tipo = 3;
                                                             strcpy(var->valor.valor_cad, $3);
-                                                            if(!insertar(var))
+                                                            if(!insertar(var, true, false))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
                                                       else{
@@ -188,21 +195,21 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                 else{strcpy(var->nombre, $1);
                                                             var->tipo = 3;
                                                             strcpy(var->valor.valor_cad, $3);
-                                                      if(!insertar(var))
+                                                      if(!insertar(var, true, true))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
       }
 
       |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
-                                                if(tabla->buscar($1, var)){
+                                                if(tabla->buscar($1, var) != 0){
                                                       if(var->tipo == check_tipo_num()){
                                                             strcpy(var->nombre, $1);
                                                             var->tipo = check_tipo_num();
                                                             switch (var->tipo){
                                                                   case 2: var->valor.valor_logico = $3; break;
                                                             }
-                                                            if(!insertar(var))
+                                                            if(!insertar(var, true, false))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
                                                       else{
@@ -220,7 +227,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                             switch (var->tipo){
                                                                   case 2: var->valor.valor_logico = $3; break;
                                                             }
-                                                      if(!insertar(var))
+                                                      if(!insertar(var, true, true))
                                                                   cout<<"Error en la asignacion"<<endl;
                                                       }
                                           };
@@ -251,9 +258,41 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
       |error '\n' {yyerrok;reset_flags();}       
 	;
 
+
+declaracion: INT VARIABLE '\n'    {
+                              if(tabla->buscar($2, var) == 0){
+                                    var->tipo=0;
+                                    strcpy(var->nombre, $2);
+                                    if(!insertar(var, false, false))
+                                          cout<<"Error en la asignacion"<<endl;
+                                    }
+                              }
+      |FLOAT VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
+                                    var->tipo=1;
+                                    strcpy(var->nombre, $2);
+                                    if(!insertar(var, false, false))
+                                          cout<<"Error en la asignacion"<<endl;
+                                    }
+                              }
+      |STRING VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
+                                    var->tipo=3;
+                                    strcpy(var->nombre, $2);
+                                    if(!insertar(var, false, false))
+                                          cout<<"Error en la asignacion"<<endl;
+                                    }
+                              }
+      |POS VARIABLE '\n'          {if(tabla->buscar($2, var) == 0){
+                                    var->tipo=4;
+                                    strcpy(var->nombre, $2);
+                                    if(!insertar(var, false, false))
+                                          cout<<"Error en la asignacion"<<endl;
+                                    }
+                              }
+      
+
 expr:    REAL 		      {real=true;real_final=true;$$=$1;}
        | ENTERO 		      {$$=$1;}    
-       | VARIABLE             {if(tabla->buscar($1, var)){
+       | VARIABLE             {if(tabla->buscar($1, var) == 1){
                                     switch(var->tipo){
                                           case 0: $$=var->valor.valor_entero;break;
                                           case 1: $$=var->valor.valor_real;real=true;real_final=true;break;
@@ -332,6 +371,11 @@ expr_logica: BOOL                 {cmp=true;$$=$1;}
                               }
        |NOT expr_logica         {$$=!$2;}
        ;
+
+bloque_definiciones: {}
+      |declaracion bloque_definiciones
+      |asignacion bloque_definiciones
+      ;
 %%
 
 int main(int argc, char *argv[]){

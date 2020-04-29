@@ -18,3 +18,4 @@ cad = "otro"
 tT = cad + 1
 escribir aa
 escribir cad
+escribir cad aa
