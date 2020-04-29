@@ -47,26 +47,37 @@ extern int yydebug;
   {
     BOOL = 258,
     ENTERO = 259,
-    VARIABLE = 260,
-    ESCRIBIR = 261,
-    CADENA = 262,
-    DEFINICIONES = 263,
-    CONFIGURACION = 264,
-    OBSTACULOS = 265,
-    EJEMPLOS = 266,
-    REAL = 267,
-    INT = 268,
-    FLOAT = 269,
-    STRING = 270,
-    POS = 271,
-    OR = 272,
-    AND = 273,
-    NOT = 274,
-    LE = 275,
-    GE = 276,
-    EQ = 277,
-    NE = 278,
-    menos = 279
+    OBSTACULO = 260,
+    VARIABLE = 261,
+    ESCRIBIR = 262,
+    CADENA = 263,
+    DEFINICIONES = 264,
+    CONFIGURACION = 265,
+    OBSTACULOS = 266,
+    EJEMPLOS = 267,
+    DIMENSION = 268,
+    ENTRADA = 269,
+    SALIDA = 270,
+    PAUSA = 271,
+    NORTE = 272,
+    SUR = 273,
+    ESTE = 274,
+    OESTE = 275,
+    EJEMPLO = 276,
+    FINEJEMPLO = 277,
+    REAL = 278,
+    INT = 279,
+    FLOAT = 280,
+    STRING = 281,
+    POS = 282,
+    OR = 283,
+    AND = 284,
+    NOT = 285,
+    LE = 286,
+    GE = 287,
+    EQ = 288,
+    NE = 289,
+    menos = 290
   };
 #endif
 
@@ -75,14 +86,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 113 "calculadora.y" /* yacc.c:1909  */
+#line 122 "calculadora.y" /* yacc.c:1909  */
 
       int c_entero;
       float c_real;
       char c_cadena[20];
       bool c_bool;
 
-#line 86 "calculadora.h" /* yacc.c:1909  */
+#line 97 "calculadora.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -38,6 +38,15 @@ EJEMPLOS                {return EJEMPLOS;}
 [Ss][Aa][Ll][Ii][Dd][Aa]                {return SALIDA;}
 [Pp][Aa][Uu][Ss][Aa]                    {return PAUSA;}
 
+obstaculo       {return OBSTACULO;}
+norte           {return NORTE;}
+sur             {return SUR;}
+este            {return ESTE;}
+oeste           {return OESTE;}
+
+ejemplo         {return EJEMPLO;}
+finejemplo      {return FINEJEMPLO;}
+
 {entero}                    yylval.c_entero = atoi(yytext);return ENTERO;
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
 \n				n_lineas++; return (yytext[0]);

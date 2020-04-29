@@ -20,13 +20,11 @@ bool error_str = false;
 bool posVar = false;
 
 int dimension_glob = 10;
-int posEntrada_glob[2];
-posEntrada_glob[0]=0;
-posEntrada_glob[1]=0;
-int posSalida_glob[2];
-posSalida_glob[0]=9;
-posSalida_glob[1]=9;
+int posEntrada_glob[2] = {0, 0};
+int posSalida_glob[2] = {9, 9};
 float pausa_glob = 0.5;
+
+int posActual[2] = {0, 0};
 
 Tabla* tabla;
 tipo_datoTS* var;
@@ -132,7 +130,7 @@ void printTabla(ofstream &out){
 
 %token <c_bool> BOOL
 %token <c_entero> ENTERO
-%token <c_cadena> VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS DIMENSION ENTRADA SALIDA PAUSA
+%token <c_cadena> OBSTACULO VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS DIMENSION ENTRADA SALIDA PAUSA NORTE SUR ESTE OESTE EJEMPLO FINEJEMPLO
 %token REAL
 %token INT FLOAT STRING POS
 %token OR AND NOT LE GE EQ NE
@@ -153,8 +151,8 @@ void printTabla(ofstream &out){
 
 %%
 lista_instrucciones: 		{}
-      |DEFINICIONES bloque_definiciones CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos 
-      |CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos
+      |DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos 
+      |CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
       |asignacion lista_instrucciones
       |declaracion '\n' lista_instrucciones
       ;
@@ -374,7 +372,7 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           case 1: $$=var->valor.valor_real;real=true;real_final=true;break;
                                           case 2: cout<<"Error semántico en la linea \033[1;31m"<<n_lineas+1<<"\033[0m, la variable "<<$1<<" de tipo logico no puede estar en la parte derecha de la asignacion"<<endl;error_bool_derecha=true;break;
                                           case 3: str = true;break;
-                                          case 4: posVar = true;;break;
+                                          case 4: posVar = true;break;
                                     }    
                               }
                               else{
@@ -383,10 +381,10 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                     }
                               }  
        | '(' expr ')'         {$$=$2;}           
-       | expr '+' expr 		{if(!str) $$=$1+$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}              
-       | expr '-' expr    	{if(!str) $$=$1-$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}            
-       | expr '*' expr        {if(!str) $$=$1*$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}} 
-       | expr '/' expr        {if(!str){ 
+       | expr '+' expr 		{if(!str&&!posVar) $$=$1+$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}              
+       | expr '-' expr    	{if(!str&&!posVar) $$=$1-$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}            
+       | expr '*' expr        {if(!str&&!posVar) $$=$1*$3;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}} 
+       | expr '/' expr        {if(!str&&!posVar){ 
                                     if(real){
                                           $$=(float)($1/$3);
                                           real=false;
@@ -395,11 +393,11 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           $$=(int)($1/$3);
                                           };
                                     }
-                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl; error_str = true;}
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl; error_str = true;}
                               
                               }
-       | expr '^' expr        {if(!str) $$=pow($1,$3);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       | expr '%' expr        {if(!str) {if(!real){
+       | expr '^' expr        {if(!str&&!posVar) $$=pow($1,$3);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       | expr '%' expr        {if(!str&&!posVar) {if(!real){
                                           $$=(int)$1%(int)$3;
                                           }
                                     else {
@@ -407,18 +405,18 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador % no se puede usar con datos de tipo real" <<endl;
                                           }
                                     }
-                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}
+                              else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}
                               } 
-       |'-' expr %prec menos  {if(!str) $$= -$2;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |'-' expr %prec menos  {if(!str&&!posVar) $$= -$2;else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
        ;
 expr_logica: BOOL                 {cmp=true;$$=$1;}
        | '(' expr_logica ')'         {$$=$2;}
-       |expr '<' expr         {cmp=true;if(!str) {if($1 < $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       |expr '>' expr         {cmp=true;if(!str) {if($1 > $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       |expr LE expr         {cmp=true;if(!str) {if($1 <= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       |expr GE expr         {cmp=true;if(!str) {if($1 >= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       |expr EQ expr         {cmp=true;if(!str) {if($1 == $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
-       |expr NE expr         {cmp=true;if(!str) {if($1 != $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres"<<endl;error_str = true;}}
+       |expr '<' expr         {cmp=true;if(!str&&!posVar) {if($1 < $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       |expr '>' expr         {cmp=true;if(!str&&!posVar) {if($1 > $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       |expr LE expr         {cmp=true;if(!str&&!posVar) {if($1 <= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       |expr GE expr         {cmp=true;if(!str&&!posVar) {if($1 >= $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       |expr EQ expr         {cmp=true;if(!str&&!posVar) {if($1 == $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
+       |expr NE expr         {cmp=true;if(!str&&!posVar) {if($1 != $3)$$=1;else $$=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
        |expr_logica AND expr_logica		{
                               cmp=true;
                               if(($1==1||$1==0)&&($3==1||$3==0))
@@ -454,10 +452,26 @@ bloque_definiciones: {}
       |asignacion bloque_definiciones
       ;
 bloque_configuracion:   {}
-      |DIMENSION expr bloque_configuracion   {TODO comprobar el tipo en todas las expresiones para ver si es correcto}
+      |DIMENSION expr bloque_configuracion   {}
       |bloque_configuracion ENTRADA expr
       |bloque_configuracion SALIDA expr
-      |bloque_configuracion PAUSA expr bloque_configuracion
+      |bloque_configuracion PAUSA expr
+      ;
+bloque_obstaculos:      {}
+      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'     {}
+      |bloque_obstaculos SUR expr '\n'
+      |bloque_obstaculos ESTE expr '\n'
+      |bloque_obstaculos OESTE expr '\n'
+      |bloque_obstaculos NORTE expr '\n'
+      ;
+bloque_ejemplos:  {}
+      |EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos {}
+      ;
+bloque_ejemplos_anidado:      {}
+      |bloque_ejemplos_anidado SUR expr '\n'
+      |bloque_ejemplos_anidado ESTE expr '\n'
+      |bloque_ejemplos_anidado OESTE expr '\n'
+      |bloque_ejemplos_anidado NORTE expr '\n'
       ;
 %%
 

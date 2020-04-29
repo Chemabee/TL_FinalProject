@@ -1,19 +1,15 @@
 *********************************
 ***NOMBRE      TIPO      VALOR***
 *********************************
-**A            Int          7
-**var1            Int          1
-**var2            Int          NI
-**str            String       hey dude
-**str2            String       a
-**Bb            Float        25.4
-**Cc            Bool         False
-**aa            Int          14
-**cad            String       esto
-**A_2            Int          7
-**vacia            String       NI
-**post            Position     <1,5>
-**p            Position     <-4,14>
+**x            Int          NI
+**y            Int          NI
+**f            Float        NI
+**cad            String       Soy Ejemplo 3
+**p1            Position     <0,-1>
+**p2            Position     <6,4>
+**INICIO            Position     <199,-1>
+**FIN            Position     <0,2>
+**P            Float        0.4
 *********************************
 *******NI = No Inicializado******
 *********************************

@@ -1,34 +1,128 @@
-A = 2*3+1
-entero var1, var2
-cadena str,str2
-Bb = (3+A)*2.54
-Cc = Bb < A
-_logico = (B == 3) && (Bb==10) #error, B no existe
-A = 34%2
-A_2 = 12%Bb #error semántico, Bb es de tipo real
-A = 12.2*Bb #error semántico, A es de tipo entero y recibe un valor de tipo real. A sigue valiendo 0
-A = A+1
-X = Cc + 2 #error semántico, no se pueden hacer operaciones aritméticas con variables lógicas
-salir #error sintáctico
-aa = A + A
-escribir "hola"
-escribir 3*5+1
-escribir "1adfoas"
-escribir true && (1>2)
-cad = "esto"
-cad = "otro"
-tT = cad + 1 #error no se permiten operaciones con str
-escribir aa
-escribir cad
-A_2 = A
-escribir A_2
-var1 = 1
-var2 = 1.1
-str = "hey dude"
-str2 = "a" #Si pongo "" falla
-escribir 5*4/2+1
-cadena vacia
-post = <1,5>
-posicion p
-p = <1-5, 2*A>
-p = <2/2.0, 1>
+DEFINICIONES
+    
+  # VARIABLES: no se inicializan
+
+  entero n
+  entero x,y           # variables que no se usan (Err. Sem.?)
+  real f
+  cadena cad
+  posicion p1,p2
+        
+  # CONSTANTES: se inicializan y se pueden usar en todos los bloques
+    
+  D = 7                # dimensiones del tablero    
+  INICIO = <D-2,D-1>   # posición de entrada
+  FIN = <0,2>          # posición de salida
+  P = 0.1*4            # pausa en movimiento
+  
+  MSG_OBS="OBSTACULOS" # mensaje para la colocación de los obstaculos
+  
+  # Algunos errores semánticos de Definiciones
+  
+  C1 = b + 1           # Err. Sem.: el identificador b no está declarado    
+  C2 = 30 % 2.0        # Err. Sem.: la operación módulo (%) con tipo real  
+
+CONFIGURACION
+  
+  Dimension D  
+  entrada INICIO    
+  salida FIN
+  pausa P
+  
+  # Algunos errores semánticos de configuración
+  
+  entrada <1,1>         # Err. Sem.: la entrada debe estar en el borde del tablero
+  salida <2,3>          # Err. Sem.: la salida debe estar en el borde del tablero
+
+OBSTACULOS
+
+  # Algunos errores semánticos de obstáculos
+    
+    obstaculo <8,8>     # Err. Sem.: obstaculo fuera de los límites del tablero
+    
+    obstaculo INICIO    # Err. Sem.: obstaculo en la posición de entrada
+    
+    obstaculo FIN       # Err. Sem.: obstaculo en la posición de salida
+
+
+  # colocación correcta de los obstaculos        
+    
+    p1 = <0,D-1>
+    p2 = <6,4>    
+    
+    escribir MSG_OBS
+    
+    # Si cambiamos de dirección, asumiremos que estábamos en la posición <0,0>
+    
+    obstaculo p1
+    repite 3
+      sur 1
+      obstaculo
+    finrepite
+    
+    repite 3
+      oeste 1
+      obstaculo
+    finrepite
+    
+    sur 1
+    obstaculo    
+    
+    obstaculo p2
+    repite 4
+      oeste 1
+      obstaculo
+    finrepite
+    
+    repite 5
+      norte 1
+      obstaculo
+    finrepite
+    
+    repite 2
+      este 1
+      obstaculo
+    finrepite
+    
+    n = 0       # Si n > 0, el laberinto es imposible
+    
+    si n > 0    
+    entonces
+      sur 1     # ESCENARIO 2
+    sino
+      este 1    # ESCENARIO 1    
+    finsi
+    
+    obstaculo
+    
+EJEMPLOS
+
+    ejemplo EJEMPLO_1               # Ejemplo 1
+        cad="Soy Ejemplo 1"
+        escribir cad
+        oeste 4
+        norte 3
+        este 2
+        norte 2
+        oeste 2
+    finejemplo 
+
+    ejemplo EJEMPLO_2               # Ejemplo 2
+        cad="Soy Ejemplo 2"
+        escribir cad
+        norte 1
+        oeste 2
+        sur 1
+        oeste 3
+        norte 3
+        este 4
+        norte 2
+        oeste 3
+    finejemplo
+
+    ejemplo EJEMPLO_3               # Ejemplo 3
+        cad="Soy Ejemplo 3"
+        escribir cad
+        oeste D                     # Err. Sem.: movimiento fuera de los límites
+    finejemplo   
+    
