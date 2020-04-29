@@ -17,6 +17,16 @@ bool error_bool_derecha = false;
 bool cmp=false;
 bool str = false;
 bool error_str = false;
+bool posVar = false;
+
+int dimension_glob = 10;
+int posEntrada_glob[2];
+posEntrada_glob[0]=0;
+posEntrada_glob[1]=0;
+int posSalida_glob[2];
+posSalida_glob[0]=9;
+posSalida_glob[1]=9;
+float pausa_glob = 0.5;
 
 Tabla* tabla;
 tipo_datoTS* var;
@@ -38,6 +48,7 @@ void reset_flags(){
       cmp=false;
       str = false;
       error_str = false;
+      posVar = false;
 }
 
 string check_tipo(){
@@ -74,21 +85,38 @@ void printTabla(ofstream &out){
       nodo* n = tabla->getFirst();
       while(n!=NULL){
             out <<"**"<< n->dato.nombre<<"            ";
-            switch (n->dato.tipo){
-                  case 0: out << "Int          "<<n->dato.valor.valor_entero;break;
-                  case 1: out << "Float        "<<n->dato.valor.valor_real;break;
-                  case 2: out << "Bool         ";
-                        if(n->dato.valor.valor_real)
-                              out<<"True";
-                        else
-                              out<<"False";
-                        break;
-                  default: out << "undefined";break;
-                  case 3: out << "String       "<<n->dato.valor.valor_cad;break;
+            if(n->dato.init == true){
+                  switch (n->dato.tipo){
+                        case 0: out << "Int          "<<n->dato.valor.valor_entero;break;
+                        case 1: out << "Float        "<<n->dato.valor.valor_real;break;
+                        case 2: out << "Bool         ";
+                              if(n->dato.valor.valor_real)
+                                    out<<"True";
+                              else
+                                    out<<"False";
+                              break;
+                        default: out << "undefined";break;
+                        case 3: out << "String       "<<n->dato.valor.valor_cad;break;
+                        case 4: out << "Position     <"<<n->dato.valor.valor_pos[0]<<","<<n->dato.valor.valor_pos[1]<<">";break;
+                  }
             }
+            else{
+                 switch (n->dato.tipo){
+                        case 0: out << "Int          NI";break;
+                        case 1: out << "Float        NI";break;
+                        case 2: out << "Bool         NI";break;
+                        default: out << "undefined";break;
+                        case 3: out << "String       NI";break;
+                        case 4: out << "Position     NI";break;
+
+                  } 
+            }
+            
             out <<endl;
             n=n->sig;
       }
+      out << "*********************************" <<endl;
+      out << "*******NI = No Inicializado******" <<endl;
       out << "*********************************" <<endl;
 
 }
@@ -104,7 +132,7 @@ void printTabla(ofstream &out){
 
 %token <c_bool> BOOL
 %token <c_entero> ENTERO
-%token <c_cadena> VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS
+%token <c_cadena> VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS DIMENSION ENTRADA SALIDA PAUSA
 %token REAL
 %token INT FLOAT STRING POS
 %token OR AND NOT LE GE EQ NE
@@ -125,6 +153,8 @@ void printTabla(ofstream &out){
 
 %%
 lista_instrucciones: 		{}
+      |DEFINICIONES bloque_definiciones CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos 
+      |CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos
       |asignacion lista_instrucciones
       |declaracion '\n' lista_instrucciones
       ;
@@ -149,6 +179,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: cout<<"real"  ;break;
                                                                   case 2: cout<<"logico";break;
                                                                   case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
                                                             }
                                                             cout << " y no se le puede asignar tipo ";
                                                             switch (check_tipo_num()){
@@ -156,6 +187,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: cout<<"real"<<endl;break;
                                                                   case 2: cout<<"logico"<<endl;break;
                                                                   case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
                                                             }
                                                       }
                                                 }
@@ -190,6 +222,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: cout<<"real"<<endl;break;
                                                                   case 2: cout<<"logico"<<endl;break;
                                                                   case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
                                                             }
                                                       }
                                                 }
@@ -200,6 +233,39 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
       }
+      |VARIABLE '=' '<'expr ',' expr '>' '\n'   {if(!real_final){
+                                                      if(tabla->buscar($1, var)!=0){
+                                                            if(var->tipo == 4){
+                                                                  strcpy(var->nombre, $1);
+                                                                  var->tipo = 4;
+                                                                  var->valor.valor_pos[0] = $4;
+                                                                  var->valor.valor_pos[1] = $6;
+                                                                  if(!insertar(var, true, false))
+                                                                        cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                            }
+                                                            else{
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
+                                                                  switch (var->tipo){
+                                                                        case 0: cout<<"entero"<<endl;break;
+                                                                        case 1: cout<<"real"<<endl;break;
+                                                                        case 2: cout<<"logico"<<endl;break;
+                                                                        case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                        case 4: cout<<"posicion"<<endl;break;
+                                                                  }
+                                                            }
+                                                      }
+                                                      else{strcpy(var->nombre, $1);
+                                                                  strcpy(var->nombre, $1);
+                                                                  var->tipo = 4;
+                                                                  var->valor.valor_pos[0] = $4;
+                                                                  var->valor.valor_pos[1] = $6;
+                                                            if(!insertar(var, true, true))
+                                                                        cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                      }
+                                                }
+                                                else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
+                                                reset_flags();
+                                          }
 
       |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
@@ -220,6 +286,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: cout<<"real"<<endl;break;
                                                                   case 2: cout<<"logico"<<endl;break;
                                                                   case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
                                                             }
                                                       }
                                                 }
@@ -307,6 +374,7 @@ expr:    REAL 		      {real=true;real_final=true;$$=$1;}
                                           case 1: $$=var->valor.valor_real;real=true;real_final=true;break;
                                           case 2: cout<<"Error semántico en la linea \033[1;31m"<<n_lineas+1<<"\033[0m, la variable "<<$1<<" de tipo logico no puede estar en la parte derecha de la asignacion"<<endl;error_bool_derecha=true;break;
                                           case 3: str = true;break;
+                                          case 4: posVar = true;;break;
                                     }    
                               }
                               else{
@@ -382,8 +450,14 @@ expr_logica: BOOL                 {cmp=true;$$=$1;}
        ;
 
 bloque_definiciones: {}
-      |declaracion bloque_definiciones
+      |declaracion '\n' bloque_definiciones
       |asignacion bloque_definiciones
+      ;
+bloque_configuracion:   {}
+      |DIMENSION expr bloque_configuracion   {TODO comprobar el tipo en todas las expresiones para ver si es correcto}
+      |bloque_configuracion ENTRADA expr
+      |bloque_configuracion SALIDA expr
+      |bloque_configuracion PAUSA expr bloque_configuracion
       ;
 %%
 

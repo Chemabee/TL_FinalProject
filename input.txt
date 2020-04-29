@@ -25,5 +25,10 @@ escribir A_2
 var1 = 1
 var2 = 1.1
 str = "hey dude"
-str2 = "" #Si pongo "" falla
+str2 = "a" #Si pongo "" falla
 escribir 5*4/2+1
+cadena vacia
+post = <1,5>
+posicion p
+p = <1-5, 2*A>
+p = <2/2.0, 1>

@@ -3,12 +3,17 @@
 *********************************
 **A            Int          7
 **var1            Int          1
-**var2            Int          7
+**var2            Int          NI
 **str            String       hey dude
-**str2            String       
+**str2            String       a
 **Bb            Float        25.4
 **Cc            Bool         False
 **aa            Int          14
 **cad            String       esto
 **A_2            Int          7
+**vacia            String       NI
+**post            Position     <1,5>
+**p            Position     <-4,14>
+*********************************
+*******NI = No Inicializado******
 *********************************

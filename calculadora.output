@@ -13,9 +13,9 @@ Terminales no usados en la gramática
 
 Reglas inútiles en la gramática
 
-   38 bloque_definiciones: %empty
-   39                    | declaracion bloque_definiciones
-   40                    | asignacion bloque_definiciones
+   39 bloque_definiciones: %empty
+   40                    | declaracion '\n' bloque_definiciones
+   41                    | asignacion bloque_definiciones
 
 
 Gramática
@@ -28,81 +28,82 @@ Gramática
 
     4 asignacion: VARIABLE '=' expr '\n'
     5           | VARIABLE '=' CADENA '\n'
-    6           | VARIABLE '=' expr_logica '\n'
-    7           | ESCRIBIR CADENA '\n'
-    8           | ESCRIBIR expr '\n'
-    9           | ESCRIBIR expr_logica '\n'
-   10           | error '\n'
+    6           | VARIABLE '=' '<' expr ',' expr '>' '\n'
+    7           | VARIABLE '=' expr_logica '\n'
+    8           | ESCRIBIR CADENA '\n'
+    9           | ESCRIBIR expr '\n'
+   10           | ESCRIBIR expr_logica '\n'
+   11           | error '\n'
 
-   11 declaracion: INT VARIABLE
-   12            | FLOAT VARIABLE
-   13            | STRING VARIABLE
-   14            | POS VARIABLE
-   15            | declaracion ',' VARIABLE
+   12 declaracion: INT VARIABLE
+   13            | FLOAT VARIABLE
+   14            | STRING VARIABLE
+   15            | POS VARIABLE
+   16            | declaracion ',' VARIABLE
 
-   16 expr: REAL
-   17     | ENTERO
-   18     | VARIABLE
-   19     | '(' expr ')'
-   20     | expr '+' expr
-   21     | expr '-' expr
-   22     | expr '*' expr
-   23     | expr '/' expr
-   24     | expr '^' expr
-   25     | expr '%' expr
-   26     | '-' expr
+   17 expr: REAL
+   18     | ENTERO
+   19     | VARIABLE
+   20     | '(' expr ')'
+   21     | expr '+' expr
+   22     | expr '-' expr
+   23     | expr '*' expr
+   24     | expr '/' expr
+   25     | expr '^' expr
+   26     | expr '%' expr
+   27     | '-' expr
 
-   27 expr_logica: BOOL
-   28            | '(' expr_logica ')'
-   29            | expr '<' expr
-   30            | expr '>' expr
-   31            | expr LE expr
-   32            | expr GE expr
-   33            | expr EQ expr
-   34            | expr NE expr
-   35            | expr_logica AND expr_logica
-   36            | expr_logica OR expr_logica
-   37            | NOT expr_logica
+   28 expr_logica: BOOL
+   29            | '(' expr_logica ')'
+   30            | expr '<' expr
+   31            | expr '>' expr
+   32            | expr LE expr
+   33            | expr GE expr
+   34            | expr EQ expr
+   35            | expr NE expr
+   36            | expr_logica AND expr_logica
+   37            | expr_logica OR expr_logica
+   38            | NOT expr_logica
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
-'\n' (10) 3 4 5 6 7 8 9 10
-'%' (37) 25
-'(' (40) 19 28
-')' (41) 19 28
-'*' (42) 22
-'+' (43) 20
-',' (44) 15
-'-' (45) 21 26
-'/' (47) 23
-'<' (60) 29
-'=' (61) 4 5 6
-'>' (62) 30
-'^' (94) 24
-error (256) 10
-BOOL (258) 27
-ENTERO (259) 17
-VARIABLE (260) 4 5 6 11 12 13 14 15 18
-ESCRIBIR (261) 7 8 9
-CADENA (262) 5 7
+'\n' (10) 3 4 5 6 7 8 9 10 11
+'%' (37) 26
+'(' (40) 20 29
+')' (41) 20 29
+'*' (42) 23
+'+' (43) 21
+',' (44) 6 16
+'-' (45) 22 27
+'/' (47) 24
+'<' (60) 6 30
+'=' (61) 4 5 6 7
+'>' (62) 6 31
+'^' (94) 25
+error (256) 11
+BOOL (258) 28
+ENTERO (259) 18
+VARIABLE (260) 4 5 6 7 12 13 14 15 16 19
+ESCRIBIR (261) 8 9 10
+CADENA (262) 5 8
 DEFINICIONES (263)
 CONFIGURACION (264)
 OBSTACULOS (265)
 EJEMPLOS (266)
-REAL (267) 16
-INT (268) 11
-FLOAT (269) 12
-STRING (270) 13
-POS (271) 14
-OR (272) 36
-AND (273) 35
-NOT (274) 37
-LE (275) 31
-GE (276) 32
-EQ (277) 33
-NE (278) 34
+REAL (267) 17
+INT (268) 12
+FLOAT (269) 13
+STRING (270) 14
+POS (271) 15
+OR (272) 37
+AND (273) 36
+NOT (274) 38
+LE (275) 32
+GE (276) 33
+EQ (277) 34
+NE (278) 35
 menos (279)
 
 
@@ -113,15 +114,15 @@ $accept (38)
 lista_instrucciones (39)
     en la izquierda: 1 2 3, en la derecha: 0 2 3
 asignacion (40)
-    en la izquierda: 4 5 6 7 8 9 10, en la derecha: 2
+    en la izquierda: 4 5 6 7 8 9 10 11, en la derecha: 2
 declaracion (41)
-    en la izquierda: 11 12 13 14 15, en la derecha: 3 15
+    en la izquierda: 12 13 14 15 16, en la derecha: 3 16
 expr (42)
-    en la izquierda: 16 17 18 19 20 21 22 23 24 25 26, en la derecha:
-    4 8 19 20 21 22 23 24 25 26 29 30 31 32 33 34
+    en la izquierda: 17 18 19 20 21 22 23 24 25 26 27, en la derecha:
+    4 6 9 20 21 22 23 24 25 26 27 30 31 32 33 34 35
 expr_logica (43)
-    en la izquierda: 27 28 29 30 31 32 33 34 35 36 37, en la derecha:
-    6 9 28 35 36 37
+    en la izquierda: 28 29 30 31 32 33 34 35 36 37 38, en la derecha:
+    7 10 29 36 37 38
 
 
 Estado 0
@@ -145,7 +146,7 @@ Estado 0
 
 Estado 1
 
-   10 asignacion: error . '\n'
+   11 asignacion: error . '\n'
 
     '\n'  desplazar e ir al estado 11
 
@@ -154,16 +155,17 @@ Estado 2
 
     4 asignacion: VARIABLE . '=' expr '\n'
     5           | VARIABLE . '=' CADENA '\n'
-    6           | VARIABLE . '=' expr_logica '\n'
+    6           | VARIABLE . '=' '<' expr ',' expr '>' '\n'
+    7           | VARIABLE . '=' expr_logica '\n'
 
     '='  desplazar e ir al estado 12
 
 
 Estado 3
 
-    7 asignacion: ESCRIBIR . CADENA '\n'
-    8           | ESCRIBIR . expr '\n'
-    9           | ESCRIBIR . expr_logica '\n'
+    8 asignacion: ESCRIBIR . CADENA '\n'
+    9           | ESCRIBIR . expr '\n'
+   10           | ESCRIBIR . expr_logica '\n'
 
     BOOL      desplazar e ir al estado 13
     ENTERO    desplazar e ir al estado 14
@@ -180,28 +182,28 @@ Estado 3
 
 Estado 4
 
-   11 declaracion: INT . VARIABLE
+   12 declaracion: INT . VARIABLE
 
     VARIABLE  desplazar e ir al estado 23
 
 
 Estado 5
 
-   12 declaracion: FLOAT . VARIABLE
+   13 declaracion: FLOAT . VARIABLE
 
     VARIABLE  desplazar e ir al estado 24
 
 
 Estado 6
 
-   13 declaracion: STRING . VARIABLE
+   14 declaracion: STRING . VARIABLE
 
     VARIABLE  desplazar e ir al estado 25
 
 
 Estado 7
 
-   14 declaracion: POS . VARIABLE
+   15 declaracion: POS . VARIABLE
 
     VARIABLE  desplazar e ir al estado 26
 
@@ -235,7 +237,7 @@ Estado 9
 Estado 10
 
     3 lista_instrucciones: declaracion . '\n' lista_instrucciones
-   15 declaracion: declaracion . ',' VARIABLE
+   16 declaracion: declaracion . ',' VARIABLE
 
     '\n'  desplazar e ir al estado 29
     ','   desplazar e ir al estado 30
@@ -243,16 +245,17 @@ Estado 10
 
 Estado 11
 
-   10 asignacion: error '\n' .
+   11 asignacion: error '\n' .
 
-    $default  reduce usando la regla 10 (asignacion)
+    $default  reduce usando la regla 11 (asignacion)
 
 
 Estado 12
 
     4 asignacion: VARIABLE '=' . expr '\n'
     5           | VARIABLE '=' . CADENA '\n'
-    6           | VARIABLE '=' . expr_logica '\n'
+    6           | VARIABLE '=' . '<' expr ',' expr '>' '\n'
+    7           | VARIABLE '=' . expr_logica '\n'
 
     BOOL      desplazar e ir al estado 13
     ENTERO    desplazar e ir al estado 14
@@ -260,51 +263,52 @@ Estado 12
     CADENA    desplazar e ir al estado 31
     REAL      desplazar e ir al estado 17
     NOT       desplazar e ir al estado 18
+    '<'       desplazar e ir al estado 32
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 20
 
-    expr         ir al estado 32
-    expr_logica  ir al estado 33
+    expr         ir al estado 33
+    expr_logica  ir al estado 34
 
 
 Estado 13
 
-   27 expr_logica: BOOL .
+   28 expr_logica: BOOL .
 
-    $default  reduce usando la regla 27 (expr_logica)
+    $default  reduce usando la regla 28 (expr_logica)
 
 
 Estado 14
 
-   17 expr: ENTERO .
-
-    $default  reduce usando la regla 17 (expr)
-
-
-Estado 15
-
-   18 expr: VARIABLE .
+   18 expr: ENTERO .
 
     $default  reduce usando la regla 18 (expr)
 
 
+Estado 15
+
+   19 expr: VARIABLE .
+
+    $default  reduce usando la regla 19 (expr)
+
+
 Estado 16
 
-    7 asignacion: ESCRIBIR CADENA . '\n'
+    8 asignacion: ESCRIBIR CADENA . '\n'
 
-    '\n'  desplazar e ir al estado 34
+    '\n'  desplazar e ir al estado 35
 
 
 Estado 17
 
-   16 expr: REAL .
+   17 expr: REAL .
 
-    $default  reduce usando la regla 16 (expr)
+    $default  reduce usando la regla 17 (expr)
 
 
 Estado 18
 
-   37 expr_logica: NOT . expr_logica
+   38 expr_logica: NOT . expr_logica
 
     BOOL      desplazar e ir al estado 13
     ENTERO    desplazar e ir al estado 14
@@ -314,27 +318,27 @@ Estado 18
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 20
 
-    expr         ir al estado 35
-    expr_logica  ir al estado 36
+    expr         ir al estado 36
+    expr_logica  ir al estado 37
 
 
 Estado 19
 
-   26 expr: '-' . expr
+   27 expr: '-' . expr
 
     ENTERO    desplazar e ir al estado 14
     VARIABLE  desplazar e ir al estado 15
     REAL      desplazar e ir al estado 17
     '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
+    '('       desplazar e ir al estado 38
 
-    expr  ir al estado 38
+    expr  ir al estado 39
 
 
 Estado 20
 
-   19 expr: '(' . expr ')'
-   28 expr_logica: '(' . expr_logica ')'
+   20 expr: '(' . expr ')'
+   29 expr_logica: '(' . expr_logica ')'
 
     BOOL      desplazar e ir al estado 13
     ENTERO    desplazar e ir al estado 14
@@ -344,78 +348,78 @@ Estado 20
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 20
 
-    expr         ir al estado 39
-    expr_logica  ir al estado 40
+    expr         ir al estado 40
+    expr_logica  ir al estado 41
 
 
 Estado 21
 
-    8 asignacion: ESCRIBIR expr . '\n'
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   29 expr_logica: expr . '<' expr
-   30            | expr . '>' expr
-   31            | expr . LE expr
-   32            | expr . GE expr
-   33            | expr . EQ expr
-   34            | expr . NE expr
+    9 asignacion: ESCRIBIR expr . '\n'
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   30 expr_logica: expr . '<' expr
+   31            | expr . '>' expr
+   32            | expr . LE expr
+   33            | expr . GE expr
+   34            | expr . EQ expr
+   35            | expr . NE expr
 
-    LE    desplazar e ir al estado 41
-    GE    desplazar e ir al estado 42
-    EQ    desplazar e ir al estado 43
-    NE    desplazar e ir al estado 44
-    '<'   desplazar e ir al estado 45
-    '>'   desplazar e ir al estado 46
-    '+'   desplazar e ir al estado 47
-    '-'   desplazar e ir al estado 48
-    '*'   desplazar e ir al estado 49
-    '/'   desplazar e ir al estado 50
-    '%'   desplazar e ir al estado 51
-    '^'   desplazar e ir al estado 52
-    '\n'  desplazar e ir al estado 53
+    LE    desplazar e ir al estado 42
+    GE    desplazar e ir al estado 43
+    EQ    desplazar e ir al estado 44
+    NE    desplazar e ir al estado 45
+    '<'   desplazar e ir al estado 46
+    '>'   desplazar e ir al estado 47
+    '+'   desplazar e ir al estado 48
+    '-'   desplazar e ir al estado 49
+    '*'   desplazar e ir al estado 50
+    '/'   desplazar e ir al estado 51
+    '%'   desplazar e ir al estado 52
+    '^'   desplazar e ir al estado 53
+    '\n'  desplazar e ir al estado 54
 
 
 Estado 22
 
-    9 asignacion: ESCRIBIR expr_logica . '\n'
-   35 expr_logica: expr_logica . AND expr_logica
-   36            | expr_logica . OR expr_logica
+   10 asignacion: ESCRIBIR expr_logica . '\n'
+   36 expr_logica: expr_logica . AND expr_logica
+   37            | expr_logica . OR expr_logica
 
-    OR    desplazar e ir al estado 54
-    AND   desplazar e ir al estado 55
-    '\n'  desplazar e ir al estado 56
+    OR    desplazar e ir al estado 55
+    AND   desplazar e ir al estado 56
+    '\n'  desplazar e ir al estado 57
 
 
 Estado 23
 
-   11 declaracion: INT VARIABLE .
-
-    $default  reduce usando la regla 11 (declaracion)
-
-
-Estado 24
-
-   12 declaracion: FLOAT VARIABLE .
+   12 declaracion: INT VARIABLE .
 
     $default  reduce usando la regla 12 (declaracion)
 
 
-Estado 25
+Estado 24
 
-   13 declaracion: STRING VARIABLE .
+   13 declaracion: FLOAT VARIABLE .
 
     $default  reduce usando la regla 13 (declaracion)
 
 
-Estado 26
+Estado 25
 
-   14 declaracion: POS VARIABLE .
+   14 declaracion: STRING VARIABLE .
 
     $default  reduce usando la regla 14 (declaracion)
+
+
+Estado 26
+
+   15 declaracion: POS VARIABLE .
+
+    $default  reduce usando la regla 15 (declaracion)
 
 
 Estado 27
@@ -446,681 +450,759 @@ Estado 29
 
     $end  reduce usando la regla 1 (lista_instrucciones)
 
-    lista_instrucciones  ir al estado 57
+    lista_instrucciones  ir al estado 58
     asignacion           ir al estado 9
     declaracion          ir al estado 10
 
 
 Estado 30
 
-   15 declaracion: declaracion ',' . VARIABLE
+   16 declaracion: declaracion ',' . VARIABLE
 
-    VARIABLE  desplazar e ir al estado 58
+    VARIABLE  desplazar e ir al estado 59
 
 
 Estado 31
 
     5 asignacion: VARIABLE '=' CADENA . '\n'
 
-    '\n'  desplazar e ir al estado 59
+    '\n'  desplazar e ir al estado 60
 
 
 Estado 32
 
-    4 asignacion: VARIABLE '=' expr . '\n'
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   29 expr_logica: expr . '<' expr
-   30            | expr . '>' expr
-   31            | expr . LE expr
-   32            | expr . GE expr
-   33            | expr . EQ expr
-   34            | expr . NE expr
+    6 asignacion: VARIABLE '=' '<' . expr ',' expr '>' '\n'
 
-    LE    desplazar e ir al estado 41
-    GE    desplazar e ir al estado 42
-    EQ    desplazar e ir al estado 43
-    NE    desplazar e ir al estado 44
-    '<'   desplazar e ir al estado 45
-    '>'   desplazar e ir al estado 46
-    '+'   desplazar e ir al estado 47
-    '-'   desplazar e ir al estado 48
-    '*'   desplazar e ir al estado 49
-    '/'   desplazar e ir al estado 50
-    '%'   desplazar e ir al estado 51
-    '^'   desplazar e ir al estado 52
-    '\n'  desplazar e ir al estado 60
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 61
 
 
 Estado 33
 
-    6 asignacion: VARIABLE '=' expr_logica . '\n'
-   35 expr_logica: expr_logica . AND expr_logica
-   36            | expr_logica . OR expr_logica
+    4 asignacion: VARIABLE '=' expr . '\n'
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   30 expr_logica: expr . '<' expr
+   31            | expr . '>' expr
+   32            | expr . LE expr
+   33            | expr . GE expr
+   34            | expr . EQ expr
+   35            | expr . NE expr
 
-    OR    desplazar e ir al estado 54
-    AND   desplazar e ir al estado 55
-    '\n'  desplazar e ir al estado 61
+    LE    desplazar e ir al estado 42
+    GE    desplazar e ir al estado 43
+    EQ    desplazar e ir al estado 44
+    NE    desplazar e ir al estado 45
+    '<'   desplazar e ir al estado 46
+    '>'   desplazar e ir al estado 47
+    '+'   desplazar e ir al estado 48
+    '-'   desplazar e ir al estado 49
+    '*'   desplazar e ir al estado 50
+    '/'   desplazar e ir al estado 51
+    '%'   desplazar e ir al estado 52
+    '^'   desplazar e ir al estado 53
+    '\n'  desplazar e ir al estado 62
 
 
 Estado 34
 
-    7 asignacion: ESCRIBIR CADENA '\n' .
+    7 asignacion: VARIABLE '=' expr_logica . '\n'
+   36 expr_logica: expr_logica . AND expr_logica
+   37            | expr_logica . OR expr_logica
 
-    $default  reduce usando la regla 7 (asignacion)
+    OR    desplazar e ir al estado 55
+    AND   desplazar e ir al estado 56
+    '\n'  desplazar e ir al estado 63
 
 
 Estado 35
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   29 expr_logica: expr . '<' expr
-   30            | expr . '>' expr
-   31            | expr . LE expr
-   32            | expr . GE expr
-   33            | expr . EQ expr
-   34            | expr . NE expr
-
-    LE   desplazar e ir al estado 41
-    GE   desplazar e ir al estado 42
-    EQ   desplazar e ir al estado 43
-    NE   desplazar e ir al estado 44
-    '<'  desplazar e ir al estado 45
-    '>'  desplazar e ir al estado 46
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-
-Estado 36
-
-   35 expr_logica: expr_logica . AND expr_logica
-   36            | expr_logica . OR expr_logica
-   37            | NOT expr_logica .
-
-    $default  reduce usando la regla 37 (expr_logica)
-
-
-Estado 37
-
-   19 expr: '(' . expr ')'
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 62
-
-
-Estado 38
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   26     | '-' expr .
-
-    $default  reduce usando la regla 26 (expr)
-
-
-Estado 39
-
-   19 expr: '(' expr . ')'
-   20     | expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   29 expr_logica: expr . '<' expr
-   30            | expr . '>' expr
-   31            | expr . LE expr
-   32            | expr . GE expr
-   33            | expr . EQ expr
-   34            | expr . NE expr
-
-    LE   desplazar e ir al estado 41
-    GE   desplazar e ir al estado 42
-    EQ   desplazar e ir al estado 43
-    NE   desplazar e ir al estado 44
-    '<'  desplazar e ir al estado 45
-    '>'  desplazar e ir al estado 46
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-    ')'  desplazar e ir al estado 63
-
-
-Estado 40
-
-   28 expr_logica: '(' expr_logica . ')'
-   35            | expr_logica . AND expr_logica
-   36            | expr_logica . OR expr_logica
-
-    OR   desplazar e ir al estado 54
-    AND  desplazar e ir al estado 55
-    ')'  desplazar e ir al estado 64
-
-
-Estado 41
-
-   31 expr_logica: expr LE . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 65
-
-
-Estado 42
-
-   32 expr_logica: expr GE . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 66
-
-
-Estado 43
-
-   33 expr_logica: expr EQ . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 67
-
-
-Estado 44
-
-   34 expr_logica: expr NE . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 68
-
-
-Estado 45
-
-   29 expr_logica: expr '<' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 69
-
-
-Estado 46
-
-   30 expr_logica: expr '>' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 70
-
-
-Estado 47
-
-   20 expr: expr '+' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 71
-
-
-Estado 48
-
-   21 expr: expr '-' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 72
-
-
-Estado 49
-
-   22 expr: expr '*' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 73
-
-
-Estado 50
-
-   23 expr: expr '/' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 74
-
-
-Estado 51
-
-   25 expr: expr '%' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 75
-
-
-Estado 52
-
-   24 expr: expr '^' . expr
-
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 37
-
-    expr  ir al estado 76
-
-
-Estado 53
-
-    8 asignacion: ESCRIBIR expr '\n' .
+    8 asignacion: ESCRIBIR CADENA '\n' .
 
     $default  reduce usando la regla 8 (asignacion)
 
 
+Estado 36
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   30 expr_logica: expr . '<' expr
+   31            | expr . '>' expr
+   32            | expr . LE expr
+   33            | expr . GE expr
+   34            | expr . EQ expr
+   35            | expr . NE expr
+
+    LE   desplazar e ir al estado 42
+    GE   desplazar e ir al estado 43
+    EQ   desplazar e ir al estado 44
+    NE   desplazar e ir al estado 45
+    '<'  desplazar e ir al estado 46
+    '>'  desplazar e ir al estado 47
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+
+Estado 37
+
+   36 expr_logica: expr_logica . AND expr_logica
+   37            | expr_logica . OR expr_logica
+   38            | NOT expr_logica .
+
+    $default  reduce usando la regla 38 (expr_logica)
+
+
+Estado 38
+
+   20 expr: '(' . expr ')'
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 64
+
+
+Estado 39
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   27     | '-' expr .
+
+    $default  reduce usando la regla 27 (expr)
+
+
+Estado 40
+
+   20 expr: '(' expr . ')'
+   21     | expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   30 expr_logica: expr . '<' expr
+   31            | expr . '>' expr
+   32            | expr . LE expr
+   33            | expr . GE expr
+   34            | expr . EQ expr
+   35            | expr . NE expr
+
+    LE   desplazar e ir al estado 42
+    GE   desplazar e ir al estado 43
+    EQ   desplazar e ir al estado 44
+    NE   desplazar e ir al estado 45
+    '<'  desplazar e ir al estado 46
+    '>'  desplazar e ir al estado 47
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+    ')'  desplazar e ir al estado 65
+
+
+Estado 41
+
+   29 expr_logica: '(' expr_logica . ')'
+   36            | expr_logica . AND expr_logica
+   37            | expr_logica . OR expr_logica
+
+    OR   desplazar e ir al estado 55
+    AND  desplazar e ir al estado 56
+    ')'  desplazar e ir al estado 66
+
+
+Estado 42
+
+   32 expr_logica: expr LE . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 67
+
+
+Estado 43
+
+   33 expr_logica: expr GE . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 68
+
+
+Estado 44
+
+   34 expr_logica: expr EQ . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 69
+
+
+Estado 45
+
+   35 expr_logica: expr NE . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 70
+
+
+Estado 46
+
+   30 expr_logica: expr '<' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 71
+
+
+Estado 47
+
+   31 expr_logica: expr '>' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 72
+
+
+Estado 48
+
+   21 expr: expr '+' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 73
+
+
+Estado 49
+
+   22 expr: expr '-' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 74
+
+
+Estado 50
+
+   23 expr: expr '*' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 75
+
+
+Estado 51
+
+   24 expr: expr '/' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 76
+
+
+Estado 52
+
+   26 expr: expr '%' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 77
+
+
+Estado 53
+
+   25 expr: expr '^' . expr
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 78
+
+
 Estado 54
 
-   36 expr_logica: expr_logica OR . expr_logica
-
-    BOOL      desplazar e ir al estado 13
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    NOT       desplazar e ir al estado 18
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 20
-
-    expr         ir al estado 35
-    expr_logica  ir al estado 77
-
-
-Estado 55
-
-   35 expr_logica: expr_logica AND . expr_logica
-
-    BOOL      desplazar e ir al estado 13
-    ENTERO    desplazar e ir al estado 14
-    VARIABLE  desplazar e ir al estado 15
-    REAL      desplazar e ir al estado 17
-    NOT       desplazar e ir al estado 18
-    '-'       desplazar e ir al estado 19
-    '('       desplazar e ir al estado 20
-
-    expr         ir al estado 35
-    expr_logica  ir al estado 78
-
-
-Estado 56
-
-    9 asignacion: ESCRIBIR expr_logica '\n' .
+    9 asignacion: ESCRIBIR expr '\n' .
 
     $default  reduce usando la regla 9 (asignacion)
 
 
+Estado 55
+
+   37 expr_logica: expr_logica OR . expr_logica
+
+    BOOL      desplazar e ir al estado 13
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    NOT       desplazar e ir al estado 18
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 20
+
+    expr         ir al estado 36
+    expr_logica  ir al estado 79
+
+
+Estado 56
+
+   36 expr_logica: expr_logica AND . expr_logica
+
+    BOOL      desplazar e ir al estado 13
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    NOT       desplazar e ir al estado 18
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 20
+
+    expr         ir al estado 36
+    expr_logica  ir al estado 80
+
+
 Estado 57
+
+   10 asignacion: ESCRIBIR expr_logica '\n' .
+
+    $default  reduce usando la regla 10 (asignacion)
+
+
+Estado 58
 
     3 lista_instrucciones: declaracion '\n' lista_instrucciones .
 
     $default  reduce usando la regla 3 (lista_instrucciones)
 
 
-Estado 58
-
-   15 declaracion: declaracion ',' VARIABLE .
-
-    $default  reduce usando la regla 15 (declaracion)
-
-
 Estado 59
+
+   16 declaracion: declaracion ',' VARIABLE .
+
+    $default  reduce usando la regla 16 (declaracion)
+
+
+Estado 60
 
     5 asignacion: VARIABLE '=' CADENA '\n' .
 
     $default  reduce usando la regla 5 (asignacion)
 
 
-Estado 60
+Estado 61
+
+    6 asignacion: VARIABLE '=' '<' expr . ',' expr '>' '\n'
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+    ','  desplazar e ir al estado 81
+
+
+Estado 62
 
     4 asignacion: VARIABLE '=' expr '\n' .
 
     $default  reduce usando la regla 4 (asignacion)
 
 
-Estado 61
-
-    6 asignacion: VARIABLE '=' expr_logica '\n' .
-
-    $default  reduce usando la regla 6 (asignacion)
-
-
-Estado 62
-
-   19 expr: '(' expr . ')'
-   20     | expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-    ')'  desplazar e ir al estado 63
-
-
 Estado 63
 
-   19 expr: '(' expr ')' .
+    7 asignacion: VARIABLE '=' expr_logica '\n' .
 
-    $default  reduce usando la regla 19 (expr)
+    $default  reduce usando la regla 7 (asignacion)
 
 
 Estado 64
 
-   28 expr_logica: '(' expr_logica ')' .
+   20 expr: '(' expr . ')'
+   21     | expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
 
-    $default  reduce usando la regla 28 (expr_logica)
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+    ')'  desplazar e ir al estado 65
 
 
 Estado 65
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   31 expr_logica: expr LE expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 31 (expr_logica)
-
-
-Estado 66
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   32 expr_logica: expr GE expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 32 (expr_logica)
-
-
-Estado 67
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   33 expr_logica: expr EQ expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 33 (expr_logica)
-
-
-Estado 68
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   34 expr_logica: expr NE expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 34 (expr_logica)
-
-
-Estado 69
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   29 expr_logica: expr '<' expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 29 (expr_logica)
-
-
-Estado 70
-
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   30 expr_logica: expr '>' expr .
-
-    '+'  desplazar e ir al estado 47
-    '-'  desplazar e ir al estado 48
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
-
-    $default  reduce usando la regla 30 (expr_logica)
-
-
-Estado 71
-
-   20 expr: expr . '+' expr
-   20     | expr '+' expr .
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
+   20 expr: '(' expr ')' .
 
     $default  reduce usando la regla 20 (expr)
 
 
+Estado 66
+
+   29 expr_logica: '(' expr_logica ')' .
+
+    $default  reduce usando la regla 29 (expr_logica)
+
+
+Estado 67
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   32 expr_logica: expr LE expr .
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 32 (expr_logica)
+
+
+Estado 68
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   33 expr_logica: expr GE expr .
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 33 (expr_logica)
+
+
+Estado 69
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   34 expr_logica: expr EQ expr .
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 34 (expr_logica)
+
+
+Estado 70
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   35 expr_logica: expr NE expr .
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 35 (expr_logica)
+
+
+Estado 71
+
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   30 expr_logica: expr '<' expr .
+
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 30 (expr_logica)
+
+
 Estado 72
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   21     | expr '-' expr .
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   31 expr_logica: expr '>' expr .
 
-    '*'  desplazar e ir al estado 49
-    '/'  desplazar e ir al estado 50
-    '%'  desplazar e ir al estado 51
-    '^'  desplazar e ir al estado 52
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
 
-    $default  reduce usando la regla 21 (expr)
+    $default  reduce usando la regla 31 (expr_logica)
 
 
 Estado 73
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   22     | expr '*' expr .
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
+   21 expr: expr . '+' expr
+   21     | expr '+' expr .
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
 
-    '^'  desplazar e ir al estado 52
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
 
-    $default  reduce usando la regla 22 (expr)
+    $default  reduce usando la regla 21 (expr)
 
 
 Estado 74
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   23     | expr '/' expr .
-   24     | expr . '^' expr
-   25     | expr . '%' expr
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   22     | expr '-' expr .
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
 
-    '^'  desplazar e ir al estado 52
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
 
-    $default  reduce usando la regla 23 (expr)
+    $default  reduce usando la regla 22 (expr)
 
 
 Estado 75
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   25     | expr . '%' expr
-   25     | expr '%' expr .
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   23     | expr '*' expr .
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
 
-    '^'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
 
-    $default  reduce usando la regla 25 (expr)
+    $default  reduce usando la regla 23 (expr)
 
 
 Estado 76
 
-   20 expr: expr . '+' expr
-   21     | expr . '-' expr
-   22     | expr . '*' expr
-   23     | expr . '/' expr
-   24     | expr . '^' expr
-   24     | expr '^' expr .
-   25     | expr . '%' expr
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   24     | expr '/' expr .
+   25     | expr . '^' expr
+   26     | expr . '%' expr
 
-    '^'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
 
     $default  reduce usando la regla 24 (expr)
 
 
 Estado 77
 
-   35 expr_logica: expr_logica . AND expr_logica
-   36            | expr_logica . OR expr_logica
-   36            | expr_logica OR expr_logica .
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+   26     | expr '%' expr .
 
-    AND  desplazar e ir al estado 55
+    '^'  desplazar e ir al estado 53
 
-    $default  reduce usando la regla 36 (expr_logica)
+    $default  reduce usando la regla 26 (expr)
 
 
 Estado 78
 
-   35 expr_logica: expr_logica . AND expr_logica
-   35            | expr_logica AND expr_logica .
-   36            | expr_logica . OR expr_logica
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   25     | expr '^' expr .
+   26     | expr . '%' expr
 
-    $default  reduce usando la regla 35 (expr_logica)
+    '^'  desplazar e ir al estado 53
+
+    $default  reduce usando la regla 25 (expr)
+
+
+Estado 79
+
+   36 expr_logica: expr_logica . AND expr_logica
+   37            | expr_logica . OR expr_logica
+   37            | expr_logica OR expr_logica .
+
+    AND  desplazar e ir al estado 56
+
+    $default  reduce usando la regla 37 (expr_logica)
+
+
+Estado 80
+
+   36 expr_logica: expr_logica . AND expr_logica
+   36            | expr_logica AND expr_logica .
+   37            | expr_logica . OR expr_logica
+
+    $default  reduce usando la regla 36 (expr_logica)
+
+
+Estado 81
+
+    6 asignacion: VARIABLE '=' '<' expr ',' . expr '>' '\n'
+
+    ENTERO    desplazar e ir al estado 14
+    VARIABLE  desplazar e ir al estado 15
+    REAL      desplazar e ir al estado 17
+    '-'       desplazar e ir al estado 19
+    '('       desplazar e ir al estado 38
+
+    expr  ir al estado 82
+
+
+Estado 82
+
+    6 asignacion: VARIABLE '=' '<' expr ',' expr . '>' '\n'
+   21 expr: expr . '+' expr
+   22     | expr . '-' expr
+   23     | expr . '*' expr
+   24     | expr . '/' expr
+   25     | expr . '^' expr
+   26     | expr . '%' expr
+
+    '>'  desplazar e ir al estado 83
+    '+'  desplazar e ir al estado 48
+    '-'  desplazar e ir al estado 49
+    '*'  desplazar e ir al estado 50
+    '/'  desplazar e ir al estado 51
+    '%'  desplazar e ir al estado 52
+    '^'  desplazar e ir al estado 53
+
+
+Estado 83
+
+    6 asignacion: VARIABLE '=' '<' expr ',' expr '>' . '\n'
+
+    '\n'  desplazar e ir al estado 84
+
+
+Estado 84
+
+    6 asignacion: VARIABLE '=' '<' expr ',' expr '>' '\n' .
+
+    $default  reduce usando la regla 6 (asignacion)

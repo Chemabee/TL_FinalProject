@@ -75,7 +75,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 96 "calculadora.y" /* yacc.c:1909  */
+#line 113 "calculadora.y" /* yacc.c:1909  */
 
       int c_entero;
       float c_real;

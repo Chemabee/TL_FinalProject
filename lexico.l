@@ -33,6 +33,11 @@ CONFIGURACION           {return CONFIGURACION;}
 OBSTACULOS              {return OBSTACULOS;}
 EJEMPLOS                {return EJEMPLOS;}
 
+[Dd][Ii][Mm][Ee][Nn][Ss][Ii][Oo][Nn]    {return DIMENSION;}
+[Ee][Nn][Tt][Rr][Aa][Dd][Aa]            {return ENTRADA;}
+[Ss][Aa][Ll][Ii][Dd][Aa]                {return SALIDA;}
+[Pp][Aa][Uu][Ss][Aa]                    {return PAUSA;}
+
 {entero}                    yylval.c_entero = atoi(yytext);return ENTERO;
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
 \n				n_lineas++; return (yytext[0]);
