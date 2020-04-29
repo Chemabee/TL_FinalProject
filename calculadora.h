@@ -50,15 +50,23 @@ extern int yydebug;
     VARIABLE = 260,
     ESCRIBIR = 261,
     CADENA = 262,
-    REAL = 263,
-    OR = 264,
-    AND = 265,
-    NOT = 266,
-    LE = 267,
-    GE = 268,
-    EQ = 269,
-    NE = 270,
-    menos = 271
+    DEFINICIONES = 263,
+    CONFIGURACION = 264,
+    OBSTACULOS = 265,
+    EJEMPLOS = 266,
+    REAL = 267,
+    INT = 268,
+    FLOAT = 269,
+    STRING = 270,
+    POS = 271,
+    OR = 272,
+    AND = 273,
+    NOT = 274,
+    LE = 275,
+    GE = 276,
+    EQ = 277,
+    NE = 278,
+    menos = 279
   };
 #endif
 
@@ -67,14 +75,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 90 "calculadora.y" /* yacc.c:1909  */
+#line 96 "calculadora.y" /* yacc.c:1909  */
 
       int c_entero;
       float c_real;
       char c_cadena[20];
       bool c_bool;
 
-#line 78 "calculadora.h" /* yacc.c:1909  */
+#line 86 "calculadora.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

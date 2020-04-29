@@ -1,4 +1,6 @@
 A = 2*3+1
+entero var1, var2
+cadena str,str2
 Bb = (3+A)*2.54
 Cc = Bb < A
 _logico = (B == 3) && (Bb==10) #error, B no existe
@@ -15,7 +17,12 @@ escribir "1adfoas"
 escribir true && (1>2)
 cad = "esto"
 cad = "otro"
-tT = cad + 1
+tT = cad + 1 #error no se permiten operaciones con str
 escribir aa
 escribir cad
-escribir cad aa
+A_2 = A
+escribir A_2
+var1 = 1
+var2 = 1.1
+str = "hey dude"
+str2 = "a" #Si pongo "" falla

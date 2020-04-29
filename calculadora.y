@@ -57,10 +57,10 @@ void yyerror(const char* s){         /*    llamada por cada error sintactico de 
 } 
 
 bool insertar(tipo_datoTS *var, bool init, bool cte){
-      if(init) var->init = true;
+      if(init == true) var->init = true;
       else var->init = false;
 
-      if(cte) var->cte = true;
+      if(cte == true) var->cte = true;
       else var-> cte = false;
 
       return tabla->insertar(var);
@@ -106,6 +106,7 @@ void printTabla(ofstream &out){
 %token <c_entero> ENTERO
 %token <c_cadena> VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS
 %token REAL
+%token INT FLOAT STRING POS
 %token OR AND NOT LE GE EQ NE
 
 %type <c_real> expr REAL
@@ -126,6 +127,8 @@ void printTabla(ofstream &out){
 lista_instrucciones: 		{}
       |DEFINICIONES bloque_definiciones CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos 
       |CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos
+      |asignacion lista_instrucciones
+      |declaracion lista_instrucciones
       ;
 
 asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
@@ -139,7 +142,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: var->valor.valor_real = $3; break;
                                                             }
                                                             if(!insertar(var, true, false))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
                                                       else{
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
@@ -165,7 +168,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 1: var->valor.valor_real = $3; break;
                                                             }
                                                       if(!insertar(var,true, true))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
                                                       
                                                 
@@ -180,7 +183,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                             var->tipo = 3;
                                                             strcpy(var->valor.valor_cad, $3);
                                                             if(!insertar(var, true, false))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
                                                       else{
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
@@ -196,7 +199,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                             var->tipo = 3;
                                                             strcpy(var->valor.valor_cad, $3);
                                                       if(!insertar(var, true, true))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
       }
 
@@ -210,7 +213,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 2: var->valor.valor_logico = $3; break;
                                                             }
                                                             if(!insertar(var, true, false))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
                                                       else{
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
@@ -228,12 +231,12 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                                   case 2: var->valor.valor_logico = $3; break;
                                                             }
                                                       if(!insertar(var, true, true))
-                                                                  cout<<"Error en la asignacion"<<endl;
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
                                           };
                                     reset_flags();
                                     }
-      |ESCRIBIR CADENA '\n' {cout << "cad " << $2 <<endl;reset_flags();}
+      |ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
       |ESCRIBIR expr '\n'     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
@@ -264,31 +267,39 @@ declaracion: INT VARIABLE '\n'    {
                                     var->tipo=0;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
-                                          cout<<"Error en la asignacion"<<endl;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
       |FLOAT VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
                                     var->tipo=1;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
-                                          cout<<"Error en la asignacion"<<endl;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
       |STRING VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
                                     var->tipo=3;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
-                                          cout<<"Error en la asignacion"<<endl;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
       |POS VARIABLE '\n'          {if(tabla->buscar($2, var) == 0){
                                     var->tipo=4;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
-                                          cout<<"Error en la asignacion"<<endl;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-      
+      |declaracion ',' VARIABLE    {int temp = var->tipo;
+                                    if(tabla->buscar($3, var) == 0){
+                                          strcpy(var->nombre, $3);
+                                          var->tipo = temp;
+                                          if(!insertar(var, false, false))
+                                                cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                    }
+                              }
+      ;
 
 expr:    REAL 		      {real=true;real_final=true;$$=$1;}
        | ENTERO 		      {$$=$1;}    

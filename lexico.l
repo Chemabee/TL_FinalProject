@@ -23,7 +23,7 @@ real_not_cientifica {real}[e][+-]?{entero}
 
 escribir        strcpy(yylval.c_cadena, yytext);return ESCRIBIR;
 
-entero          {return INT};
+entero          {return INT;}
 real            {return FLOAT;}
 cadena          {return STRING;}
 posicion        {return POS;}
