@@ -24,7 +24,7 @@ Gramática
 
     1 lista_instrucciones: %empty
     2                    | asignacion lista_instrucciones
-    3                    | declaracion lista_instrucciones
+    3                    | declaracion '\n' lista_instrucciones
 
     4 asignacion: VARIABLE '=' expr '\n'
     5           | VARIABLE '=' CADENA '\n'
@@ -34,10 +34,10 @@ Gramática
     9           | ESCRIBIR expr_logica '\n'
    10           | error '\n'
 
-   11 declaracion: INT VARIABLE '\n'
-   12            | FLOAT VARIABLE '\n'
-   13            | STRING VARIABLE '\n'
-   14            | POS VARIABLE '\n'
+   11 declaracion: INT VARIABLE
+   12            | FLOAT VARIABLE
+   13            | STRING VARIABLE
+   14            | POS VARIABLE
    15            | declaracion ',' VARIABLE
 
    16 expr: REAL
@@ -68,7 +68,7 @@ Gramática
 Terminales con las reglas donde aparecen
 
 $end (0) 0
-'\n' (10) 4 5 6 7 8 9 10 11 12 13 14
+'\n' (10) 3 4 5 6 7 8 9 10
 '%' (37) 25
 '(' (40) 19 28
 ')' (41) 19 28
@@ -180,28 +180,28 @@ Estado 3
 
 Estado 4
 
-   11 declaracion: INT . VARIABLE '\n'
+   11 declaracion: INT . VARIABLE
 
     VARIABLE  desplazar e ir al estado 23
 
 
 Estado 5
 
-   12 declaracion: FLOAT . VARIABLE '\n'
+   12 declaracion: FLOAT . VARIABLE
 
     VARIABLE  desplazar e ir al estado 24
 
 
 Estado 6
 
-   13 declaracion: STRING . VARIABLE '\n'
+   13 declaracion: STRING . VARIABLE
 
     VARIABLE  desplazar e ir al estado 25
 
 
 Estado 7
 
-   14 declaracion: POS . VARIABLE '\n'
+   14 declaracion: POS . VARIABLE
 
     VARIABLE  desplazar e ir al estado 26
 
@@ -234,23 +234,11 @@ Estado 9
 
 Estado 10
 
-    3 lista_instrucciones: declaracion . lista_instrucciones
+    3 lista_instrucciones: declaracion . '\n' lista_instrucciones
    15 declaracion: declaracion . ',' VARIABLE
 
-    error     desplazar e ir al estado 1
-    VARIABLE  desplazar e ir al estado 2
-    ESCRIBIR  desplazar e ir al estado 3
-    INT       desplazar e ir al estado 4
-    FLOAT     desplazar e ir al estado 5
-    STRING    desplazar e ir al estado 6
-    POS       desplazar e ir al estado 7
-    ','       desplazar e ir al estado 29
-
-    $end  reduce usando la regla 1 (lista_instrucciones)
-
-    lista_instrucciones  ir al estado 30
-    asignacion           ir al estado 9
-    declaracion          ir al estado 10
+    '\n'  desplazar e ir al estado 29
+    ','   desplazar e ir al estado 30
 
 
 Estado 11
@@ -404,30 +392,30 @@ Estado 22
 
 Estado 23
 
-   11 declaracion: INT VARIABLE . '\n'
+   11 declaracion: INT VARIABLE .
 
-    '\n'  desplazar e ir al estado 57
+    $default  reduce usando la regla 11 (declaracion)
 
 
 Estado 24
 
-   12 declaracion: FLOAT VARIABLE . '\n'
+   12 declaracion: FLOAT VARIABLE .
 
-    '\n'  desplazar e ir al estado 58
+    $default  reduce usando la regla 12 (declaracion)
 
 
 Estado 25
 
-   13 declaracion: STRING VARIABLE . '\n'
+   13 declaracion: STRING VARIABLE .
 
-    '\n'  desplazar e ir al estado 59
+    $default  reduce usando la regla 13 (declaracion)
 
 
 Estado 26
 
-   14 declaracion: POS VARIABLE . '\n'
+   14 declaracion: POS VARIABLE .
 
-    '\n'  desplazar e ir al estado 60
+    $default  reduce usando la regla 14 (declaracion)
 
 
 Estado 27
@@ -446,23 +434,35 @@ Estado 28
 
 Estado 29
 
-   15 declaracion: declaracion ',' . VARIABLE
+    3 lista_instrucciones: declaracion '\n' . lista_instrucciones
 
-    VARIABLE  desplazar e ir al estado 61
+    error     desplazar e ir al estado 1
+    VARIABLE  desplazar e ir al estado 2
+    ESCRIBIR  desplazar e ir al estado 3
+    INT       desplazar e ir al estado 4
+    FLOAT     desplazar e ir al estado 5
+    STRING    desplazar e ir al estado 6
+    POS       desplazar e ir al estado 7
+
+    $end  reduce usando la regla 1 (lista_instrucciones)
+
+    lista_instrucciones  ir al estado 57
+    asignacion           ir al estado 9
+    declaracion          ir al estado 10
 
 
 Estado 30
 
-    3 lista_instrucciones: declaracion lista_instrucciones .
+   15 declaracion: declaracion ',' . VARIABLE
 
-    $default  reduce usando la regla 3 (lista_instrucciones)
+    VARIABLE  desplazar e ir al estado 58
 
 
 Estado 31
 
     5 asignacion: VARIABLE '=' CADENA . '\n'
 
-    '\n'  desplazar e ir al estado 62
+    '\n'  desplazar e ir al estado 59
 
 
 Estado 32
@@ -493,7 +493,7 @@ Estado 32
     '/'   desplazar e ir al estado 50
     '%'   desplazar e ir al estado 51
     '^'   desplazar e ir al estado 52
-    '\n'  desplazar e ir al estado 63
+    '\n'  desplazar e ir al estado 60
 
 
 Estado 33
@@ -504,7 +504,7 @@ Estado 33
 
     OR    desplazar e ir al estado 54
     AND   desplazar e ir al estado 55
-    '\n'  desplazar e ir al estado 64
+    '\n'  desplazar e ir al estado 61
 
 
 Estado 34
@@ -562,7 +562,7 @@ Estado 37
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 65
+    expr  ir al estado 62
 
 
 Estado 38
@@ -606,7 +606,7 @@ Estado 39
     '/'  desplazar e ir al estado 50
     '%'  desplazar e ir al estado 51
     '^'  desplazar e ir al estado 52
-    ')'  desplazar e ir al estado 66
+    ')'  desplazar e ir al estado 63
 
 
 Estado 40
@@ -617,7 +617,7 @@ Estado 40
 
     OR   desplazar e ir al estado 54
     AND  desplazar e ir al estado 55
-    ')'  desplazar e ir al estado 67
+    ')'  desplazar e ir al estado 64
 
 
 Estado 41
@@ -630,7 +630,7 @@ Estado 41
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 68
+    expr  ir al estado 65
 
 
 Estado 42
@@ -643,7 +643,7 @@ Estado 42
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 69
+    expr  ir al estado 66
 
 
 Estado 43
@@ -656,7 +656,7 @@ Estado 43
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 70
+    expr  ir al estado 67
 
 
 Estado 44
@@ -669,7 +669,7 @@ Estado 44
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 71
+    expr  ir al estado 68
 
 
 Estado 45
@@ -682,7 +682,7 @@ Estado 45
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 72
+    expr  ir al estado 69
 
 
 Estado 46
@@ -695,7 +695,7 @@ Estado 46
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 73
+    expr  ir al estado 70
 
 
 Estado 47
@@ -708,7 +708,7 @@ Estado 47
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 74
+    expr  ir al estado 71
 
 
 Estado 48
@@ -721,7 +721,7 @@ Estado 48
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 75
+    expr  ir al estado 72
 
 
 Estado 49
@@ -734,7 +734,7 @@ Estado 49
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 76
+    expr  ir al estado 73
 
 
 Estado 50
@@ -747,7 +747,7 @@ Estado 50
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 77
+    expr  ir al estado 74
 
 
 Estado 51
@@ -760,7 +760,7 @@ Estado 51
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 78
+    expr  ir al estado 75
 
 
 Estado 52
@@ -773,7 +773,7 @@ Estado 52
     '-'       desplazar e ir al estado 19
     '('       desplazar e ir al estado 37
 
-    expr  ir al estado 79
+    expr  ir al estado 76
 
 
 Estado 53
@@ -796,7 +796,7 @@ Estado 54
     '('       desplazar e ir al estado 20
 
     expr         ir al estado 35
-    expr_logica  ir al estado 80
+    expr_logica  ir al estado 77
 
 
 Estado 55
@@ -812,7 +812,7 @@ Estado 55
     '('       desplazar e ir al estado 20
 
     expr         ir al estado 35
-    expr_logica  ir al estado 81
+    expr_logica  ir al estado 78
 
 
 Estado 56
@@ -824,61 +824,40 @@ Estado 56
 
 Estado 57
 
-   11 declaracion: INT VARIABLE '\n' .
+    3 lista_instrucciones: declaracion '\n' lista_instrucciones .
 
-    $default  reduce usando la regla 11 (declaracion)
+    $default  reduce usando la regla 3 (lista_instrucciones)
 
 
 Estado 58
-
-   12 declaracion: FLOAT VARIABLE '\n' .
-
-    $default  reduce usando la regla 12 (declaracion)
-
-
-Estado 59
-
-   13 declaracion: STRING VARIABLE '\n' .
-
-    $default  reduce usando la regla 13 (declaracion)
-
-
-Estado 60
-
-   14 declaracion: POS VARIABLE '\n' .
-
-    $default  reduce usando la regla 14 (declaracion)
-
-
-Estado 61
 
    15 declaracion: declaracion ',' VARIABLE .
 
     $default  reduce usando la regla 15 (declaracion)
 
 
-Estado 62
+Estado 59
 
     5 asignacion: VARIABLE '=' CADENA '\n' .
 
     $default  reduce usando la regla 5 (asignacion)
 
 
-Estado 63
+Estado 60
 
     4 asignacion: VARIABLE '=' expr '\n' .
 
     $default  reduce usando la regla 4 (asignacion)
 
 
-Estado 64
+Estado 61
 
     6 asignacion: VARIABLE '=' expr_logica '\n' .
 
     $default  reduce usando la regla 6 (asignacion)
 
 
-Estado 65
+Estado 62
 
    19 expr: '(' expr . ')'
    20     | expr . '+' expr
@@ -894,24 +873,24 @@ Estado 65
     '/'  desplazar e ir al estado 50
     '%'  desplazar e ir al estado 51
     '^'  desplazar e ir al estado 52
-    ')'  desplazar e ir al estado 66
+    ')'  desplazar e ir al estado 63
 
 
-Estado 66
+Estado 63
 
    19 expr: '(' expr ')' .
 
     $default  reduce usando la regla 19 (expr)
 
 
-Estado 67
+Estado 64
 
    28 expr_logica: '(' expr_logica ')' .
 
     $default  reduce usando la regla 28 (expr_logica)
 
 
-Estado 68
+Estado 65
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -931,7 +910,7 @@ Estado 68
     $default  reduce usando la regla 31 (expr_logica)
 
 
-Estado 69
+Estado 66
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -951,7 +930,7 @@ Estado 69
     $default  reduce usando la regla 32 (expr_logica)
 
 
-Estado 70
+Estado 67
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -971,7 +950,7 @@ Estado 70
     $default  reduce usando la regla 33 (expr_logica)
 
 
-Estado 71
+Estado 68
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -991,7 +970,7 @@ Estado 71
     $default  reduce usando la regla 34 (expr_logica)
 
 
-Estado 72
+Estado 69
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1011,7 +990,7 @@ Estado 72
     $default  reduce usando la regla 29 (expr_logica)
 
 
-Estado 73
+Estado 70
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1031,7 +1010,7 @@ Estado 73
     $default  reduce usando la regla 30 (expr_logica)
 
 
-Estado 74
+Estado 71
 
    20 expr: expr . '+' expr
    20     | expr '+' expr .
@@ -1049,7 +1028,7 @@ Estado 74
     $default  reduce usando la regla 20 (expr)
 
 
-Estado 75
+Estado 72
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1067,7 +1046,7 @@ Estado 75
     $default  reduce usando la regla 21 (expr)
 
 
-Estado 76
+Estado 73
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1082,7 +1061,7 @@ Estado 76
     $default  reduce usando la regla 22 (expr)
 
 
-Estado 77
+Estado 74
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1097,7 +1076,7 @@ Estado 77
     $default  reduce usando la regla 23 (expr)
 
 
-Estado 78
+Estado 75
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1112,7 +1091,7 @@ Estado 78
     $default  reduce usando la regla 25 (expr)
 
 
-Estado 79
+Estado 76
 
    20 expr: expr . '+' expr
    21     | expr . '-' expr
@@ -1127,7 +1106,7 @@ Estado 79
     $default  reduce usando la regla 24 (expr)
 
 
-Estado 80
+Estado 77
 
    35 expr_logica: expr_logica . AND expr_logica
    36            | expr_logica . OR expr_logica
@@ -1138,7 +1117,7 @@ Estado 80
     $default  reduce usando la regla 36 (expr_logica)
 
 
-Estado 81
+Estado 78
 
    35 expr_logica: expr_logica . AND expr_logica
    35            | expr_logica AND expr_logica .

@@ -125,10 +125,8 @@ void printTabla(ofstream &out){
 
 %%
 lista_instrucciones: 		{}
-      |DEFINICIONES bloque_definiciones CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos 
-      |CONFIGURACION bloque_configuracion OBSTACULOS bloque_obstaculos EJEMPLOS bloque_ejemplos
       |asignacion lista_instrucciones
-      |declaracion lista_instrucciones
+      |declaracion '\n' lista_instrucciones
       ;
 
 asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
@@ -262,7 +260,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
 	;
 
 
-declaracion: INT VARIABLE '\n'    {
+declaracion: INT VARIABLE    {
                               if(tabla->buscar($2, var) == 0){
                                     var->tipo=0;
                                     strcpy(var->nombre, $2);
@@ -270,28 +268,28 @@ declaracion: INT VARIABLE '\n'    {
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-      |FLOAT VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
+      |FLOAT VARIABLE         {if(tabla->buscar($2, var) == 0){
                                     var->tipo=1;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-      |STRING VARIABLE '\n'        {if(tabla->buscar($2, var) == 0){
+      |STRING VARIABLE        {if(tabla->buscar($2, var) == 0){
                                     var->tipo=3;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-      |POS VARIABLE '\n'          {if(tabla->buscar($2, var) == 0){
+      |POS VARIABLE          {if(tabla->buscar($2, var) == 0){
                                     var->tipo=4;
                                     strcpy(var->nombre, $2);
                                     if(!insertar(var, false, false))
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-      |declaracion ',' VARIABLE    {int temp = var->tipo;
+      |declaracion ',' VARIABLE     {int temp = var->tipo;
                                     if(tabla->buscar($3, var) == 0){
                                           strcpy(var->nombre, $3);
                                           var->tipo = temp;

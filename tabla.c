@@ -84,9 +84,10 @@ int Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
                                 strcpy((*identificador).valor.valor_cad, act->dato.valor.valor_cad);
                             }
                             else{//Maybe needs to be fixed soon...
-                                if (act->dato == 4)
+                                if (act->dato.tipo == 4)
                                 {
-                                    (*identificador).valor.valor_pos = act->dato.valor.valor_pos;
+                                    (*identificador).valor.valor_pos[0] = act->dato.valor.valor_pos[0];
+                                    (*identificador).valor.valor_pos[1] = act->dato.valor.valor_pos[1];
                                 }
                             }
                         }
