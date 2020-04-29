@@ -230,6 +230,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                                       if(!insertar(var, true, true))
                                                                   cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                                       }
+                                                      reset_flags();
       }
       |VARIABLE '=' '<'expr ',' expr '>' '\n'   {if(!real_final){
                                                       if(tabla->buscar($1, var)!=0){
@@ -452,17 +453,22 @@ bloque_definiciones: {}
       |asignacion bloque_definiciones
       ;
 bloque_configuracion:   {}
-      |DIMENSION expr bloque_configuracion   {}
-      |bloque_configuracion ENTRADA expr
-      |bloque_configuracion SALIDA expr
-      |bloque_configuracion PAUSA expr
+      |DIMENSION expr bloque_configuracion '\n'   {}
+      |bloque_configuracion ENTRADA expr '\n'
+      |bloque_configuracion ENTRADA '<'expr ',' expr '>' '\n'
+      |bloque_configuracion SALIDA expr '\n'
+      |bloque_configuracion SALIDA '<'expr ',' expr '>' '\n'
+      |bloque_configuracion PAUSA expr '\n'
       ;
 bloque_obstaculos:      {}
-      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'     {}
+      |bloque_obstaculos asignacion
+      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'
+      |bloque_obstaculos OBSTACULO VARIABLE '\n'      {}
       |bloque_obstaculos SUR expr '\n'
       |bloque_obstaculos ESTE expr '\n'
       |bloque_obstaculos OESTE expr '\n'
       |bloque_obstaculos NORTE expr '\n'
+      |bloque_obstaculos OBSTACULO '\n'
       ;
 bloque_ejemplos:  {}
       |EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos {}

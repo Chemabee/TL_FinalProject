@@ -1,6 +1,3 @@
-Estado 102 conflictos: 3 desplazamiento/reducción
-
-
 Gramática
 
     0 $accept: lista_instrucciones $end
@@ -50,72 +47,76 @@ Gramática
    39            | expr_logica OR expr_logica
    40            | NOT expr_logica
 
-   41 bloque_definiciones: '\n'
+   41 bloque_definiciones: %empty
    42                    | declaracion '\n' bloque_definiciones
    43                    | asignacion bloque_definiciones
-   44                    | %empty
 
-   45 bloque_configuracion: %empty
-   46                     | DIMENSION expr bloque_configuracion
-   47                     | bloque_configuracion ENTRADA expr
-   48                     | bloque_configuracion SALIDA expr
-   49                     | bloque_configuracion PAUSA expr
+   44 bloque_configuracion: %empty
+   45                     | DIMENSION expr bloque_configuracion '\n'
+   46                     | bloque_configuracion ENTRADA expr '\n'
+   47                     | bloque_configuracion ENTRADA '<' expr ',' expr '>' '\n'
+   48                     | bloque_configuracion SALIDA expr '\n'
+   49                     | bloque_configuracion SALIDA '<' expr ',' expr '>' '\n'
+   50                     | bloque_configuracion PAUSA expr '\n'
 
-   50 bloque_obstaculos: %empty
-   51                  | bloque_obstaculos OBSTACULO '<' expr ',' expr '>' '\n'
-   52                  | bloque_obstaculos SUR expr '\n'
-   53                  | bloque_obstaculos ESTE expr '\n'
-   54                  | bloque_obstaculos OESTE expr '\n'
-   55                  | bloque_obstaculos NORTE expr '\n'
+   51 bloque_obstaculos: %empty
+   52                  | bloque_obstaculos asignacion
+   53                  | bloque_obstaculos OBSTACULO '<' expr ',' expr '>' '\n'
+   54                  | bloque_obstaculos OBSTACULO VARIABLE '\n'
+   55                  | bloque_obstaculos SUR expr '\n'
+   56                  | bloque_obstaculos ESTE expr '\n'
+   57                  | bloque_obstaculos OESTE expr '\n'
+   58                  | bloque_obstaculos NORTE expr '\n'
+   59                  | bloque_obstaculos OBSTACULO '\n'
 
-   56 bloque_ejemplos: %empty
-   57                | EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+   60 bloque_ejemplos: %empty
+   61                | EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
 
-   58 bloque_ejemplos_anidado: %empty
-   59                        | bloque_ejemplos_anidado SUR expr '\n'
-   60                        | bloque_ejemplos_anidado ESTE expr '\n'
-   61                        | bloque_ejemplos_anidado OESTE expr '\n'
-   62                        | bloque_ejemplos_anidado NORTE expr '\n'
+   62 bloque_ejemplos_anidado: %empty
+   63                        | bloque_ejemplos_anidado SUR expr '\n'
+   64                        | bloque_ejemplos_anidado ESTE expr '\n'
+   65                        | bloque_ejemplos_anidado OESTE expr '\n'
+   66                        | bloque_ejemplos_anidado NORTE expr '\n'
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
-'\n' (10) 2 3 5 6 7 8 9 10 11 12 13 41 42 51 52 53 54 55 57 59 60 61
-    62
+'\n' (10) 2 3 5 6 7 8 9 10 11 12 13 42 45 46 47 48 49 50 53 54 55 56
+    57 58 59 61 63 64 65 66
 '%' (37) 28
 '(' (40) 22 31
 ')' (41) 22 31
 '*' (42) 25
 '+' (43) 23
-',' (44) 8 18 51
+',' (44) 8 18 47 49 53
 '-' (45) 24 29
 '/' (47) 26
-'<' (60) 8 32 51
+'<' (60) 8 32 47 49 53
 '=' (61) 6 7 8 9
-'>' (62) 8 33 51
+'>' (62) 8 33 47 49 53
 '^' (94) 27
 error (256) 13
 BOOL (258) 30
 ENTERO (259) 20
-OBSTACULO (260) 51
-VARIABLE (261) 6 7 8 9 14 15 16 17 18 21 57
+OBSTACULO (260) 53 54 59
+VARIABLE (261) 6 7 8 9 14 15 16 17 18 21 54 61
 ESCRIBIR (262) 10 11 12
 CADENA (263) 7 10
 DEFINICIONES (264) 2
 CONFIGURACION (265) 2 3
 OBSTACULOS (266) 2 3
 EJEMPLOS (267) 2 3
-DIMENSION (268) 46
-ENTRADA (269) 47
-SALIDA (270) 48
-PAUSA (271) 49
-NORTE (272) 55 62
-SUR (273) 52 59
-ESTE (274) 53 60
-OESTE (275) 54 61
-EJEMPLO (276) 57
-FINEJEMPLO (277) 57
+DIMENSION (268) 45
+ENTRADA (269) 46 47
+SALIDA (270) 48 49
+PAUSA (271) 50
+NORTE (272) 58 66
+SUR (273) 55 63
+ESTE (274) 56 64
+OESTE (275) 57 65
+EJEMPLO (276) 61
+FINEJEMPLO (277) 61
 REAL (278) 19
 INT (279) 14
 FLOAT (280) 15
@@ -138,27 +139,28 @@ $accept (49)
 lista_instrucciones (50)
     en la izquierda: 1 2 3 4 5, en la derecha: 0 4 5
 asignacion (51)
-    en la izquierda: 6 7 8 9 10 11 12 13, en la derecha: 4 43
+    en la izquierda: 6 7 8 9 10 11 12 13, en la derecha: 4 43 52
 declaracion (52)
     en la izquierda: 14 15 16 17 18, en la derecha: 5 18 42
 expr (53)
     en la izquierda: 19 20 21 22 23 24 25 26 27 28 29, en la derecha:
-    6 8 11 22 23 24 25 26 27 28 29 32 33 34 35 36 37 46 47 48 49 51
-    52 53 54 55 59 60 61 62
+    6 8 11 22 23 24 25 26 27 28 29 32 33 34 35 36 37 45 46 47 48 49
+    50 53 55 56 57 58 63 64 65 66
 expr_logica (54)
     en la izquierda: 30 31 32 33 34 35 36 37 38 39 40, en la derecha:
     9 12 31 38 39 40
 bloque_definiciones (55)
-    en la izquierda: 41 42 43 44, en la derecha: 2 42 43
+    en la izquierda: 41 42 43, en la derecha: 2 42 43
 bloque_configuracion (56)
-    en la izquierda: 45 46 47 48 49, en la derecha: 2 3 46 47 48 49
+    en la izquierda: 44 45 46 47 48 49 50, en la derecha: 2 3 45 46
+    47 48 49 50
 bloque_obstaculos (57)
-    en la izquierda: 50 51 52 53 54 55, en la derecha: 2 3 51 52 53
-    54 55
+    en la izquierda: 51 52 53 54 55 56 57 58 59, en la derecha: 2 3
+    52 53 54 55 56 57 58 59
 bloque_ejemplos (58)
-    en la izquierda: 56 57, en la derecha: 2 3 57
+    en la izquierda: 60 61, en la derecha: 2 3 61
 bloque_ejemplos_anidado (59)
-    en la izquierda: 58 59 60 61 62, en la derecha: 57 59 60 61 62
+    en la izquierda: 62 63 64 65 66, en la derecha: 61 63 64 65 66
 
 
 Estado 0
@@ -459,24 +461,23 @@ Estado 25
     FLOAT     desplazar e ir al estado 7
     STRING    desplazar e ir al estado 8
     POS       desplazar e ir al estado 9
-    '\n'      desplazar e ir al estado 62
 
-    CONFIGURACION  reduce usando la regla 44 (bloque_definiciones)
+    CONFIGURACION  reduce usando la regla 41 (bloque_definiciones)
 
-    asignacion           ir al estado 63
-    declaracion          ir al estado 64
-    bloque_definiciones  ir al estado 65
+    asignacion           ir al estado 62
+    declaracion          ir al estado 63
+    bloque_definiciones  ir al estado 64
 
 
 Estado 26
 
     3 lista_instrucciones: CONFIGURACION '\n' . bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
 
-    DIMENSION  desplazar e ir al estado 66
+    DIMENSION  desplazar e ir al estado 65
 
-    $default  reduce usando la regla 45 (bloque_configuracion)
+    $default  reduce usando la regla 44 (bloque_configuracion)
 
-    bloque_configuracion  ir al estado 67
+    bloque_configuracion  ir al estado 66
 
 
 Estado 27
@@ -537,7 +538,7 @@ Estado 33
 
     $end  reduce usando la regla 1 (lista_instrucciones)
 
-    lista_instrucciones  ir al estado 68
+    lista_instrucciones  ir al estado 67
     asignacion           ir al estado 11
     declaracion          ir al estado 12
 
@@ -546,14 +547,14 @@ Estado 34
 
    18 declaracion: declaracion ',' . VARIABLE
 
-    VARIABLE  desplazar e ir al estado 69
+    VARIABLE  desplazar e ir al estado 68
 
 
 Estado 35
 
     7 asignacion: VARIABLE '=' CADENA . '\n'
 
-    '\n'  desplazar e ir al estado 70
+    '\n'  desplazar e ir al estado 69
 
 
 Estado 36
@@ -566,7 +567,7 @@ Estado 36
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 71
+    expr  ir al estado 70
 
 
 Estado 37
@@ -597,7 +598,7 @@ Estado 37
     '/'   desplazar e ir al estado 55
     '%'   desplazar e ir al estado 56
     '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 72
+    '\n'  desplazar e ir al estado 71
 
 
 Estado 38
@@ -608,7 +609,7 @@ Estado 38
 
     OR    desplazar e ir al estado 59
     AND   desplazar e ir al estado 60
-    '\n'  desplazar e ir al estado 73
+    '\n'  desplazar e ir al estado 72
 
 
 Estado 39
@@ -666,7 +667,7 @@ Estado 42
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 74
+    expr  ir al estado 73
 
 
 Estado 43
@@ -710,7 +711,7 @@ Estado 44
     '/'  desplazar e ir al estado 55
     '%'  desplazar e ir al estado 56
     '^'  desplazar e ir al estado 57
-    ')'  desplazar e ir al estado 75
+    ')'  desplazar e ir al estado 74
 
 
 Estado 45
@@ -721,7 +722,7 @@ Estado 45
 
     OR   desplazar e ir al estado 59
     AND  desplazar e ir al estado 60
-    ')'  desplazar e ir al estado 76
+    ')'  desplazar e ir al estado 75
 
 
 Estado 46
@@ -734,7 +735,7 @@ Estado 46
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 77
+    expr  ir al estado 76
 
 
 Estado 47
@@ -747,7 +748,7 @@ Estado 47
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 78
+    expr  ir al estado 77
 
 
 Estado 48
@@ -760,7 +761,7 @@ Estado 48
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 79
+    expr  ir al estado 78
 
 
 Estado 49
@@ -773,7 +774,7 @@ Estado 49
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 80
+    expr  ir al estado 79
 
 
 Estado 50
@@ -786,7 +787,7 @@ Estado 50
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 81
+    expr  ir al estado 80
 
 
 Estado 51
@@ -799,7 +800,7 @@ Estado 51
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 82
+    expr  ir al estado 81
 
 
 Estado 52
@@ -812,7 +813,7 @@ Estado 52
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 83
+    expr  ir al estado 82
 
 
 Estado 53
@@ -825,7 +826,7 @@ Estado 53
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 84
+    expr  ir al estado 83
 
 
 Estado 54
@@ -838,7 +839,7 @@ Estado 54
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 85
+    expr  ir al estado 84
 
 
 Estado 55
@@ -851,7 +852,7 @@ Estado 55
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 86
+    expr  ir al estado 85
 
 
 Estado 56
@@ -864,7 +865,7 @@ Estado 56
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 87
+    expr  ir al estado 86
 
 
 Estado 57
@@ -877,7 +878,7 @@ Estado 57
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 88
+    expr  ir al estado 87
 
 
 Estado 58
@@ -900,7 +901,7 @@ Estado 59
     '('       desplazar e ir al estado 22
 
     expr         ir al estado 40
-    expr_logica  ir al estado 89
+    expr_logica  ir al estado 88
 
 
 Estado 60
@@ -916,7 +917,7 @@ Estado 60
     '('       desplazar e ir al estado 22
 
     expr         ir al estado 40
-    expr_logica  ir al estado 90
+    expr_logica  ir al estado 89
 
 
 Estado 61
@@ -928,13 +929,6 @@ Estado 61
 
 Estado 62
 
-   41 bloque_definiciones: '\n' .
-
-    $default  reduce usando la regla 41 (bloque_definiciones)
-
-
-Estado 63
-
    43 bloque_definiciones: asignacion . bloque_definiciones
 
     error     desplazar e ir al estado 1
@@ -944,34 +938,33 @@ Estado 63
     FLOAT     desplazar e ir al estado 7
     STRING    desplazar e ir al estado 8
     POS       desplazar e ir al estado 9
-    '\n'      desplazar e ir al estado 62
 
-    CONFIGURACION  reduce usando la regla 44 (bloque_definiciones)
+    CONFIGURACION  reduce usando la regla 41 (bloque_definiciones)
 
-    asignacion           ir al estado 63
-    declaracion          ir al estado 64
-    bloque_definiciones  ir al estado 91
+    asignacion           ir al estado 62
+    declaracion          ir al estado 63
+    bloque_definiciones  ir al estado 90
 
 
-Estado 64
+Estado 63
 
    18 declaracion: declaracion . ',' VARIABLE
    42 bloque_definiciones: declaracion . '\n' bloque_definiciones
 
-    '\n'  desplazar e ir al estado 92
+    '\n'  desplazar e ir al estado 91
     ','   desplazar e ir al estado 34
+
+
+Estado 64
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones . CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+
+    CONFIGURACION  desplazar e ir al estado 92
 
 
 Estado 65
 
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones . CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-
-    CONFIGURACION  desplazar e ir al estado 93
-
-
-Estado 66
-
-   46 bloque_configuracion: DIMENSION . expr bloque_configuracion
+   45 bloque_configuracion: DIMENSION . expr bloque_configuracion '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
@@ -979,44 +972,46 @@ Estado 66
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 94
+    expr  ir al estado 93
+
+
+Estado 66
+
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion . OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+   46 bloque_configuracion: bloque_configuracion . ENTRADA expr '\n'
+   47                     | bloque_configuracion . ENTRADA '<' expr ',' expr '>' '\n'
+   48                     | bloque_configuracion . SALIDA expr '\n'
+   49                     | bloque_configuracion . SALIDA '<' expr ',' expr '>' '\n'
+   50                     | bloque_configuracion . PAUSA expr '\n'
+
+    OBSTACULOS  desplazar e ir al estado 94
+    ENTRADA     desplazar e ir al estado 95
+    SALIDA      desplazar e ir al estado 96
+    PAUSA       desplazar e ir al estado 97
 
 
 Estado 67
-
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion . OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-   47 bloque_configuracion: bloque_configuracion . ENTRADA expr
-   48                     | bloque_configuracion . SALIDA expr
-   49                     | bloque_configuracion . PAUSA expr
-
-    OBSTACULOS  desplazar e ir al estado 95
-    ENTRADA     desplazar e ir al estado 96
-    SALIDA      desplazar e ir al estado 97
-    PAUSA       desplazar e ir al estado 98
-
-
-Estado 68
 
     5 lista_instrucciones: declaracion '\n' lista_instrucciones .
 
     $default  reduce usando la regla 5 (lista_instrucciones)
 
 
-Estado 69
+Estado 68
 
    18 declaracion: declaracion ',' VARIABLE .
 
     $default  reduce usando la regla 18 (declaracion)
 
 
-Estado 70
+Estado 69
 
     7 asignacion: VARIABLE '=' CADENA '\n' .
 
     $default  reduce usando la regla 7 (asignacion)
 
 
-Estado 71
+Estado 70
 
     8 asignacion: VARIABLE '=' '<' expr . ',' expr '>' '\n'
    23 expr: expr . '+' expr
@@ -1032,24 +1027,24 @@ Estado 71
     '/'  desplazar e ir al estado 55
     '%'  desplazar e ir al estado 56
     '^'  desplazar e ir al estado 57
-    ','  desplazar e ir al estado 99
+    ','  desplazar e ir al estado 98
 
 
-Estado 72
+Estado 71
 
     6 asignacion: VARIABLE '=' expr '\n' .
 
     $default  reduce usando la regla 6 (asignacion)
 
 
-Estado 73
+Estado 72
 
     9 asignacion: VARIABLE '=' expr_logica '\n' .
 
     $default  reduce usando la regla 9 (asignacion)
 
 
-Estado 74
+Estado 73
 
    22 expr: '(' expr . ')'
    23     | expr . '+' expr
@@ -1065,24 +1060,24 @@ Estado 74
     '/'  desplazar e ir al estado 55
     '%'  desplazar e ir al estado 56
     '^'  desplazar e ir al estado 57
-    ')'  desplazar e ir al estado 75
+    ')'  desplazar e ir al estado 74
 
 
-Estado 75
+Estado 74
 
    22 expr: '(' expr ')' .
 
     $default  reduce usando la regla 22 (expr)
 
 
-Estado 76
+Estado 75
 
    31 expr_logica: '(' expr_logica ')' .
 
     $default  reduce usando la regla 31 (expr_logica)
 
 
-Estado 77
+Estado 76
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1102,7 +1097,7 @@ Estado 77
     $default  reduce usando la regla 34 (expr_logica)
 
 
-Estado 78
+Estado 77
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1122,7 +1117,7 @@ Estado 78
     $default  reduce usando la regla 35 (expr_logica)
 
 
-Estado 79
+Estado 78
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1142,7 +1137,7 @@ Estado 79
     $default  reduce usando la regla 36 (expr_logica)
 
 
-Estado 80
+Estado 79
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1162,7 +1157,7 @@ Estado 80
     $default  reduce usando la regla 37 (expr_logica)
 
 
-Estado 81
+Estado 80
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1182,7 +1177,7 @@ Estado 81
     $default  reduce usando la regla 32 (expr_logica)
 
 
-Estado 82
+Estado 81
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1202,7 +1197,7 @@ Estado 82
     $default  reduce usando la regla 33 (expr_logica)
 
 
-Estado 83
+Estado 82
 
    23 expr: expr . '+' expr
    23     | expr '+' expr .
@@ -1220,7 +1215,7 @@ Estado 83
     $default  reduce usando la regla 23 (expr)
 
 
-Estado 84
+Estado 83
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1238,7 +1233,7 @@ Estado 84
     $default  reduce usando la regla 24 (expr)
 
 
-Estado 85
+Estado 84
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1253,7 +1248,7 @@ Estado 85
     $default  reduce usando la regla 25 (expr)
 
 
-Estado 86
+Estado 85
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1268,7 +1263,7 @@ Estado 86
     $default  reduce usando la regla 26 (expr)
 
 
-Estado 87
+Estado 86
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1283,7 +1278,7 @@ Estado 87
     $default  reduce usando la regla 28 (expr)
 
 
-Estado 88
+Estado 87
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1298,7 +1293,7 @@ Estado 88
     $default  reduce usando la regla 27 (expr)
 
 
-Estado 89
+Estado 88
 
    38 expr_logica: expr_logica . AND expr_logica
    39            | expr_logica . OR expr_logica
@@ -1309,7 +1304,7 @@ Estado 89
     $default  reduce usando la regla 39 (expr_logica)
 
 
-Estado 90
+Estado 89
 
    38 expr_logica: expr_logica . AND expr_logica
    38            | expr_logica AND expr_logica .
@@ -1318,14 +1313,14 @@ Estado 90
     $default  reduce usando la regla 38 (expr_logica)
 
 
-Estado 91
+Estado 90
 
    43 bloque_definiciones: asignacion bloque_definiciones .
 
     $default  reduce usando la regla 43 (bloque_definiciones)
 
 
-Estado 92
+Estado 91
 
    42 bloque_definiciones: declaracion '\n' . bloque_definiciones
 
@@ -1336,23 +1331,22 @@ Estado 92
     FLOAT     desplazar e ir al estado 7
     STRING    desplazar e ir al estado 8
     POS       desplazar e ir al estado 9
-    '\n'      desplazar e ir al estado 62
 
-    CONFIGURACION  reduce usando la regla 44 (bloque_definiciones)
+    CONFIGURACION  reduce usando la regla 41 (bloque_definiciones)
 
-    asignacion           ir al estado 63
-    declaracion          ir al estado 64
-    bloque_definiciones  ir al estado 100
+    asignacion           ir al estado 62
+    declaracion          ir al estado 63
+    bloque_definiciones  ir al estado 99
 
 
-Estado 93
+Estado 92
 
     2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION . '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
 
-    '\n'  desplazar e ir al estado 101
+    '\n'  desplazar e ir al estado 100
 
 
-Estado 94
+Estado 93
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -1360,9 +1354,9 @@ Estado 94
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   46 bloque_configuracion: DIMENSION expr . bloque_configuracion
+   45 bloque_configuracion: DIMENSION expr . bloque_configuracion '\n'
 
-    DIMENSION  desplazar e ir al estado 66
+    DIMENSION  desplazar e ir al estado 65
     '+'        desplazar e ir al estado 52
     '-'        desplazar e ir al estado 53
     '*'        desplazar e ir al estado 54
@@ -1370,60 +1364,51 @@ Estado 94
     '%'        desplazar e ir al estado 56
     '^'        desplazar e ir al estado 57
 
-    $default  reduce usando la regla 45 (bloque_configuracion)
+    $default  reduce usando la regla 44 (bloque_configuracion)
 
-    bloque_configuracion  ir al estado 102
+    bloque_configuracion  ir al estado 101
+
+
+Estado 94
+
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS . '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 102
 
 
 Estado 95
 
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS . '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-
-    '\n'  desplazar e ir al estado 103
-
-
-Estado 96
-
-   47 bloque_configuracion: bloque_configuracion ENTRADA . expr
+   46 bloque_configuracion: bloque_configuracion ENTRADA . expr '\n'
+   47                     | bloque_configuracion ENTRADA . '<' expr ',' expr '>' '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
     REAL      desplazar e ir al estado 19
+    '<'       desplazar e ir al estado 103
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
     expr  ir al estado 104
 
 
-Estado 97
+Estado 96
 
-   48 bloque_configuracion: bloque_configuracion SALIDA . expr
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 105
-
-
-Estado 98
-
-   49 bloque_configuracion: bloque_configuracion PAUSA . expr
+   48 bloque_configuracion: bloque_configuracion SALIDA . expr '\n'
+   49                     | bloque_configuracion SALIDA . '<' expr ',' expr '>' '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
     REAL      desplazar e ir al estado 19
+    '<'       desplazar e ir al estado 105
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
     expr  ir al estado 106
 
 
-Estado 99
+Estado 97
 
-    8 asignacion: VARIABLE '=' '<' expr ',' . expr '>' '\n'
+   50 bloque_configuracion: bloque_configuracion PAUSA . expr '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
@@ -1434,48 +1419,72 @@ Estado 99
     expr  ir al estado 107
 
 
-Estado 100
+Estado 98
+
+    8 asignacion: VARIABLE '=' '<' expr ',' . expr '>' '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 108
+
+
+Estado 99
 
    42 bloque_definiciones: declaracion '\n' bloque_definiciones .
 
     $default  reduce usando la regla 42 (bloque_definiciones)
 
 
-Estado 101
+Estado 100
 
     2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' . bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
 
-    DIMENSION  desplazar e ir al estado 66
+    DIMENSION  desplazar e ir al estado 65
 
-    $default  reduce usando la regla 45 (bloque_configuracion)
+    $default  reduce usando la regla 44 (bloque_configuracion)
 
-    bloque_configuracion  ir al estado 108
+    bloque_configuracion  ir al estado 109
+
+
+Estado 101
+
+   45 bloque_configuracion: DIMENSION expr bloque_configuracion . '\n'
+   46                     | bloque_configuracion . ENTRADA expr '\n'
+   47                     | bloque_configuracion . ENTRADA '<' expr ',' expr '>' '\n'
+   48                     | bloque_configuracion . SALIDA expr '\n'
+   49                     | bloque_configuracion . SALIDA '<' expr ',' expr '>' '\n'
+   50                     | bloque_configuracion . PAUSA expr '\n'
+
+    ENTRADA  desplazar e ir al estado 95
+    SALIDA   desplazar e ir al estado 96
+    PAUSA    desplazar e ir al estado 97
+    '\n'     desplazar e ir al estado 110
 
 
 Estado 102
 
-   46 bloque_configuracion: DIMENSION expr bloque_configuracion .
-   47                     | bloque_configuracion . ENTRADA expr
-   48                     | bloque_configuracion . SALIDA expr
-   49                     | bloque_configuracion . PAUSA expr
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' . bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
 
-    ENTRADA  desplazar e ir al estado 96
-    SALIDA   desplazar e ir al estado 97
-    PAUSA    desplazar e ir al estado 98
+    $default  reduce usando la regla 51 (bloque_obstaculos)
 
-    ENTRADA   [reduce usando la regla 46 (bloque_configuracion)]
-    SALIDA    [reduce usando la regla 46 (bloque_configuracion)]
-    PAUSA     [reduce usando la regla 46 (bloque_configuracion)]
-    $default  reduce usando la regla 46 (bloque_configuracion)
+    bloque_obstaculos  ir al estado 111
 
 
 Estado 103
 
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' . bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' . expr ',' expr '>' '\n'
 
-    $default  reduce usando la regla 50 (bloque_obstaculos)
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
 
-    bloque_obstaculos  ir al estado 109
+    expr  ir al estado 112
 
 
 Estado 104
@@ -1486,36 +1495,28 @@ Estado 104
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   47 bloque_configuracion: bloque_configuracion ENTRADA expr .
+   46 bloque_configuracion: bloque_configuracion ENTRADA expr . '\n'
 
-    '+'  desplazar e ir al estado 52
-    '-'  desplazar e ir al estado 53
-    '*'  desplazar e ir al estado 54
-    '/'  desplazar e ir al estado 55
-    '%'  desplazar e ir al estado 56
-    '^'  desplazar e ir al estado 57
-
-    $default  reduce usando la regla 47 (bloque_configuracion)
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 113
 
 
 Estado 105
 
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   48 bloque_configuracion: bloque_configuracion SALIDA expr .
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' . expr ',' expr '>' '\n'
 
-    '+'  desplazar e ir al estado 52
-    '-'  desplazar e ir al estado 53
-    '*'  desplazar e ir al estado 54
-    '/'  desplazar e ir al estado 55
-    '%'  desplazar e ir al estado 56
-    '^'  desplazar e ir al estado 57
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
 
-    $default  reduce usando la regla 48 (bloque_configuracion)
+    expr  ir al estado 114
 
 
 Estado 106
@@ -1526,19 +1527,37 @@ Estado 106
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   49 bloque_configuracion: bloque_configuracion PAUSA expr .
+   48 bloque_configuracion: bloque_configuracion SALIDA expr . '\n'
 
-    '+'  desplazar e ir al estado 52
-    '-'  desplazar e ir al estado 53
-    '*'  desplazar e ir al estado 54
-    '/'  desplazar e ir al estado 55
-    '%'  desplazar e ir al estado 56
-    '^'  desplazar e ir al estado 57
-
-    $default  reduce usando la regla 49 (bloque_configuracion)
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 115
 
 
 Estado 107
+
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   50 bloque_configuracion: bloque_configuracion PAUSA expr . '\n'
+
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 116
+
+
+Estado 108
 
     8 asignacion: VARIABLE '=' '<' expr ',' expr . '>' '\n'
    23 expr: expr . '+' expr
@@ -1548,267 +1567,71 @@ Estado 107
    27     | expr . '^' expr
    28     | expr . '%' expr
 
-    '>'  desplazar e ir al estado 110
+    '>'  desplazar e ir al estado 117
     '+'  desplazar e ir al estado 52
     '-'  desplazar e ir al estado 53
     '*'  desplazar e ir al estado 54
     '/'  desplazar e ir al estado 55
     '%'  desplazar e ir al estado 56
     '^'  desplazar e ir al estado 57
-
-
-Estado 108
-
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion . OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-   47 bloque_configuracion: bloque_configuracion . ENTRADA expr
-   48                     | bloque_configuracion . SALIDA expr
-   49                     | bloque_configuracion . PAUSA expr
-
-    OBSTACULOS  desplazar e ir al estado 111
-    ENTRADA     desplazar e ir al estado 96
-    SALIDA      desplazar e ir al estado 97
-    PAUSA       desplazar e ir al estado 98
 
 
 Estado 109
 
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
-   51 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   52                  | bloque_obstaculos . SUR expr '\n'
-   53                  | bloque_obstaculos . ESTE expr '\n'
-   54                  | bloque_obstaculos . OESTE expr '\n'
-   55                  | bloque_obstaculos . NORTE expr '\n'
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion . OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+   46 bloque_configuracion: bloque_configuracion . ENTRADA expr '\n'
+   47                     | bloque_configuracion . ENTRADA '<' expr ',' expr '>' '\n'
+   48                     | bloque_configuracion . SALIDA expr '\n'
+   49                     | bloque_configuracion . SALIDA '<' expr ',' expr '>' '\n'
+   50                     | bloque_configuracion . PAUSA expr '\n'
 
-    OBSTACULO  desplazar e ir al estado 112
-    EJEMPLOS   desplazar e ir al estado 113
-    NORTE      desplazar e ir al estado 114
-    SUR        desplazar e ir al estado 115
-    ESTE       desplazar e ir al estado 116
-    OESTE      desplazar e ir al estado 117
+    OBSTACULOS  desplazar e ir al estado 118
+    ENTRADA     desplazar e ir al estado 95
+    SALIDA      desplazar e ir al estado 96
+    PAUSA       desplazar e ir al estado 97
 
 
 Estado 110
 
-    8 asignacion: VARIABLE '=' '<' expr ',' expr '>' . '\n'
+   45 bloque_configuracion: DIMENSION expr bloque_configuracion '\n' .
 
-    '\n'  desplazar e ir al estado 118
+    $default  reduce usando la regla 45 (bloque_configuracion)
 
 
 Estado 111
 
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS . '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
+   52 bloque_obstaculos: bloque_obstaculos . asignacion
+   53                  | bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
+   54                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   55                  | bloque_obstaculos . SUR expr '\n'
+   56                  | bloque_obstaculos . ESTE expr '\n'
+   57                  | bloque_obstaculos . OESTE expr '\n'
+   58                  | bloque_obstaculos . NORTE expr '\n'
+   59                  | bloque_obstaculos . OBSTACULO '\n'
 
-    '\n'  desplazar e ir al estado 119
+    error      desplazar e ir al estado 1
+    OBSTACULO  desplazar e ir al estado 119
+    VARIABLE   desplazar e ir al estado 2
+    ESCRIBIR   desplazar e ir al estado 3
+    EJEMPLOS   desplazar e ir al estado 120
+    NORTE      desplazar e ir al estado 121
+    SUR        desplazar e ir al estado 122
+    ESTE       desplazar e ir al estado 123
+    OESTE      desplazar e ir al estado 124
+
+    asignacion  ir al estado 125
 
 
 Estado 112
 
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO . '<' expr ',' expr '>' '\n'
-
-    '<'  desplazar e ir al estado 120
-
-
-Estado 113
-
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS . '\n' bloque_ejemplos
-
-    '\n'  desplazar e ir al estado 121
-
-
-Estado 114
-
-   55 bloque_obstaculos: bloque_obstaculos NORTE . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 122
-
-
-Estado 115
-
-   52 bloque_obstaculos: bloque_obstaculos SUR . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 123
-
-
-Estado 116
-
-   53 bloque_obstaculos: bloque_obstaculos ESTE . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 124
-
-
-Estado 117
-
-   54 bloque_obstaculos: bloque_obstaculos OESTE . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 125
-
-
-Estado 118
-
-    8 asignacion: VARIABLE '=' '<' expr ',' expr '>' '\n' .
-
-    $default  reduce usando la regla 8 (asignacion)
-
-
-Estado 119
-
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' . bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-
-    $default  reduce usando la regla 50 (bloque_obstaculos)
-
-    bloque_obstaculos  ir al estado 126
-
-
-Estado 120
-
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' . expr ',' expr '>' '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 127
-
-
-Estado 121
-
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' . bloque_ejemplos
-
-    EJEMPLO  desplazar e ir al estado 128
-
-    $default  reduce usando la regla 56 (bloque_ejemplos)
-
-    bloque_ejemplos  ir al estado 129
-
-
-Estado 122
-
    23 expr: expr . '+' expr
    24     | expr . '-' expr
    25     | expr . '*' expr
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   55 bloque_obstaculos: bloque_obstaculos NORTE expr . '\n'
-
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 130
-
-
-Estado 123
-
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   52 bloque_obstaculos: bloque_obstaculos SUR expr . '\n'
-
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 131
-
-
-Estado 124
-
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   53 bloque_obstaculos: bloque_obstaculos ESTE expr . '\n'
-
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 132
-
-
-Estado 125
-
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   54 bloque_obstaculos: bloque_obstaculos OESTE expr . '\n'
-
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 133
-
-
-Estado 126
-
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
-   51 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   52                  | bloque_obstaculos . SUR expr '\n'
-   53                  | bloque_obstaculos . ESTE expr '\n'
-   54                  | bloque_obstaculos . OESTE expr '\n'
-   55                  | bloque_obstaculos . NORTE expr '\n'
-
-    OBSTACULO  desplazar e ir al estado 112
-    EJEMPLOS   desplazar e ir al estado 134
-    NORTE      desplazar e ir al estado 114
-    SUR        desplazar e ir al estado 115
-    ESTE       desplazar e ir al estado 116
-    OESTE      desplazar e ir al estado 117
-
-
-Estado 127
-
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr . ',' expr '>' '\n'
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' expr . ',' expr '>' '\n'
 
     '+'  desplazar e ir al estado 52
     '-'  desplazar e ir al estado 53
@@ -1816,61 +1639,143 @@ Estado 127
     '/'  desplazar e ir al estado 55
     '%'  desplazar e ir al estado 56
     '^'  desplazar e ir al estado 57
-    ','  desplazar e ir al estado 135
+    ','  desplazar e ir al estado 126
 
 
-Estado 128
+Estado 113
 
-   57 bloque_ejemplos: EJEMPLO . VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+   46 bloque_configuracion: bloque_configuracion ENTRADA expr '\n' .
 
-    VARIABLE  desplazar e ir al estado 136
-
-
-Estado 129
-
-    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos .
-
-    $default  reduce usando la regla 3 (lista_instrucciones)
+    $default  reduce usando la regla 46 (bloque_configuracion)
 
 
-Estado 130
+Estado 114
 
-   55 bloque_obstaculos: bloque_obstaculos NORTE expr '\n' .
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' expr . ',' expr '>' '\n'
 
-    $default  reduce usando la regla 55 (bloque_obstaculos)
+    '+'  desplazar e ir al estado 52
+    '-'  desplazar e ir al estado 53
+    '*'  desplazar e ir al estado 54
+    '/'  desplazar e ir al estado 55
+    '%'  desplazar e ir al estado 56
+    '^'  desplazar e ir al estado 57
+    ','  desplazar e ir al estado 127
 
 
-Estado 131
+Estado 115
 
-   52 bloque_obstaculos: bloque_obstaculos SUR expr '\n' .
+   48 bloque_configuracion: bloque_configuracion SALIDA expr '\n' .
+
+    $default  reduce usando la regla 48 (bloque_configuracion)
+
+
+Estado 116
+
+   50 bloque_configuracion: bloque_configuracion PAUSA expr '\n' .
+
+    $default  reduce usando la regla 50 (bloque_configuracion)
+
+
+Estado 117
+
+    8 asignacion: VARIABLE '=' '<' expr ',' expr '>' . '\n'
+
+    '\n'  desplazar e ir al estado 128
+
+
+Estado 118
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS . '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 129
+
+
+Estado 119
+
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO . '<' expr ',' expr '>' '\n'
+   54                  | bloque_obstaculos OBSTACULO . VARIABLE '\n'
+   59                  | bloque_obstaculos OBSTACULO . '\n'
+
+    VARIABLE  desplazar e ir al estado 130
+    '<'       desplazar e ir al estado 131
+    '\n'      desplazar e ir al estado 132
+
+
+Estado 120
+
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS . '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 133
+
+
+Estado 121
+
+   58 bloque_obstaculos: bloque_obstaculos NORTE . expr '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 134
+
+
+Estado 122
+
+   55 bloque_obstaculos: bloque_obstaculos SUR . expr '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 135
+
+
+Estado 123
+
+   56 bloque_obstaculos: bloque_obstaculos ESTE . expr '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 136
+
+
+Estado 124
+
+   57 bloque_obstaculos: bloque_obstaculos OESTE . expr '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 137
+
+
+Estado 125
+
+   52 bloque_obstaculos: bloque_obstaculos asignacion .
 
     $default  reduce usando la regla 52 (bloque_obstaculos)
 
 
-Estado 132
+Estado 126
 
-   53 bloque_obstaculos: bloque_obstaculos ESTE expr '\n' .
-
-    $default  reduce usando la regla 53 (bloque_obstaculos)
-
-
-Estado 133
-
-   54 bloque_obstaculos: bloque_obstaculos OESTE expr '\n' .
-
-    $default  reduce usando la regla 54 (bloque_obstaculos)
-
-
-Estado 134
-
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS . '\n' bloque_ejemplos
-
-    '\n'  desplazar e ir al estado 137
-
-
-Estado 135
-
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' . expr '>' '\n'
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' expr ',' . expr '>' '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
@@ -1881,22 +1786,147 @@ Estado 135
     expr  ir al estado 138
 
 
+Estado 127
+
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' expr ',' . expr '>' '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 139
+
+
+Estado 128
+
+    8 asignacion: VARIABLE '=' '<' expr ',' expr '>' '\n' .
+
+    $default  reduce usando la regla 8 (asignacion)
+
+
+Estado 129
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' . bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+
+    $default  reduce usando la regla 51 (bloque_obstaculos)
+
+    bloque_obstaculos  ir al estado 140
+
+
+Estado 130
+
+   54 bloque_obstaculos: bloque_obstaculos OBSTACULO VARIABLE . '\n'
+
+    '\n'  desplazar e ir al estado 141
+
+
+Estado 131
+
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' . expr ',' expr '>' '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 142
+
+
+Estado 132
+
+   59 bloque_obstaculos: bloque_obstaculos OBSTACULO '\n' .
+
+    $default  reduce usando la regla 59 (bloque_obstaculos)
+
+
+Estado 133
+
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' . bloque_ejemplos
+
+    EJEMPLO  desplazar e ir al estado 143
+
+    $default  reduce usando la regla 60 (bloque_ejemplos)
+
+    bloque_ejemplos  ir al estado 144
+
+
+Estado 134
+
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   58 bloque_obstaculos: bloque_obstaculos NORTE expr . '\n'
+
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 145
+
+
+Estado 135
+
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   55 bloque_obstaculos: bloque_obstaculos SUR expr . '\n'
+
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 146
+
+
 Estado 136
 
-   57 bloque_ejemplos: EJEMPLO VARIABLE . '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   56 bloque_obstaculos: bloque_obstaculos ESTE expr . '\n'
 
-    '\n'  desplazar e ir al estado 139
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 147
 
 
 Estado 137
 
-    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' . bloque_ejemplos
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   57 bloque_obstaculos: bloque_obstaculos OESTE expr . '\n'
 
-    EJEMPLO  desplazar e ir al estado 128
-
-    $default  reduce usando la regla 56 (bloque_ejemplos)
-
-    bloque_ejemplos  ir al estado 140
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 148
 
 
 Estado 138
@@ -1907,9 +1937,9 @@ Estado 138
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr . '>' '\n'
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' expr ',' expr . '>' '\n'
 
-    '>'  desplazar e ir al estado 141
+    '>'  desplazar e ir al estado 149
     '+'  desplazar e ir al estado 52
     '-'  desplazar e ir al estado 53
     '*'  desplazar e ir al estado 54
@@ -1920,65 +1950,249 @@ Estado 138
 
 Estado 139
 
-   57 bloque_ejemplos: EJEMPLO VARIABLE '\n' . bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' expr ',' expr . '>' '\n'
 
-    $default  reduce usando la regla 58 (bloque_ejemplos_anidado)
-
-    bloque_ejemplos_anidado  ir al estado 142
+    '>'  desplazar e ir al estado 150
+    '+'  desplazar e ir al estado 52
+    '-'  desplazar e ir al estado 53
+    '*'  desplazar e ir al estado 54
+    '/'  desplazar e ir al estado 55
+    '%'  desplazar e ir al estado 56
+    '^'  desplazar e ir al estado 57
 
 
 Estado 140
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
+   52 bloque_obstaculos: bloque_obstaculos . asignacion
+   53                  | bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
+   54                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   55                  | bloque_obstaculos . SUR expr '\n'
+   56                  | bloque_obstaculos . ESTE expr '\n'
+   57                  | bloque_obstaculos . OESTE expr '\n'
+   58                  | bloque_obstaculos . NORTE expr '\n'
+   59                  | bloque_obstaculos . OBSTACULO '\n'
+
+    error      desplazar e ir al estado 1
+    OBSTACULO  desplazar e ir al estado 119
+    VARIABLE   desplazar e ir al estado 2
+    ESCRIBIR   desplazar e ir al estado 3
+    EJEMPLOS   desplazar e ir al estado 151
+    NORTE      desplazar e ir al estado 121
+    SUR        desplazar e ir al estado 122
+    ESTE       desplazar e ir al estado 123
+    OESTE      desplazar e ir al estado 124
+
+    asignacion  ir al estado 125
+
+
+Estado 141
+
+   54 bloque_obstaculos: bloque_obstaculos OBSTACULO VARIABLE '\n' .
+
+    $default  reduce usando la regla 54 (bloque_obstaculos)
+
+
+Estado 142
+
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr . ',' expr '>' '\n'
+
+    '+'  desplazar e ir al estado 52
+    '-'  desplazar e ir al estado 53
+    '*'  desplazar e ir al estado 54
+    '/'  desplazar e ir al estado 55
+    '%'  desplazar e ir al estado 56
+    '^'  desplazar e ir al estado 57
+    ','  desplazar e ir al estado 152
+
+
+Estado 143
+
+   61 bloque_ejemplos: EJEMPLO . VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+
+    VARIABLE  desplazar e ir al estado 153
+
+
+Estado 144
+
+    3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos .
+
+    $default  reduce usando la regla 3 (lista_instrucciones)
+
+
+Estado 145
+
+   58 bloque_obstaculos: bloque_obstaculos NORTE expr '\n' .
+
+    $default  reduce usando la regla 58 (bloque_obstaculos)
+
+
+Estado 146
+
+   55 bloque_obstaculos: bloque_obstaculos SUR expr '\n' .
+
+    $default  reduce usando la regla 55 (bloque_obstaculos)
+
+
+Estado 147
+
+   56 bloque_obstaculos: bloque_obstaculos ESTE expr '\n' .
+
+    $default  reduce usando la regla 56 (bloque_obstaculos)
+
+
+Estado 148
+
+   57 bloque_obstaculos: bloque_obstaculos OESTE expr '\n' .
+
+    $default  reduce usando la regla 57 (bloque_obstaculos)
+
+
+Estado 149
+
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' expr ',' expr '>' . '\n'
+
+    '\n'  desplazar e ir al estado 154
+
+
+Estado 150
+
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' expr ',' expr '>' . '\n'
+
+    '\n'  desplazar e ir al estado 155
+
+
+Estado 151
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS . '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 156
+
+
+Estado 152
+
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' . expr '>' '\n'
+
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 157
+
+
+Estado 153
+
+   61 bloque_ejemplos: EJEMPLO VARIABLE . '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 158
+
+
+Estado 154
+
+   47 bloque_configuracion: bloque_configuracion ENTRADA '<' expr ',' expr '>' '\n' .
+
+    $default  reduce usando la regla 47 (bloque_configuracion)
+
+
+Estado 155
+
+   49 bloque_configuracion: bloque_configuracion SALIDA '<' expr ',' expr '>' '\n' .
+
+    $default  reduce usando la regla 49 (bloque_configuracion)
+
+
+Estado 156
+
+    2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' . bloque_ejemplos
+
+    EJEMPLO  desplazar e ir al estado 143
+
+    $default  reduce usando la regla 60 (bloque_ejemplos)
+
+    bloque_ejemplos  ir al estado 159
+
+
+Estado 157
+
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr . '>' '\n'
+
+    '>'  desplazar e ir al estado 160
+    '+'  desplazar e ir al estado 52
+    '-'  desplazar e ir al estado 53
+    '*'  desplazar e ir al estado 54
+    '/'  desplazar e ir al estado 55
+    '%'  desplazar e ir al estado 56
+    '^'  desplazar e ir al estado 57
+
+
+Estado 158
+
+   61 bloque_ejemplos: EJEMPLO VARIABLE '\n' . bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos
+
+    $default  reduce usando la regla 62 (bloque_ejemplos_anidado)
+
+    bloque_ejemplos_anidado  ir al estado 161
+
+
+Estado 159
 
     2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos .
 
     $default  reduce usando la regla 2 (lista_instrucciones)
 
 
-Estado 141
+Estado 160
 
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr '>' . '\n'
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr '>' . '\n'
 
-    '\n'  desplazar e ir al estado 143
-
-
-Estado 142
-
-   57 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado . FINEJEMPLO '\n' bloque_ejemplos
-   59 bloque_ejemplos_anidado: bloque_ejemplos_anidado . SUR expr '\n'
-   60                        | bloque_ejemplos_anidado . ESTE expr '\n'
-   61                        | bloque_ejemplos_anidado . OESTE expr '\n'
-   62                        | bloque_ejemplos_anidado . NORTE expr '\n'
-
-    NORTE       desplazar e ir al estado 144
-    SUR         desplazar e ir al estado 145
-    ESTE        desplazar e ir al estado 146
-    OESTE       desplazar e ir al estado 147
-    FINEJEMPLO  desplazar e ir al estado 148
+    '\n'  desplazar e ir al estado 162
 
 
-Estado 143
+Estado 161
 
-   51 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr '>' '\n' .
+   61 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado . FINEJEMPLO '\n' bloque_ejemplos
+   63 bloque_ejemplos_anidado: bloque_ejemplos_anidado . SUR expr '\n'
+   64                        | bloque_ejemplos_anidado . ESTE expr '\n'
+   65                        | bloque_ejemplos_anidado . OESTE expr '\n'
+   66                        | bloque_ejemplos_anidado . NORTE expr '\n'
 
-    $default  reduce usando la regla 51 (bloque_obstaculos)
-
-
-Estado 144
-
-   62 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 149
+    NORTE       desplazar e ir al estado 163
+    SUR         desplazar e ir al estado 164
+    ESTE        desplazar e ir al estado 165
+    OESTE       desplazar e ir al estado 166
+    FINEJEMPLO  desplazar e ir al estado 167
 
 
-Estado 145
+Estado 162
 
-   59 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR . expr '\n'
+   53 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' expr ',' expr '>' '\n' .
+
+    $default  reduce usando la regla 53 (bloque_obstaculos)
+
+
+Estado 163
+
+   66 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE . expr '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
@@ -1986,25 +2200,12 @@ Estado 145
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 150
+    expr  ir al estado 168
 
 
-Estado 146
+Estado 164
 
-   60 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE . expr '\n'
-
-    ENTERO    desplazar e ir al estado 16
-    VARIABLE  desplazar e ir al estado 17
-    REAL      desplazar e ir al estado 19
-    '-'       desplazar e ir al estado 21
-    '('       desplazar e ir al estado 42
-
-    expr  ir al estado 151
-
-
-Estado 147
-
-   61 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE . expr '\n'
+   63 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR . expr '\n'
 
     ENTERO    desplazar e ir al estado 16
     VARIABLE  desplazar e ir al estado 17
@@ -2012,55 +2213,43 @@ Estado 147
     '-'       desplazar e ir al estado 21
     '('       desplazar e ir al estado 42
 
-    expr  ir al estado 152
+    expr  ir al estado 169
 
 
-Estado 148
+Estado 165
 
-   57 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO . '\n' bloque_ejemplos
+   64 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE . expr '\n'
 
-    '\n'  desplazar e ir al estado 153
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
 
-
-Estado 149
-
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   62 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE expr . '\n'
-
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 154
+    expr  ir al estado 170
 
 
-Estado 150
+Estado 166
 
-   23 expr: expr . '+' expr
-   24     | expr . '-' expr
-   25     | expr . '*' expr
-   26     | expr . '/' expr
-   27     | expr . '^' expr
-   28     | expr . '%' expr
-   59 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR expr . '\n'
+   65 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE . expr '\n'
 
-    '+'   desplazar e ir al estado 52
-    '-'   desplazar e ir al estado 53
-    '*'   desplazar e ir al estado 54
-    '/'   desplazar e ir al estado 55
-    '%'   desplazar e ir al estado 56
-    '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 155
+    ENTERO    desplazar e ir al estado 16
+    VARIABLE  desplazar e ir al estado 17
+    REAL      desplazar e ir al estado 19
+    '-'       desplazar e ir al estado 21
+    '('       desplazar e ir al estado 42
+
+    expr  ir al estado 171
 
 
-Estado 151
+Estado 167
+
+   61 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO . '\n' bloque_ejemplos
+
+    '\n'  desplazar e ir al estado 172
+
+
+Estado 168
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -2068,7 +2257,7 @@ Estado 151
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   60 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE expr . '\n'
+   66 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE expr . '\n'
 
     '+'   desplazar e ir al estado 52
     '-'   desplazar e ir al estado 53
@@ -2076,10 +2265,10 @@ Estado 151
     '/'   desplazar e ir al estado 55
     '%'   desplazar e ir al estado 56
     '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 156
+    '\n'  desplazar e ir al estado 173
 
 
-Estado 152
+Estado 169
 
    23 expr: expr . '+' expr
    24     | expr . '-' expr
@@ -2087,7 +2276,7 @@ Estado 152
    26     | expr . '/' expr
    27     | expr . '^' expr
    28     | expr . '%' expr
-   61 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE expr . '\n'
+   63 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR expr . '\n'
 
     '+'   desplazar e ir al estado 52
     '-'   desplazar e ir al estado 53
@@ -2095,50 +2284,88 @@ Estado 152
     '/'   desplazar e ir al estado 55
     '%'   desplazar e ir al estado 56
     '^'   desplazar e ir al estado 57
-    '\n'  desplazar e ir al estado 157
+    '\n'  desplazar e ir al estado 174
 
 
-Estado 153
+Estado 170
 
-   57 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' . bloque_ejemplos
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   64 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE expr . '\n'
 
-    EJEMPLO  desplazar e ir al estado 128
-
-    $default  reduce usando la regla 56 (bloque_ejemplos)
-
-    bloque_ejemplos  ir al estado 158
-
-
-Estado 154
-
-   62 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE expr '\n' .
-
-    $default  reduce usando la regla 62 (bloque_ejemplos_anidado)
-
-
-Estado 155
-
-   59 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR expr '\n' .
-
-    $default  reduce usando la regla 59 (bloque_ejemplos_anidado)
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 175
 
 
-Estado 156
+Estado 171
 
-   60 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE expr '\n' .
+   23 expr: expr . '+' expr
+   24     | expr . '-' expr
+   25     | expr . '*' expr
+   26     | expr . '/' expr
+   27     | expr . '^' expr
+   28     | expr . '%' expr
+   65 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE expr . '\n'
 
-    $default  reduce usando la regla 60 (bloque_ejemplos_anidado)
+    '+'   desplazar e ir al estado 52
+    '-'   desplazar e ir al estado 53
+    '*'   desplazar e ir al estado 54
+    '/'   desplazar e ir al estado 55
+    '%'   desplazar e ir al estado 56
+    '^'   desplazar e ir al estado 57
+    '\n'  desplazar e ir al estado 176
 
 
-Estado 157
+Estado 172
 
-   61 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE expr '\n' .
+   61 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' . bloque_ejemplos
 
-    $default  reduce usando la regla 61 (bloque_ejemplos_anidado)
+    EJEMPLO  desplazar e ir al estado 143
+
+    $default  reduce usando la regla 60 (bloque_ejemplos)
+
+    bloque_ejemplos  ir al estado 177
 
 
-Estado 158
+Estado 173
 
-   57 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos .
+   66 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE expr '\n' .
 
-    $default  reduce usando la regla 57 (bloque_ejemplos)
+    $default  reduce usando la regla 66 (bloque_ejemplos_anidado)
+
+
+Estado 174
+
+   63 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR expr '\n' .
+
+    $default  reduce usando la regla 63 (bloque_ejemplos_anidado)
+
+
+Estado 175
+
+   64 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE expr '\n' .
+
+    $default  reduce usando la regla 64 (bloque_ejemplos_anidado)
+
+
+Estado 176
+
+   65 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE expr '\n' .
+
+    $default  reduce usando la regla 65 (bloque_ejemplos_anidado)
+
+
+Estado 177
+
+   61 bloque_ejemplos: EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos .
+
+    $default  reduce usando la regla 61 (bloque_ejemplos)

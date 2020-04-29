@@ -14,10 +14,10 @@ real ({entero}*[.]{entero})|({entero}[.]{entero}*)
 real_not_cientifica {real}[e][+-]?{entero}
 
 %%
-"#"                          BEGIN(COM1);
-<COM1>\n                  {BEGIN(0);n_lineas++; return (yytext[0]);}
-<COM1>. ;
-["]						BEGIN(STR);
+"#"                         BEGIN(COM1);
+<COM1>\n                    {BEGIN(0);n_lineas++; return (yytext[0]);}
+<COM1>.                     ;
+["]						    BEGIN(STR);
 <STR>[^"]*					strcpy(yylval.c_cadena,yytext);return CADENA;
 <STR>["]					BEGIN(0);
 
@@ -49,6 +49,7 @@ finejemplo      {return FINEJEMPLO;}
 
 {entero}                    yylval.c_entero = atoi(yytext);return ENTERO;
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
+^[ \t]*\n$      n_lineas++;
 \n				n_lineas++; return (yytext[0]);
 [\t ]			;
 true            yylval.c_bool = 1; return BOOL;
