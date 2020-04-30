@@ -88,12 +88,23 @@ union YYSTYPE
 {
 #line 122 "calculadora.y" /* yacc.c:1909  */
 
+      //Tipo union por si en el futuro lo podemos usar
+      typedef char tipo_cadena[50];
+      typedef int tipo_pos[2];
+      union tipo_valor{
+            int valor_entero;//0
+            float valor_real;//1
+            bool valor_logico;//2
+            tipo_cadena valor_cad;//3
+            tipo_pos valor_pos;//4
+      };
+
       int c_entero;
       float c_real;
       char c_cadena[20];
       bool c_bool;
 
-#line 97 "calculadora.h" /* yacc.c:1909  */
+#line 108 "calculadora.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

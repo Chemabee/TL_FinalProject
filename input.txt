@@ -1,4 +1,6 @@
 DEFINICIONES
+#hola
+      #holaa
     entero n
     entero x,y           # variables que no se usan (Err. Sem.?)
     real f

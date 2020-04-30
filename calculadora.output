@@ -1,3 +1,14 @@
+No terminales inútiles en la gramática
+
+   bloque_obstaculos_anidado
+
+
+Reglas inútiles en la gramática
+
+   67 bloque_obstaculos_anidado: %empty
+   68                          | %empty
+
+
 Gramática
 
     0 $accept: lista_instrucciones $end

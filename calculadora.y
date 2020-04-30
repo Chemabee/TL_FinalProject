@@ -120,6 +120,17 @@ void printTabla(ofstream &out){
 }
 %}
 %union{
+      //Tipo union por si en el futuro lo podemos usar
+      typedef char tipo_cadena[50];
+      typedef int tipo_pos[2];
+      union tipo_valor{
+            int valor_entero;//0
+            float valor_real;//1
+            bool valor_logico;//2
+            tipo_cadena valor_cad;//3
+            tipo_pos valor_pos;//4
+      };
+
       int c_entero;
       float c_real;
       char c_cadena[20];
@@ -469,6 +480,9 @@ bloque_obstaculos:      {}
       |bloque_obstaculos OESTE expr '\n'
       |bloque_obstaculos NORTE expr '\n'
       |bloque_obstaculos OBSTACULO '\n'
+      ;
+bloque_obstaculos_anidado:
+      |
       ;
 bloque_ejemplos:  {}
       |EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos {}
