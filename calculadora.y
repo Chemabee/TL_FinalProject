@@ -141,7 +141,7 @@ void printTabla(ofstream &out){
 
 %token <c_bool> BOOL
 %token <c_entero> ENTERO
-%token <c_cadena> OBSTACULO VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS DIMENSION ENTRADA SALIDA PAUSA NORTE SUR ESTE OESTE EJEMPLO FINEJEMPLO
+%token <c_cadena> OBSTACULO VARIABLE ESCRIBIR CADENA DEFINICIONES CONFIGURACION OBSTACULOS EJEMPLOS DIMENSION ENTRADA SALIDA PAUSA NORTE SUR ESTE OESTE EJEMPLO FINEJEMPLO REPITE FINREPITE IF THEN ELSE ENDIF
 %token REAL
 %token INT FLOAT STRING POS
 %token OR AND NOT LE GE EQ NE
@@ -374,6 +374,7 @@ declaracion: INT VARIABLE    {
                                                 cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
+      |error '\n' {yyerrok;reset_flags();} 
       ;
 
 expr:    REAL 		      {real=true;real_final=true;$$=$1;}
@@ -480,19 +481,30 @@ bloque_obstaculos:      {}
       |bloque_obstaculos OESTE expr '\n'
       |bloque_obstaculos NORTE expr '\n'
       |bloque_obstaculos OBSTACULO '\n'
+      |bloque_obstaculos bucle
+      |bloque_obstaculos condicional
+      |bloque_obstaculos asignacion
       ;
-bloque_obstaculos_anidado:
-      |
-      ;
+
 bloque_ejemplos:  {}
-      |EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' bloque_ejemplos {}
+      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {}
       ;
 bloque_ejemplos_anidado:      {}
       |bloque_ejemplos_anidado SUR expr '\n'
       |bloque_ejemplos_anidado ESTE expr '\n'
       |bloque_ejemplos_anidado OESTE expr '\n'
       |bloque_ejemplos_anidado NORTE expr '\n'
+      |bloque_ejemplos_anidado asignacion
       ;
+
+bucle:      {}
+      |REPITE expr '\n' bloque_obstaculos FINREPITE '\n' 
+      ;
+
+condicional:{}
+      |IF expr_logica '\n' THEN '\n' bloque_obstaculos ELSE '\n' bloque_obstaculos ENDIF '\n'
+      ;
+
 %%
 
 int main(int argc, char *argv[]){

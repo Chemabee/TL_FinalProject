@@ -54,6 +54,14 @@ oeste           {return OESTE;}
 ejemplo         {return EJEMPLO;}
 finejemplo      {return FINEJEMPLO;}
 
+repite          {return REPITE;}
+finrepite       {return FINREPITE;}
+
+si              {return IF;}
+entonces        {return THEN;}
+sino            {return ELSE;}
+finsi           {return ENDIF;}
+
 {entero}                    yylval.c_entero = atoi(yytext);return ENTERO;
 {real}|{real_not_cientifica}		yylval.c_real = atof(yytext);return REAL;
 true            yylval.c_bool = 1; return BOOL;

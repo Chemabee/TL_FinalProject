@@ -5,7 +5,7 @@
 **x            Int          NI
 **y            Int          NI
 **f            Float        NI
-**cad            String       NI
+**cad            String       Soy Ejemplo 3
 **p1            Position     NI
 **p2            Position     <6,4>
 **D            Int          7

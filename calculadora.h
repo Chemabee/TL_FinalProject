@@ -65,19 +65,25 @@ extern int yydebug;
     OESTE = 275,
     EJEMPLO = 276,
     FINEJEMPLO = 277,
-    REAL = 278,
-    INT = 279,
-    FLOAT = 280,
-    STRING = 281,
-    POS = 282,
-    OR = 283,
-    AND = 284,
-    NOT = 285,
-    LE = 286,
-    GE = 287,
-    EQ = 288,
-    NE = 289,
-    menos = 290
+    REPITE = 278,
+    FINREPITE = 279,
+    IF = 280,
+    THEN = 281,
+    ELSE = 282,
+    ENDIF = 283,
+    REAL = 284,
+    INT = 285,
+    FLOAT = 286,
+    STRING = 287,
+    POS = 288,
+    OR = 289,
+    AND = 290,
+    NOT = 291,
+    LE = 292,
+    GE = 293,
+    EQ = 294,
+    NE = 295,
+    menos = 296
   };
 #endif
 
@@ -104,7 +110,7 @@ union YYSTYPE
       char c_cadena[20];
       bool c_bool;
 
-#line 108 "calculadora.h" /* yacc.c:1909  */
+#line 114 "calculadora.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
