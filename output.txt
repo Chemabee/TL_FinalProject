@@ -1,18 +1,6 @@
-*********************************
-***NOMBRE      TIPO      VALOR***
-*********************************
-**n            Int          0
-**x            Int          NI
-**y            Int          NI
-**f            Float        NI
-**cad            String       Soy Ejemplo 3
-**p1            Position     <0,6>
-**p2            Position     <6,4>
-**D            Int          7
-**INICIO            Position     <5,6>
-**FIN            Position     <0,2>
-**P            Float        0.4
-**MSG_OBS            String       OBSTACULOS
+****************************************
+***NOMBRE      TIPO      VALOR    CTE***
+****************************************
 *********************************
 *******NI = No Inicializado******
 *********************************

@@ -76,9 +76,9 @@ bool insertar(tipo_datoTS *var, bool init, bool cte){
 }
 
 void printTabla(ofstream &out){
-      out << "*********************************" <<endl;
-      out << "***NOMBRE      TIPO      VALOR***" <<endl;
-      out << "*********************************" <<endl;
+      out << "****************************************" <<endl;
+      out << "***NOMBRE      TIPO      VALOR    CTE***" <<endl;
+      out << "****************************************" <<endl;
 
       nodo* n = tabla->getFirst();
       while(n!=NULL){
@@ -109,8 +109,9 @@ void printTabla(ofstream &out){
 
                   } 
             }
+            if(n->dato.cte == true) out<<"     SI"<<endl;
+            else out<<"      NO"<<endl;
             
-            out <<endl;
             n=n->sig;
       }
       out << "*********************************" <<endl;
@@ -164,6 +165,8 @@ void printTabla(ofstream &out){
 lista_instrucciones: 		{}
       |DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos 
       |CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
+      |DEFINICIONES '\n' bloque_definiciones OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos 
+      |OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos       
       |asignacion lista_instrucciones
       |declaracion '\n' lista_instrucciones
       ;
@@ -311,7 +314,11 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                           };
                                     reset_flags();
                                     }
-      |ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
+      |escribir   {}
+      
+      |error '\n' {yyerrok;reset_flags();}       
+	;
+escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
       |ESCRIBIR expr '\n'     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
@@ -332,9 +339,7 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
                                     }
                                     reset_flags();
       }
-      
-      |error '\n' {yyerrok;reset_flags();}       
-	;
+      ;
 
 
 declaracion: INT VARIABLE    {
@@ -576,27 +581,7 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
                                           };
                                     reset_flags();
                                     }
-      |ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
-      |ESCRIBIR expr '\n'     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
-                                    if(str){cout << var->valor.valor_cad <<endl;}
-                                    else if(posVar){cout <<"<"<<var->dato.valor_pos[0]<<","<var->dato.valor_pos[1]<<">"<<endl;}
-                                    else cout <<$2<<endl;
-                              }
-                              reset_flags();}
-      |ESCRIBIR expr_logica '\n' {
-                                    if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
-                                                if(cmp){	
-                                                      if($2)	
-                                                            cout<<"true";	
-                                                      else cout<<"false";	
-                                                }	
-                                                else	
-                                                      cout<<$2;	
-                                                cout<<endl;
-                                    }
-                                    reset_flags();
-      }
-      
+      |escribir   {}
       |error '\n' {yyerrok;reset_flags();}       
 	;
 
