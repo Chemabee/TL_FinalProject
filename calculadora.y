@@ -460,17 +460,157 @@ expr_logica: BOOL                 {cmp=true;$$=$1;}
        |NOT expr_logica         {$$=!$2;}
        ;
 
+asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+                                                
+                                                if(tabla->buscar($1, var) != 0){
+                                                      if(var->tipo == check_tipo_num()){
+                                                            strcpy(var->nombre, $1);
+                                                            var->tipo = check_tipo_num();
+                                                            switch (var->tipo){
+                                                                  case 0: var->valor.valor_entero = $3; break;
+                                                                  case 1: var->valor.valor_real = $3; break;
+                                                            }
+                                                            if(!insertar(var, true, false))
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                      }
+                                                      else{
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
+                                                            switch (var->tipo){
+                                                                  case 0: cout<<"entero";break;
+                                                                  case 1: cout<<"real"  ;break;
+                                                                  case 2: cout<<"logico";break;
+                                                                  case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
+                                                            }
+                                                            cout << " y no se le puede asignar tipo ";
+                                                            switch (check_tipo_num()){
+                                                                  case 0: cout<<"entero"<<endl;break;
+                                                                  case 1: cout<<"real"<<endl;break;
+                                                                  case 2: cout<<"logico"<<endl;break;
+                                                                  case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
+                                                            }
+                                                      }
+                                                }
+                                                else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
+                                                      
+                                                
+                                          };
+                                    
+                                    reset_flags();
+                                    }
+      |VARIABLE '=' CADENA '\n'           {
+                                                if(tabla->buscar($1, var)!=0){
+                                                      if(var->tipo == 3){
+                                                            strcpy(var->nombre, $1);
+                                                            var->tipo = 3;
+                                                            strcpy(var->valor.valor_cad, $3);
+                                                            if(!insertar(var, true, false))
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                      }
+                                                      else{
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
+                                                            switch (var->tipo){
+                                                                  case 0: cout<<"entero"<<endl;break;
+                                                                  case 1: cout<<"real"<<endl;break;
+                                                                  case 2: cout<<"logico"<<endl;break;
+                                                                  case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
+                                                            }
+                                                      }
+                                                }
+                                                else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
+                                                reset_flags();
+      }
+      |VARIABLE '=' '<'expr ',' expr '>' '\n'   {if(!real_final){
+                                                      if(tabla->buscar($1, var)!=0){
+                                                            if(var->tipo == 4){
+                                                                  strcpy(var->nombre, $1);
+                                                                  var->tipo = 4;
+                                                                  var->valor.valor_pos[0] = $4;
+                                                                  var->valor.valor_pos[1] = $6;
+                                                                  if(!insertar(var, true, false))
+                                                                        cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                            }
+                                                            else{
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
+                                                                  switch (var->tipo){
+                                                                        case 0: cout<<"entero"<<endl;break;
+                                                                        case 1: cout<<"real"<<endl;break;
+                                                                        case 2: cout<<"logico"<<endl;break;
+                                                                        case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                        case 4: cout<<"posicion"<<endl;break;
+                                                                  }
+                                                            }
+                                                      }
+                                                      else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
+                                                }
+                                                else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
+                                                reset_flags();
+                                          }
+
+      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
+                                                
+                                                if(tabla->buscar($1, var) != 0){
+                                                      if(var->tipo == check_tipo_num()){
+                                                            strcpy(var->nombre, $1);
+                                                            var->tipo = check_tipo_num();
+                                                            switch (var->tipo){
+                                                                  case 2: var->valor.valor_logico = $3; break;
+                                                            }
+                                                            if(!insertar(var, true, false))
+                                                                  cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
+                                                      }
+                                                      else{
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, la variable "<<$1<<" es de tipo ";
+                                                            switch (var->tipo){
+                                                                  case 0: cout<<"entero"<<endl;break;
+                                                                  case 1: cout<<"real"<<endl;break;
+                                                                  case 2: cout<<"logico"<<endl;break;
+                                                                  case 3: cout<<"cadena de caracteres"<<endl;break;
+                                                                  case 4: cout<<"posicion"<<endl;break;
+                                                            }
+                                                      }
+                                                }
+                                                else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
+                                          };
+                                    reset_flags();
+                                    }
+      |ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
+      |ESCRIBIR expr '\n'     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+                                    if(str){cout << var->valor.valor_cad <<endl;}
+                                    else if(posVar){cout <<"<"<<var->dato.valor_pos[0]<<","<var->dato.valor_pos[1]<<">"<<endl;}
+                                    else cout <<$2<<endl;
+                              }
+                              reset_flags();}
+      |ESCRIBIR expr_logica '\n' {
+                                    if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+                                                if(cmp){	
+                                                      if($2)	
+                                                            cout<<"true";	
+                                                      else cout<<"false";	
+                                                }	
+                                                else	
+                                                      cout<<$2;	
+                                                cout<<endl;
+                                    }
+                                    reset_flags();
+      }
+      
+      |error '\n' {yyerrok;reset_flags();}       
+	;
+
 bloque_definiciones: {}
       |declaracion '\n' bloque_definiciones
       |asignacion bloque_definiciones
       ;
 bloque_configuracion:   {}
-      |DIMENSION expr bloque_configuracion '\n'   {}
-      |bloque_configuracion ENTRADA expr '\n'
-      |bloque_configuracion ENTRADA '<'expr ',' expr '>' '\n'
-      |bloque_configuracion SALIDA expr '\n'
-      |bloque_configuracion SALIDA '<'expr ',' expr '>' '\n'
-      |bloque_configuracion PAUSA expr '\n'
+      |DIMENSION expr bloque_configuracion '\n'                   {reset_flags();}
+      |bloque_configuracion ENTRADA expr '\n'                     {reset_flags();}
+      |bloque_configuracion ENTRADA '<'expr ',' expr '>' '\n'     {reset_flags();}
+      |bloque_configuracion SALIDA expr '\n'                      {reset_flags();}
+      |bloque_configuracion SALIDA '<'expr ',' expr '>' '\n'      {reset_flags();}
+      |bloque_configuracion PAUSA expr '\n'                       {reset_flags();}
       ;
 bloque_obstaculos:      {}
       |bloque_obstaculos asignacion

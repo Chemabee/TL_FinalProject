@@ -2050,54 +2050,84 @@ yyreduce:
 
   case 47:
 #line 468 "calculadora.y" /* yacc.c:1646  */
-    {}
+    {reset_flags();}
 #line 2055 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 469 "calculadora.y" /* yacc.c:1646  */
+    {reset_flags();}
+#line 2061 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 470 "calculadora.y" /* yacc.c:1646  */
+    {reset_flags();}
+#line 2067 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 471 "calculadora.y" /* yacc.c:1646  */
+    {reset_flags();}
+#line 2073 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 472 "calculadora.y" /* yacc.c:1646  */
+    {reset_flags();}
+#line 2079 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 473 "calculadora.y" /* yacc.c:1646  */
+    {reset_flags();}
+#line 2085 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 475 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2061 "calculadora.c" /* yacc.c:1646  */
+#line 2091 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 478 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2067 "calculadora.c" /* yacc.c:1646  */
+#line 2097 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 489 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2073 "calculadora.c" /* yacc.c:1646  */
+#line 2103 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 490 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2079 "calculadora.c" /* yacc.c:1646  */
+#line 2109 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 492 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2085 "calculadora.c" /* yacc.c:1646  */
+#line 2115 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 73:
 #line 500 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2091 "calculadora.c" /* yacc.c:1646  */
+#line 2121 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 75:
 #line 504 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2097 "calculadora.c" /* yacc.c:1646  */
+#line 2127 "calculadora.c" /* yacc.c:1646  */
     break;
 
 
-#line 2101 "calculadora.c" /* yacc.c:1646  */
+#line 2131 "calculadora.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
