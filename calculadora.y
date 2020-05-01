@@ -613,7 +613,6 @@ bloque_configuracion:   {}
       |bloque_configuracion PAUSA expr '\n'                       {reset_flags();}
       ;
 bloque_obstaculos:      {}
-      |bloque_obstaculos asignacion
       |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'
       |bloque_obstaculos OBSTACULO VARIABLE '\n'      {}
       |bloque_obstaculos SUR expr '\n'
@@ -621,7 +620,7 @@ bloque_obstaculos:      {}
       |bloque_obstaculos OESTE expr '\n'
       |bloque_obstaculos NORTE expr '\n'
       |bloque_obstaculos OBSTACULO '\n'
-      |bloque_obstaculos bucle
+      |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' 
       |bloque_obstaculos condicional
       |bloque_obstaculos asignacion
       ;
@@ -637,12 +636,7 @@ bloque_ejemplos_anidado:      {}
       |bloque_ejemplos_anidado asignacion
       ;
 
-bucle:      {}
-      |REPITE expr '\n' bloque_obstaculos FINREPITE '\n' 
-      ;
-
-condicional:{}
-      |IF expr_logica '\n' THEN '\n' bloque_obstaculos ELSE '\n' bloque_obstaculos ENDIF '\n'
+condicional:IF expr_logica '\n' THEN '\n' bloque_obstaculos ELSE '\n' bloque_obstaculos ENDIF '\n'
       ;
 
 %%
