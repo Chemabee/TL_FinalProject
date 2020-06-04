@@ -67,7 +67,7 @@ int Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
             (*identificador).tipo = act->dato.tipo;
             (*identificador).init = act->dato.init;
             (*identificador).cte = act->dato.cte;
-            if(act->dato.cte == true){
+            if(act->dato.init == true){
                 if(act->dato.tipo == 0){
                 (*identificador).valor.valor_entero = act->dato.valor.valor_entero;
                 }

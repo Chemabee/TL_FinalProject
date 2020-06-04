@@ -22,6 +22,17 @@ DEFINICIONES
   C1 = b + 1           # Err. Sem.: el identificador b no está declarado    
   C2 = 30 % 2.0        # Err. Sem.: la operación módulo (%) con tipo real  
 
+  p1 = <0,D-1>
+  p2 = <6,4>  
+  escribir "AAA"
+  escribir p1
+  escribir p2
+  escribir FIN
+  escribir p1
+  escribir MSG_OBS
+  escribir p1
+  escribir "BBB"
+
 CONFIGURACION
   
   Dimension D  
@@ -33,6 +44,8 @@ CONFIGURACION
   
   entrada <1,1>         # Err. Sem.: la entrada debe estar en el borde del tablero
   salida <2,3>          # Err. Sem.: la salida debe estar en el borde del tablero
+  escribir MSG_OBS
+  escribir FIN
 
 OBSTACULOS
 
@@ -50,8 +63,10 @@ OBSTACULOS
     p1 = <0,D-1>
     p2 = <6,4>    
     
+    escribir p1
     escribir MSG_OBS
-    
+    escribir p1
+
     # Si cambiamos de dirección, asumiremos que estábamos en la posición <0,0>
     
     obstaculo p1
@@ -88,6 +103,7 @@ OBSTACULOS
     
     si n > 0    
     entonces
+    obstaculo
       sur 1     # ESCENARIO 2
     sino
       este 1    # ESCENARIO 1    
