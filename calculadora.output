@@ -81,7 +81,7 @@ Gramática
 
    55 bloque_obstaculos: %empty
    56                  | bloque_obstaculos OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos OBSTACULO expr '\n'
    58                  | bloque_obstaculos SUR expr '\n'
    59                  | bloque_obstaculos ESTE expr '\n'
    60                  | bloque_obstaculos OESTE expr '\n'
@@ -125,7 +125,7 @@ error (256) 13 22
 BOOL (258) 34
 ENTERO (259) 24
 OBSTACULO (260) 56 57 62
-VARIABLE (261) 8 9 10 11 17 18 19 20 21 25 57 67
+VARIABLE (261) 8 9 10 11 17 18 19 20 21 25 67
 ESCRIBIR (262) 14 15 16
 CADENA (263) 9 14
 DEFINICIONES (264) 2 4
@@ -178,7 +178,7 @@ declaracion (59)
 expr (60)
     en la izquierda: 23 24 25 26 27 28 29 30 31 32 33, en la derecha:
     8 10 15 26 27 28 29 30 31 32 33 36 37 38 39 40 41 49 50 51 52 53
-    54 56 58 59 60 61 63 69 70 71 72
+    54 56 57 58 59 60 61 63 69 70 71 72
 expr_logica (61)
     en la izquierda: 34 35 36 37 38 39 40 41 42 43 44, en la derecha:
     11 16 35 42 43 44 74
@@ -1071,7 +1071,7 @@ Estado 70
 
     5 lista_instrucciones: OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -1546,12 +1546,18 @@ Estado 103
 Estado 104
 
    56 bloque_obstaculos: bloque_obstaculos OBSTACULO . '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos OBSTACULO . VARIABLE '\n'
+   57                  | bloque_obstaculos OBSTACULO . expr '\n'
    62                  | bloque_obstaculos OBSTACULO . '\n'
 
-    VARIABLE  desplazar e ir al estado 126
-    '<'       desplazar e ir al estado 127
-    '\n'      desplazar e ir al estado 128
+    ENTERO    desplazar e ir al estado 18
+    VARIABLE  desplazar e ir al estado 19
+    REAL      desplazar e ir al estado 21
+    '<'       desplazar e ir al estado 126
+    '-'       desplazar e ir al estado 23
+    '('       desplazar e ir al estado 45
+    '\n'      desplazar e ir al estado 127
+
+    expr  ir al estado 128
 
 
 Estado 105
@@ -1812,13 +1818,6 @@ Estado 125
 
 Estado 126
 
-   57 bloque_obstaculos: bloque_obstaculos OBSTACULO VARIABLE . '\n'
-
-    '\n'  desplazar e ir al estado 146
-
-
-Estado 127
-
    56 bloque_obstaculos: bloque_obstaculos OBSTACULO '<' . expr ',' expr '>' '\n'
 
     ENTERO    desplazar e ir al estado 18
@@ -1827,14 +1826,33 @@ Estado 127
     '-'       desplazar e ir al estado 23
     '('       desplazar e ir al estado 45
 
-    expr  ir al estado 147
+    expr  ir al estado 146
 
 
-Estado 128
+Estado 127
 
    62 bloque_obstaculos: bloque_obstaculos OBSTACULO '\n' .
 
     $default  reduce usando la regla 62 (bloque_obstaculos)
+
+
+Estado 128
+
+   27 expr: expr . '+' expr
+   28     | expr . '-' expr
+   29     | expr . '*' expr
+   30     | expr . '/' expr
+   31     | expr . '^' expr
+   32     | expr . '%' expr
+   57 bloque_obstaculos: bloque_obstaculos OBSTACULO expr . '\n'
+
+    '+'   desplazar e ir al estado 55
+    '-'   desplazar e ir al estado 56
+    '*'   desplazar e ir al estado 57
+    '/'   desplazar e ir al estado 58
+    '%'   desplazar e ir al estado 59
+    '^'   desplazar e ir al estado 60
+    '\n'  desplazar e ir al estado 147
 
 
 Estado 129
@@ -1990,7 +2008,7 @@ Estado 138
 
     4 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -2028,7 +2046,7 @@ Estado 140
 
     3 lista_instrucciones: CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -2116,13 +2134,6 @@ Estado 145
 
 Estado 146
 
-   57 bloque_obstaculos: bloque_obstaculos OBSTACULO VARIABLE '\n' .
-
-    $default  reduce usando la regla 57 (bloque_obstaculos)
-
-
-Estado 147
-
    27 expr: expr . '+' expr
    28     | expr . '-' expr
    29     | expr . '*' expr
@@ -2138,6 +2149,13 @@ Estado 147
     '%'  desplazar e ir al estado 59
     '^'  desplazar e ir al estado 60
     ','  desplazar e ir al estado 161
+
+
+Estado 147
+
+   57 bloque_obstaculos: bloque_obstaculos OBSTACULO expr '\n' .
+
+    $default  reduce usando la regla 57 (bloque_obstaculos)
 
 
 Estado 148
@@ -2271,7 +2289,7 @@ Estado 162
 Estado 163
 
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -2424,7 +2442,7 @@ Estado 175
 
     2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos . EJEMPLOS '\n' bloque_ejemplos
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -2511,7 +2529,7 @@ Estado 182
 Estado 183
 
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'
@@ -2776,7 +2794,7 @@ Estado 203
 Estado 204
 
    56 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
-   57                  | bloque_obstaculos . OBSTACULO VARIABLE '\n'
+   57                  | bloque_obstaculos . OBSTACULO expr '\n'
    58                  | bloque_obstaculos . SUR expr '\n'
    59                  | bloque_obstaculos . ESTE expr '\n'
    60                  | bloque_obstaculos . OESTE expr '\n'

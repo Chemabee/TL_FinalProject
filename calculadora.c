@@ -552,7 +552,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  34
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   599
+#define YYLAST   621
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  55
@@ -616,9 +616,9 @@ static const yytype_uint16 yyrline[] =
      368,   375,   382,   390,   393,   394,   395,   409,   410,   411,
      412,   413,   425,   426,   436,   438,   439,   440,   441,   442,
      443,   444,   445,   446,   460,   473,   596,   597,   598,   600,
-     601,   608,   620,   632,   644,   656,   660,   661,   662,   663,
-     664,   665,   666,   667,   668,   669,   670,   673,   674,   676,
-     677,   678,   679,   680,   681,   684
+     601,   608,   620,   632,   644,   656,   660,   661,   670,   679,
+     680,   681,   682,   683,   684,   685,   686,   689,   690,   692,
+     693,   694,   695,   696,   697,   700
 };
 #endif
 
@@ -655,10 +655,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -153
+#define YYPACT_NINF -154
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-153)))
+  (!!((Yystate) == (-154)))
 
 #define YYTABLE_NINF -47
 
@@ -669,28 +669,28 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     175,   -38,   -18,   106,   -29,    -9,    -8,    55,    81,    84,
-      85,    74,   175,  -153,   -42,   -30,    72,  -153,  -153,  -153,
-      42,  -153,    89,   130,    89,   323,    25,   203,    83,  -153,
-    -153,  -153,  -153,  -153,  -153,  -153,   175,    96,    63,   130,
-     339,    29,  -153,   369,  -153,   130,  -153,   355,   -16,   130,
-     130,   130,   130,   130,   130,   130,   130,   130,   130,   130,
-     130,  -153,    89,    89,  -153,   203,    34,    18,   130,    68,
-     268,  -153,  -153,  -153,   100,  -153,  -153,   509,  -153,  -153,
-     545,   545,   545,   545,   545,   545,   183,   183,    75,    75,
-      75,    75,    87,  -153,  -153,   203,    78,    79,   152,    80,
-     122,   123,   130,    88,    21,    97,   130,   130,   130,   130,
-     130,    89,  -153,  -153,   130,  -153,    83,  -153,   -12,  -153,
-     130,   172,   130,   399,   409,  -153,   101,   130,  -153,  -153,
-     419,   429,   439,   449,   459,    33,   518,   583,   277,  -153,
-     298,   212,  -153,   375,  -153,  -153,  -153,   387,   116,  -153,
-    -153,  -153,  -153,  -153,   113,   108,   109,   110,   117,   130,
-     130,   130,   135,   307,   118,  -153,  -153,  -153,  -153,   525,
-     532,   539,   121,   125,  -153,   328,   116,   116,   126,   128,
-     131,  -153,  -153,   245,   140,  -153,  -153,  -153,   337,   142,
-    -153,   130,   130,   130,   130,   149,  -153,  -153,   116,   469,
-     479,   489,   499,  -153,   220,  -153,  -153,  -153,  -153,   150,
-    -153
+     200,   -49,   -41,   123,   -22,   -17,    -9,    58,    67,    76,
+      78,    90,   200,  -154,   -36,   -25,   106,  -154,  -154,  -154,
+      39,  -154,    89,   137,    89,   343,    25,   207,    81,  -154,
+    -154,  -154,  -154,  -154,  -154,  -154,   200,    96,    56,   137,
+     359,    27,  -154,   389,  -154,   137,  -154,   375,    46,   137,
+     137,   137,   137,   137,   137,   137,   137,   137,   137,   137,
+     137,  -154,    89,    89,  -154,   207,    22,    77,   137,     8,
+     288,  -154,  -154,  -154,   180,  -154,  -154,   537,  -154,  -154,
+     573,   573,   573,   573,   573,   573,   157,   157,    65,    65,
+      65,    65,    80,  -154,  -154,   207,    64,    69,   151,    70,
+     124,   133,   137,    72,    34,    82,   137,   137,   137,   137,
+     137,    89,  -154,  -154,   137,  -154,    81,  -154,    -8,  -154,
+     137,   407,   137,   417,   427,  -154,   137,  -154,   437,  -154,
+     447,   457,   467,   477,   487,    33,   546,   164,   297,  -154,
+     318,   208,  -154,   232,  -154,  -154,   395,  -154,   111,  -154,
+    -154,  -154,  -154,  -154,   110,    88,    92,    93,    94,   137,
+     137,   137,   142,   327,    97,  -154,  -154,  -154,  -154,   553,
+     560,   567,    99,   102,  -154,   348,   111,   111,   108,   109,
+     117,  -154,  -154,   265,   118,  -154,  -154,  -154,   357,   119,
+    -154,   137,   137,   137,   137,   131,  -154,  -154,   111,   497,
+     507,   517,   527,  -154,   240,  -154,  -154,  -154,  -154,   132,
+    -154
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -710,9 +710,9 @@ static const yytype_uint8 yydefact[] =
       33,    32,    44,    43,    48,     0,     0,     0,    49,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,    66,    65,     0,    47,    49,    56,     0,    56,
-       0,     0,     0,     0,     0,    14,     0,     0,    63,    67,
+       0,     0,     0,     0,     0,    14,     0,    63,     0,    67,
        0,     0,     0,     0,     0,     0,     0,     0,     0,    50,
-       0,     0,    51,     0,    53,    55,    58,     0,     6,    62,
+       0,     0,    51,     0,    53,    55,     0,    58,     6,    62,
       59,    60,    61,    56,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,    11,    56,    67,    67,     0,
        0,     0,     0,     0,    56,     0,     5,     4,     0,     0,
@@ -725,8 +725,8 @@ static const yytype_uint8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -153,    -6,     5,  -153,   -26,    -3,     9,   -58,   -90,  -108,
-    -152,  -153,  -153
+    -154,   -10,     5,  -154,   -26,    -3,     9,   -61,   -88,  -108,
+    -153,  -154,  -154
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -741,33 +741,35 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      25,    66,   100,   101,   102,    12,    35,    94,   118,   138,
-      36,   140,    37,    40,    15,   176,   177,    12,    62,    63,
-      46,    47,   -23,    27,   -23,    41,   137,   126,    96,    97,
-      71,    44,    65,    48,    79,    16,    74,   115,   198,    66,
-     139,    12,    77,    28,    29,   163,    80,    81,    82,    83,
+      25,    66,    35,    15,    94,    12,   100,   101,   102,   138,
+     118,   140,    16,    40,   176,   177,    36,    12,    37,    99,
+      46,    47,   100,   101,   102,    41,    71,   -23,   137,   -23,
+      27,    44,    65,    48,   115,    28,    74,   198,    18,    66,
+      19,    12,    77,    29,   139,   163,    80,    81,    82,    83,
       84,    85,    86,    87,    88,    89,    90,    91,   175,    62,
-      63,    30,   127,    62,    63,    98,   183,    62,    63,    66,
-      65,    92,    93,   128,    34,    17,    18,    64,    19,    99,
-      38,    76,   100,   101,   102,   154,    95,    31,    37,   204,
-      32,    33,    17,    18,    42,    19,    68,   121,   123,   124,
-      65,    21,    72,   130,   131,   132,   133,   134,    22,    17,
-      18,   136,    19,    39,    20,    73,    23,   141,    21,   143,
-     135,    24,    63,    60,   147,    22,    18,    18,    19,    19,
-     116,   117,   119,    23,    18,    21,    19,   162,    24,   164,
-     125,   172,    22,    55,    56,    57,    58,    59,    60,   129,
-      23,    21,    21,   146,   114,    24,   169,   170,   171,    21,
-     165,   166,   167,   120,   122,    68,    23,    23,     0,   168,
-     174,    45,    45,   181,    23,    -2,     1,   182,   185,    45,
-     186,     2,     3,   187,     4,     5,     6,     0,   199,   200,
-     201,   202,   190,   196,   197,    55,    56,    57,    58,    59,
-      60,   203,   210,     0,     1,     7,     8,     9,    10,     2,
-       3,     0,     0,   -46,   -46,    55,    56,    57,    58,    59,
-      60,   103,     0,     0,   142,   104,     2,     3,    57,    58,
-      59,    60,     0,     7,     8,     9,    10,   106,   107,   108,
-     109,     0,     0,   110,     0,   111,   103,     0,   209,     0,
+      63,    62,    63,    21,    30,    98,   183,    62,    63,    66,
+      65,    92,    93,    31,    95,   126,    37,    64,    23,    76,
+      62,    63,    32,    45,    33,   154,   127,    96,    97,   204,
+      34,    42,    17,    18,    68,    19,    79,   121,   123,   124,
+      65,   128,    72,   130,   131,   132,   133,   134,    73,    17,
+      18,   136,    19,    60,    38,    63,   116,   141,    21,   143,
+     135,   117,   119,   146,   125,    22,    17,    18,    18,    19,
+      19,    20,   162,    23,   129,    21,   164,    18,    24,    19,
+     165,    18,    22,    19,   166,   167,   168,    39,   172,   174,
+      23,   181,    21,    21,   182,    24,   169,   170,   171,    22,
+     185,   186,    21,     0,    68,   120,    21,    23,    23,   187,
+     190,   197,    24,    45,   122,   156,     0,    23,   100,   101,
+     102,    23,    45,   203,   210,     0,    45,     0,   199,   200,
+     201,   202,     0,   196,    55,    56,    57,    58,    59,    60,
+      -2,     1,    57,    58,    59,    60,     2,     3,     1,     4,
+       5,     6,     0,     2,     3,     0,     0,   -46,   -46,     0,
+       0,     0,     0,    55,    56,    57,    58,    59,    60,     0,
+       7,     8,     9,    10,   114,     0,     0,     7,     8,     9,
+      10,   103,     0,     0,     0,   104,     2,     3,     0,     0,
+       0,    55,    56,    57,    58,    59,    60,   106,   107,   108,
+     109,     0,   159,   110,     0,   111,   103,     0,   209,     0,
      104,     2,     3,     0,     0,    55,    56,    57,    58,    59,
-      60,     0,   106,   107,   108,   109,   159,     0,   110,   103,
+      60,     0,   106,   107,   108,   109,   160,     0,   110,   103,
      111,     0,   189,   104,     2,     3,     0,     0,   103,     0,
      105,     0,   104,     2,     3,   106,   107,   108,   109,   157,
        0,   110,     0,   111,   106,   107,   108,   109,     0,   103,
@@ -783,53 +785,56 @@ static const yytype_int16 yytable[] =
        0,    75,    49,    50,    51,    52,    53,    54,    55,    56,
       57,    58,    59,    60,     0,    78,    49,    50,    51,    52,
       53,    54,    55,    56,    57,    58,    59,    60,    55,    56,
-      57,    58,    59,    60,     0,     0,     0,     0,     0,   160,
-      55,    56,    57,    58,    59,    60,     0,     0,     0,     0,
-       0,   161,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   144,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   145,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   149,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   150,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   151,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   152,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   153,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   205,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   206,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   207,    55,    56,    57,    58,    59,    60,     0,     0,
-       0,   208,    55,    56,    57,    58,    59,    60,     0,    78,
-     155,    55,    56,    57,    58,    59,    60,   178,    55,    56,
-      57,    58,    59,    60,   179,    55,    56,    57,    58,    59,
-      60,   180,    55,    56,    57,    58,    59,    60,    55,    56,
-      57,    58,    59,    60,   156,     0,     0,   100,   101,   102
+      57,    58,    59,    60,     0,     0,     0,     0,     0,   161,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   142,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   144,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   145,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   147,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   149,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   150,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   151,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   152,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   153,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   205,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   206,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   207,
+      55,    56,    57,    58,    59,    60,     0,     0,     0,   208,
+      55,    56,    57,    58,    59,    60,     0,    78,   155,    55,
+      56,    57,    58,    59,    60,   178,    55,    56,    57,    58,
+      59,    60,   179,    55,    56,    57,    58,    59,    60,   180,
+      55,    56,    57,    58,    59,    60,    55,    56,    57,    58,
+      59,    60
 };
 
 static const yytype_int16 yycheck[] =
 {
-       3,    27,    14,    15,    16,     0,    12,    65,    98,   117,
-      52,   119,    54,    16,    52,   167,   168,    12,    34,    35,
-      23,    24,    52,    52,    54,    16,   116,     6,    10,    11,
-      36,    22,    27,    24,    50,    53,    39,    95,   190,    65,
-      52,    36,    45,    52,    52,   153,    49,    50,    51,    52,
+       3,    27,    12,    52,    65,     0,    14,    15,    16,   117,
+      98,   119,    53,    16,   167,   168,    52,    12,    54,    11,
+      23,    24,    14,    15,    16,    16,    36,    52,   116,    54,
+      52,    22,    27,    24,    95,    52,    39,   190,     4,    65,
+       6,    36,    45,    52,    52,   153,    49,    50,    51,    52,
       53,    54,    55,    56,    57,    58,    59,    60,   166,    34,
-      35,     6,    41,    34,    35,    68,   174,    34,    35,    95,
-      65,    62,    63,    52,     0,     3,     4,    52,     6,    11,
-       8,    52,    14,    15,    16,    52,    52,     6,    54,   197,
-       6,     6,     3,     4,    52,     6,    13,   100,   101,   102,
-      95,    29,     6,   106,   107,   108,   109,   110,    36,     3,
-       4,   114,     6,    41,     8,    52,    44,   120,    29,   122,
-     111,    49,    35,    48,   127,    36,     4,     4,     6,     6,
-      52,    52,    52,    44,     4,    29,     6,    21,    49,    26,
-      52,     6,    36,    43,    44,    45,    46,    47,    48,    52,
-      44,    29,    29,    52,    54,    49,   159,   160,   161,    29,
-      52,    52,    52,    41,    41,    13,    44,    44,    -1,    52,
-      52,    49,    49,    52,    44,     0,     1,    52,    52,    49,
-      52,     6,     7,    52,     9,    10,    11,    -1,   191,   192,
-     193,   194,    52,   188,    52,    43,    44,    45,    46,    47,
-      48,    52,    52,    -1,     1,    30,    31,    32,    33,     6,
-       7,    -1,    -1,    10,    11,    43,    44,    45,    46,    47,
-      48,     1,    -1,    -1,    52,     5,     6,     7,    45,    46,
-      47,    48,    -1,    30,    31,    32,    33,    17,    18,    19,
-      20,    -1,    -1,    23,    -1,    25,     1,    -1,    28,    -1,
+      35,    34,    35,    29,     6,    68,   174,    34,    35,    95,
+      65,    62,    63,     6,    52,    41,    54,    52,    44,    52,
+      34,    35,     6,    49,     6,    52,    52,    10,    11,   197,
+       0,    52,     3,     4,    13,     6,    50,   100,   101,   102,
+      95,   104,     6,   106,   107,   108,   109,   110,    52,     3,
+       4,   114,     6,    48,     8,    35,    52,   120,    29,   122,
+     111,    52,    52,   126,    52,    36,     3,     4,     4,     6,
+       6,     8,    21,    44,    52,    29,    26,     4,    49,     6,
+      52,     4,    36,     6,    52,    52,    52,    41,     6,    52,
+      44,    52,    29,    29,    52,    49,   159,   160,   161,    36,
+      52,    52,    29,    -1,    13,    41,    29,    44,    44,    52,
+      52,    52,    49,    49,    41,    11,    -1,    44,    14,    15,
+      16,    44,    49,    52,    52,    -1,    49,    -1,   191,   192,
+     193,   194,    -1,   188,    43,    44,    45,    46,    47,    48,
+       0,     1,    45,    46,    47,    48,     6,     7,     1,     9,
+      10,    11,    -1,     6,     7,    -1,    -1,    10,    11,    -1,
+      -1,    -1,    -1,    43,    44,    45,    46,    47,    48,    -1,
+      30,    31,    32,    33,    54,    -1,    -1,    30,    31,    32,
+      33,     1,    -1,    -1,    -1,     5,     6,     7,    -1,    -1,
+      -1,    43,    44,    45,    46,    47,    48,    17,    18,    19,
+      20,    -1,    54,    23,    -1,    25,     1,    -1,    28,    -1,
        5,     6,     7,    -1,    -1,    43,    44,    45,    46,    47,
       48,    -1,    17,    18,    19,    20,    54,    -1,    23,     1,
       25,    -1,    27,     5,     6,     7,    -1,    -1,     1,    -1,
@@ -848,23 +853,24 @@ static const yytype_int16 yycheck[] =
       45,    46,    47,    48,    -1,    50,    37,    38,    39,    40,
       41,    42,    43,    44,    45,    46,    47,    48,    43,    44,
       45,    46,    47,    48,    -1,    -1,    -1,    -1,    -1,    54,
-      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    -1,
-      -1,    54,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    -1,
-      -1,    52,    43,    44,    45,    46,    47,    48,    -1,    50,
-      42,    43,    44,    45,    46,    47,    48,    42,    43,    44,
-      45,    46,    47,    48,    42,    43,    44,    45,    46,    47,
-      48,    42,    43,    44,    45,    46,    47,    48,    43,    44,
-      45,    46,    47,    48,    11,    -1,    -1,    14,    15,    16
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    -1,    -1,    52,
+      43,    44,    45,    46,    47,    48,    -1,    50,    42,    43,
+      44,    45,    46,    47,    48,    42,    43,    44,    45,    46,
+      47,    48,    42,    43,    44,    45,    46,    47,    48,    42,
+      43,    44,    45,    46,    47,    48,    43,    44,    45,    46,
+      47,    48
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -883,9 +889,9 @@ static const yytype_uint8 yystos[] =
       60,    60,    61,    61,    62,    52,    10,    11,    60,    11,
       14,    15,    16,     1,     5,    12,    17,    18,    19,    20,
       23,    25,    57,    67,    54,    62,    52,    52,    63,    52,
-      41,    60,    41,    60,    60,    52,     6,    41,    52,    52,
+      41,    60,    41,    60,    60,    52,    41,    52,    60,    52,
       60,    60,    60,    60,    60,    61,    60,    63,    64,    52,
-      64,    60,    52,    60,    52,    52,    52,    60,    65,    52,
+      64,    60,    52,    60,    52,    52,    60,    52,    65,    52,
       52,    52,    52,    52,    52,    42,    11,    12,    12,    54,
       54,    54,    21,    64,    26,    52,    52,    52,    52,    60,
       60,    60,     6,    24,    52,    64,    65,    65,    42,    42,
@@ -1597,7 +1603,7 @@ yyreduce:
         case 2:
 #line 173 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 1601 "calculadora.c" /* yacc.c:1646  */
+#line 1607 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1649,7 +1655,7 @@ yyreduce:
                                     
                                     reset_flags();
                                     }
-#line 1653 "calculadora.c" /* yacc.c:1646  */
+#line 1659 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 10:
@@ -1682,7 +1688,7 @@ yyreduce:
                                                       }
                                                       reset_flags();
       }
-#line 1686 "calculadora.c" /* yacc.c:1646  */
+#line 1692 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 11:
@@ -1720,7 +1726,7 @@ yyreduce:
                                                 else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
                                                 reset_flags();
                                           }
-#line 1724 "calculadora.c" /* yacc.c:1646  */
+#line 1730 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 12:
@@ -1759,25 +1765,25 @@ yyreduce:
                                           };
                                     reset_flags();
                                     }
-#line 1763 "calculadora.c" /* yacc.c:1646  */
+#line 1769 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 325 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 1769 "calculadora.c" /* yacc.c:1646  */
+#line 1775 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 327 "calculadora.y" /* yacc.c:1646  */
     {yyerrok;reset_flags();}
-#line 1775 "calculadora.c" /* yacc.c:1646  */
+#line 1781 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 329 "calculadora.y" /* yacc.c:1646  */
     {cout << (yyvsp[-1].c_cadena) <<endl;reset_flags();}
-#line 1781 "calculadora.c" /* yacc.c:1646  */
+#line 1787 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 16:
@@ -1789,7 +1795,7 @@ yyreduce:
                                     else cout <<(yyvsp[-1].c_real)<<endl;
                               }
                               reset_flags();}
-#line 1793 "calculadora.c" /* yacc.c:1646  */
+#line 1799 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -1807,7 +1813,7 @@ yyreduce:
                                     }
                                     reset_flags();
       }
-#line 1811 "calculadora.c" /* yacc.c:1646  */
+#line 1817 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -1820,7 +1826,7 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1824 "calculadora.c" /* yacc.c:1646  */
+#line 1830 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 19:
@@ -1832,7 +1838,7 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1836 "calculadora.c" /* yacc.c:1646  */
+#line 1842 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 20:
@@ -1844,7 +1850,7 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1848 "calculadora.c" /* yacc.c:1646  */
+#line 1854 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 21:
@@ -1856,7 +1862,7 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1860 "calculadora.c" /* yacc.c:1646  */
+#line 1866 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 22:
@@ -1869,25 +1875,25 @@ yyreduce:
                                                 cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1873 "calculadora.c" /* yacc.c:1646  */
+#line 1879 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 390 "calculadora.y" /* yacc.c:1646  */
     {yyerrok;reset_flags();}
-#line 1879 "calculadora.c" /* yacc.c:1646  */
+#line 1885 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 393 "calculadora.y" /* yacc.c:1646  */
     {real=true;real_final=true;(yyval.c_real)=(yyvsp[0].c_real);}
-#line 1885 "calculadora.c" /* yacc.c:1646  */
+#line 1891 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 394 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_real)=(yyvsp[0].c_entero);}
-#line 1891 "calculadora.c" /* yacc.c:1646  */
+#line 1897 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 26:
@@ -1906,31 +1912,31 @@ yyreduce:
                                     error_nodef = true;
                                     }
                               }
-#line 1910 "calculadora.c" /* yacc.c:1646  */
+#line 1916 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 409 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_real)=(yyvsp[-1].c_real);}
-#line 1916 "calculadora.c" /* yacc.c:1646  */
+#line 1922 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 410 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)+(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1922 "calculadora.c" /* yacc.c:1646  */
+#line 1928 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 411 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)-(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1928 "calculadora.c" /* yacc.c:1646  */
+#line 1934 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 412 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)*(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1934 "calculadora.c" /* yacc.c:1646  */
+#line 1940 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 31:
@@ -1947,13 +1953,13 @@ yyreduce:
                               else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl; error_str = true;}
                               
                               }
-#line 1951 "calculadora.c" /* yacc.c:1646  */
+#line 1957 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 425 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=pow((yyvsp[-2].c_real),(yyvsp[0].c_real));else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1957 "calculadora.c" /* yacc.c:1646  */
+#line 1963 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 33:
@@ -1968,61 +1974,61 @@ yyreduce:
                                     }
                               else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}
                               }
-#line 1972 "calculadora.c" /* yacc.c:1646  */
+#line 1978 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 34:
 #line 436 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)= -(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1978 "calculadora.c" /* yacc.c:1646  */
+#line 1984 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 438 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;(yyval.c_bool)=(yyvsp[0].c_bool);}
-#line 1984 "calculadora.c" /* yacc.c:1646  */
+#line 1990 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 439 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_bool)=(yyvsp[-1].c_bool);}
-#line 1990 "calculadora.c" /* yacc.c:1646  */
+#line 1996 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 440 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) < (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1996 "calculadora.c" /* yacc.c:1646  */
+#line 2002 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 38:
 #line 441 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) > (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2002 "calculadora.c" /* yacc.c:1646  */
+#line 2008 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 39:
 #line 442 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) <= (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2008 "calculadora.c" /* yacc.c:1646  */
+#line 2014 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 40:
 #line 443 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) >= (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2014 "calculadora.c" /* yacc.c:1646  */
+#line 2020 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 41:
 #line 444 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) == (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2020 "calculadora.c" /* yacc.c:1646  */
+#line 2026 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 445 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) != (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2026 "calculadora.c" /* yacc.c:1646  */
+#line 2032 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 43:
@@ -2040,7 +2046,7 @@ yyreduce:
                                     cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador AND sólo acepta expresiones tipo lógico" <<endl;
                                     }
                               }
-#line 2044 "calculadora.c" /* yacc.c:1646  */
+#line 2050 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 44:
@@ -2058,25 +2064,25 @@ yyreduce:
                                     cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador OR sólo acepta expresiones tipo lógico" <<endl;
                                     }    
                               }
-#line 2062 "calculadora.c" /* yacc.c:1646  */
+#line 2068 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 45:
 #line 473 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_bool)=!(yyvsp[0].c_bool);}
-#line 2068 "calculadora.c" /* yacc.c:1646  */
+#line 2074 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 596 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2074 "calculadora.c" /* yacc.c:1646  */
+#line 2080 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 49:
 #line 600 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2080 "calculadora.c" /* yacc.c:1646  */
+#line 2086 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 50:
@@ -2088,7 +2094,7 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION debe estar entre 4 y 10"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2092 "calculadora.c" /* yacc.c:1646  */
+#line 2098 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 51:
@@ -2105,7 +2111,7 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2109 "calculadora.c" /* yacc.c:1646  */
+#line 2115 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 52:
@@ -2122,7 +2128,7 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2126 "calculadora.c" /* yacc.c:1646  */
+#line 2132 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 53:
@@ -2139,7 +2145,7 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2143 "calculadora.c" /* yacc.c:1646  */
+#line 2149 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 54:
@@ -2156,7 +2162,7 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2160 "calculadora.c" /* yacc.c:1646  */
+#line 2166 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 55:
@@ -2164,41 +2170,63 @@ yyreduce:
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&(check_tipo_num()==0 || check_tipo_num()==1)){
                                                                         if(0 < (yyvsp[-1].c_real)) pausa_glob = (yyvsp[-1].c_real);
                                                                   }reset_flags();}
-#line 2168 "calculadora.c" /* yacc.c:1646  */
+#line 2174 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 660 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2174 "calculadora.c" /* yacc.c:1646  */
-    break;
-
-  case 58:
-#line 662 "calculadora.y" /* yacc.c:1646  */
-    {}
 #line 2180 "calculadora.c" /* yacc.c:1646  */
     break;
 
+  case 57:
+#line 661 "calculadora.y" /* yacc.c:1646  */
+    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+                                                                        if(0 <= (yyvsp[-4].c_real) && (yyvsp[-4].c_real) < dimension_glob && 0 <= (yyvsp[-2].c_real) && (yyvsp[-2].c_real) < dimension_glob){
+                                                                              if(((yyvsp[-4].c_real) != posSalida_glob[0] || (yyvsp[-2].c_real) != posSalida_glob[1])&&((yyvsp[-4].c_real) != posEntrada_glob[0] || (yyvsp[-2].c_real) != posEntrada_glob[1])){
+/* TODO */
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO no puede coincidir con la ENTRADA o SALIDA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
+                                                                  reset_flags();}
+#line 2194 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 670 "calculadora.y" /* yacc.c:1646  */
+    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
+                                                            if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
+                                                                  if((var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])&&(var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])){
+/* TODO */
+                                                                  }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO no puede coincidir con la ENTRADA o SALIDA"<<endl;
+                                                            }
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
+                                                      }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo "<<check_tipo_num()<<endl;};
+                                                      reset_flags();}
+#line 2208 "calculadora.c" /* yacc.c:1646  */
+    break;
+
   case 67:
-#line 673 "calculadora.y" /* yacc.c:1646  */
+#line 689 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2186 "calculadora.c" /* yacc.c:1646  */
+#line 2214 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 674 "calculadora.y" /* yacc.c:1646  */
+#line 690 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2192 "calculadora.c" /* yacc.c:1646  */
+#line 2220 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 676 "calculadora.y" /* yacc.c:1646  */
+#line 692 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2198 "calculadora.c" /* yacc.c:1646  */
+#line 2226 "calculadora.c" /* yacc.c:1646  */
     break;
 
 
-#line 2202 "calculadora.c" /* yacc.c:1646  */
+#line 2230 "calculadora.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2426,7 +2454,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 687 "calculadora.y" /* yacc.c:1906  */
+#line 703 "calculadora.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[]){

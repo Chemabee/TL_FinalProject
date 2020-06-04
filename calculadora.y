@@ -658,8 +658,24 @@ bloque_configuracion:   {}
                                                                   }reset_flags();}
       ;
 bloque_obstaculos:      {}
-      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'
-      |bloque_obstaculos OBSTACULO VARIABLE '\n'      {}
+      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+                                                                        if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
+                                                                              if(($4 != posSalida_glob[0] || $6 != posSalida_glob[1])&&($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1])){
+/* TODO */
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO no puede coincidir con la ENTRADA o SALIDA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_obstaculos OBSTACULO expr '\n'      {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
+                                                            if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
+                                                                  if((var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])&&(var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])){
+/* TODO */
+                                                                  }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO no puede coincidir con la ENTRADA o SALIDA"<<endl;
+                                                            }
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
+                                                      }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo "<<check_tipo_num()<<endl;};
+                                                      reset_flags();}
       |bloque_obstaculos SUR expr '\n'
       |bloque_obstaculos ESTE expr '\n'
       |bloque_obstaculos OESTE expr '\n'
