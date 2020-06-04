@@ -50,12 +50,14 @@ void reset_flags(){
 }
 
 string check_tipo(){
-      if(cmp) return "logico";
+      if(posVar) return "posicion";
+      else if(cmp) return "logico";
       else if(real_final) return "real";
       else return "entero";
 }
 int check_tipo_num(){
-      if(str) return 3;
+      if(posVar) return 4;
+      else if(str) return 3;
       else if(cmp) return 2;
       else if(real_final) return 1;
       else return 0;
@@ -114,6 +116,12 @@ void printTabla(ofstream &out){
             
             n=n->sig;
       }
+      out << "*********************************" <<endl;
+      out << "*******Variables Globales********" <<endl;
+      out << "** DIMENSION: "<<dimension_glob<<endl;
+      out << "** POS_ENTRADA: <"<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<">"<<endl;
+      out << "** POS_SALIDA: <"<<posSalida_glob[0]<<","<<posSalida_glob[1]<<">"<<endl;
+      out << "** PAUSA: "<<pausa_glob<<endl;
       out << "*********************************" <<endl;
       out << "*******NI = No Inicializado******" <<endl;
       out << "*********************************" <<endl;
@@ -590,12 +598,64 @@ bloque_definiciones: {}
       |asignacion bloque_definiciones
       ;
 bloque_configuracion:   {}
-      |DIMENSION expr bloque_configuracion '\n'                   {reset_flags();}
-      |bloque_configuracion ENTRADA expr '\n'                     {reset_flags();}
-      |bloque_configuracion ENTRADA '<'expr ',' expr '>' '\n'     {reset_flags();}
-      |bloque_configuracion SALIDA expr '\n'                      {reset_flags();}
-      |bloque_configuracion SALIDA '<'expr ',' expr '>' '\n'      {reset_flags();}
-      |bloque_configuracion PAUSA expr '\n'                       {reset_flags();}
+      |DIMENSION expr bloque_configuracion '\n'                   {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+                                                                        if(3<$2 && $2<11){dimension_glob = $2;
+                                                                                          posSalida_glob[0]=$2-1;
+                                                                                          posSalida_glob[1]=$2-1;}
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION debe estar entre 4 y 10"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_configuracion ENTRADA expr '\n'                     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
+                                                                        if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
+                                                                              if(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1]){
+                                                                                    if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
+                                                                                          posEntrada_glob[0] = var->valor.valor_pos[0];
+                                                                                          posEntrada_glob[1] = var->valor.valor_pos[1];
+                                                                                    }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;   
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_configuracion ENTRADA '<'expr ',' expr '>' '\n'     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+                                                                        if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
+                                                                              if($4 != posSalida_glob[0] || $6 != posSalida_glob[1]){
+                                                                                    if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
+                                                                                          posEntrada_glob[0] = $4;
+                                                                                          posEntrada_glob[1] = $6;
+                                                                                    }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_configuracion SALIDA expr '\n'                      {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
+                                                                        if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
+                                                                              if(var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1]){
+                                                                                    if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
+                                                                                          posSalida_glob[0] = var->valor.valor_pos[0];
+                                                                                          posSalida_glob[1] = var->valor.valor_pos[1];
+                                                                                    }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;   
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_configuracion SALIDA '<'expr ',' expr '>' '\n'      {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+                                                                        if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
+                                                                              if($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1]){
+                                                                                    if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
+                                                                                          posSalida_glob[0] = $4;
+                                                                                          posSalida_glob[1] = $6;
+                                                                                    }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;
+                                                                              }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
+                                                                        }
+                                                                        else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
+                                                                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
+                                                                  reset_flags();}
+      |bloque_configuracion PAUSA expr '\n'                       {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&(check_tipo_num()==0 || check_tipo_num()==1)){
+                                                                        if(0 < $3) pausa_glob = $3;
+                                                                  }reset_flags();}
       ;
 bloque_obstaculos:      {}
       |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n'

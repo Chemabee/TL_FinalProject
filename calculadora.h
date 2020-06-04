@@ -92,7 +92,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 123 "calculadora.y" /* yacc.c:1909  */
+#line 131 "calculadora.y" /* yacc.c:1909  */
 
       //Tipo union por si en el futuro lo podemos usar
       typedef char tipo_cadena[50];
