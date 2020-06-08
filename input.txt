@@ -66,52 +66,21 @@ OBSTACULOS
     escribir p1
     escribir MSG_OBS
     escribir p1
-
-    # Si cambiamos de dirección, asumiremos que estábamos en la posición <0,0>
     
-    obstaculo p1
-    repite 3
-      sur 1
-      obstaculo
-    finrepite
-    
-    repite 3
-      oeste 1
-      obstaculo
-    finrepite
-    
+    obstaculo <0,0>
     sur 1
-    obstaculo    
-    
-    obstaculo p2
-    repite 4
-      oeste 1
-      obstaculo
-    finrepite
-    
-    repite 5
-      norte 1
-      obstaculo
-    finrepite
-    
-    repite 2
-      este 1
-      obstaculo
-    finrepite
-    
-    n = 0       # Si n > 0, el laberinto es imposible
-    
-    si n > 0    
-    entonces
-    obstaculo
-      sur 1     # ESCENARIO 2
-    sino
-      este 1    # ESCENARIO 1    
-    finsi
-    
     obstaculo
     
 EJEMPLOS
+    ejemplo EJEMPLO_0               # Ejemplo 0
+        cad="Soy Ejemplo 0"
+        escribir cad
+        oeste 4
+        norte 3
+        este 2
+        norte 2
+        oeste 2
+    finejemplo
 
     ejemplo EJEMPLO_1               # Ejemplo 1
         cad="Soy Ejemplo 1"

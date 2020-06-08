@@ -4,6 +4,7 @@
 #include <math.h>
 #include "tabla.c"
 #include "string.h"
+#include <stdio.h>
  
 
 using namespace std;
@@ -25,6 +26,11 @@ int posSalida_glob[2] = {9, 9};
 float pausa_glob = 0.5;
 
 int posActual[2] = {0, 0};
+
+//Matriz de obstaculos
+int i = 0;
+int j = 0;
+int matriz_obstaculos[10][10];
 
 Tabla* tabla;
 tipo_datoTS* var;
@@ -77,6 +83,19 @@ bool insertar(tipo_datoTS *var, bool init, bool cte){
       return tabla->insertar(var);
 }
 
+bool moverse(int pasos, string direccion){
+      switch(direccion){
+            case "N":
+            break;
+            case "S";
+            break;
+            case "E":
+            break;
+            case "O":
+            break;
+      }
+}
+
 void printTabla(ofstream &out){
       out << "****************************************" <<endl;
       out << "***NOMBRE      TIPO      VALOR    CTE***" <<endl;
@@ -126,8 +145,15 @@ void printTabla(ofstream &out){
       out << "*********************************" <<endl;
       out << "*******NI = No Inicializado******" <<endl;
       out << "*********************************" <<endl;
-
+      out << "***************MAPA**************" <<endl;
+      for(i = 0; i < dimension_glob; i++){
+            for(j = 0; j < dimension_glob; j++){
+                  out << matriz_obstaculos[i][j];
+            }
+            out<<endl;
+      }
 }
+
 %}
 %union{
       //Tipo union por si en el futuro lo podemos usar
@@ -173,11 +199,11 @@ void printTabla(ofstream &out){
 %%
 lista_instrucciones: 		{}
       |DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos 
-      |CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos
-      |DEFINICIONES '\n' bloque_definiciones OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos 
-      |OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos       
-      |asignacion lista_instrucciones
-      |declaracion '\n' lista_instrucciones
+      |CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos     
+      |DEFINICIONES '\n' bloque_definiciones OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos       
+      |OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos        
+      |asignacion lista_instrucciones     
+      |declaracion '\n' lista_instrucciones      
       ;
 
 asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
@@ -665,6 +691,7 @@ bloque_obstaculos:      {}
       |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n' {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
                                                                               if(($4 != posSalida_glob[0] || $6 != posSalida_glob[1]) && ($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1])){
+                                                                                    matriz_obstaculos[(int)$4][(int)$6] = 1;
                                                                                     cout<<"OBSTACULO colocado en <"<<$4<<","<<$6<<">"<<endl;/* TODO */
                                                                                     posActual[0] = $4;
                                                                                     posActual[1] = $6;
@@ -676,6 +703,7 @@ bloque_obstaculos:      {}
       |bloque_obstaculos OBSTACULO expr '\n'    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
                                                       if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                             if((var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])&&(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])){
+                                                                  matriz_obstaculos[var->valor.valor_pos[0]][var->valor.valor_pos[1]] = 1;
                                                                   cout<<"OBSTACULO colocado en <"<<var->valor.valor_pos[0]<<","<<var->valor.valor_pos[1]<<">"<<endl; /*TODO*/
                                                                   posActual[0] = var->valor.valor_pos[0];
                                                                   posActual[1] = var->valor.valor_pos[1];  
@@ -722,21 +750,64 @@ bloque_obstaculos:      {}
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
-      |bloque_obstaculos OBSTACULO '\n'         {cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;reset_flags();}
-      |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' 
+      |bloque_obstaculos OBSTACULO '\n'         {matriz_obstaculos[posActual[0]][posActual[1]] = 1;
+                                                cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
+                                                reset_flags();}
+      |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' {}
       |bloque_obstaculos condicional
       |bloque_obstaculos asignacion_sin_ctes
       ;
 
-bloque_ejemplos:  {}
-      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {}
+bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
+      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
       ;
 bloque_ejemplos_anidado:      {}
-      |bloque_ejemplos_anidado SUR expr '\n'
-      |bloque_ejemplos_anidado ESTE expr '\n'
-      |bloque_ejemplos_anidado OESTE expr '\n'
-      |bloque_ejemplos_anidado NORTE expr '\n'
-      |bloque_ejemplos_anidado asignacion
+      |bloque_ejemplos_anidado SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                      if(posActual[0]+$3 < dimension_glob){
+                                                            if((matriz_obstaculos[posActual[0]+(int)$3][posActual[1]] == 0))
+                                                                  posActual[0]=posActual[0]+$3;
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
+                                                      }else{
+                                                            posActual[0]=dimension_glob-1;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
+                                                reset_flags();}
+      |bloque_ejemplos_anidado ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                      if(posActual[1]+$3 < dimension_glob){
+                                                            if(matriz_obstaculos[posActual[0]][posActual[1]+(int)$3] == 0)
+                                                                  posActual[1]=posActual[1]+$3;
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
+                                                      }else{
+                                                            posActual[1]=dimension_glob-1;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al ESTE!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
+                                                reset_flags();}
+      |bloque_ejemplos_anidado OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                      if(posActual[1]-$3 >= 0){
+                                                            if(matriz_obstaculos[posActual[0]][posActual[1]-(int)$3] == 0)
+                                                                  posActual[1]=posActual[0]-$3;
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
+                                                      }else{
+                                                            posActual[1]=0;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al OESTE!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
+                                                reset_flags();}
+      |bloque_ejemplos_anidado NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                      if(posActual[0]-$3 >= 0){
+                                                            if(matriz_obstaculos[posActual[0]-(int)$3][posActual[1]] == 0)
+                                                                  posActual[0]=posActual[0]-$3;
+                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
+
+                                                      }else{
+                                                            posActual[0]=0;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al NORTE!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
+                                                reset_flags();}
+      |bloque_ejemplos_anidado asignacion_sin_ctes
       ;
 
 condicional:IF expr_logica '\n' THEN '\n' bloque_obstaculos ELSE '\n' bloque_obstaculos ENDIF '\n'
