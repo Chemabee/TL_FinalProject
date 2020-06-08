@@ -7,6 +7,14 @@ int main(int argc, char** argv){
 entornoIniciar (10);
 entornoPonerEntrada(0,0,0.5);
 entornoPonerSalida(9,9);
+entornoMostrarMensaje("AAA");
+entornoMostrarMensaje("<0,6>");
+entornoMostrarMensaje("<6,4>");
+entornoMostrarMensaje("<0,2>");
+entornoMostrarMensaje("<0,6>");
+entornoMostrarMensaje("OBSTACULOS");
+entornoMostrarMensaje("<0,6>");
+entornoMostrarMensaje("BBB");
 entornoPonerEntrada(5,6,0.5);
 entornoPonerSalida(0,2);
 entornoPonerSalida(0,6);
@@ -18,9 +26,19 @@ entornoMostrarMensaje("OBSTACULOS");
 entornoMostrarMensaje("<0,6>");
 entornoPonerObstaculo(0,0);
 entornoPonerObstaculo(0,1);
+entornoPonerEntrada(5,6,0.4);
+entornoPonerSalida(0,6);
+entornoPonerEntrada(5,6,0.4);
+entornoPonerSalida(0,6);
 entornoMostrarMensaje("Soy Ejemplo 0");
+entornoPonerEntrada(5,6,0.4);
+entornoPonerSalida(0,6);
 entornoMostrarMensaje("Soy Ejemplo 1");
+entornoPonerEntrada(5,6,0.4);
+entornoPonerSalida(0,6);
 entornoMostrarMensaje("Soy Ejemplo 2");
+entornoPonerEntrada(5,6,0.4);
+entornoPonerSalida(0,6);
 entornoMostrarMensaje("Soy Ejemplo 3");
 return 0
 }

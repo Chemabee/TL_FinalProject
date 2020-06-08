@@ -21,6 +21,7 @@ bool error_str = false;
 bool posVar = false;
 
 bool fileInicializado = false;
+bool finEjemplo = false;
 
 int dimension_glob = 10;
 int posEntrada_glob[2] = {0, 0};
@@ -73,6 +74,12 @@ int check_tipo_num(){
       else if(real_final) return 1;
       else return 0;
 }
+
+void printVictoria(){
+      if(posSalida_glob[0]==posActual[0] && posSalida_glob[1] == posActual[1]) finalFile<<"  ¡ Lo conseguiste !    "<<endl;
+      else finalFile<<"  ¡ Fin !    "<<endl;
+}
+
 void yyerror(const char* s){         /*    llamada por cada error sintactico de yacc */
 	cout << "Error sintáctico en la línea \033[1;31m"<<n_lineas<<"\033[0m"<<endl;	
       reset_flags();
@@ -126,7 +133,7 @@ bool moverse(int pasos, int direccion){
                         else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
                   break;
             }
-            if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;}
+            if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;printVictoria();finEjemplo=true;}
       }
 }
 
@@ -658,11 +665,11 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
       |error '\n' {yyerrok;reset_flags();}       
 	;
 
-bloque_definiciones: {}
-      |declaracion '\n' bloque_definiciones
-      |asignacion bloque_definiciones
+bloque_definiciones: {initFile();}
+      |bloque_definiciones declaracion '\n'
+      |bloque_definiciones asignacion
       ;
-bloque_configuracion:   {initFile();}
+bloque_configuracion:   {if(!fileInicializado)initFile();}
       |DIMENSION expr bloque_configuracion '\n'                   {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(3<$2 && $2<11){dimension_glob = $2;
                                                                                           posSalida_glob[0]=$2-1;
@@ -801,10 +808,14 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos asignacion_sin_ctes
       ;
 
-bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
-      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
+bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
+                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
+                        finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;}
+      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {printVictoria();}
       ;
-bloque_ejemplos_anidado:      {}
+bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
+                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
+                        finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;}
       |bloque_ejemplos_anidado SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       moverse((int)$3, 1);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
