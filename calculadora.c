@@ -148,6 +148,40 @@ bool insertar(tipo_datoTS *var, bool init, bool cte){
       return tabla->insertar(var);
 }
 
+bool moverse(int pasos, int direccion){
+      bool exit = false;
+      switch(direccion){
+            case 0://Norte
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[1] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;}
+                  }
+            break;
+            case 1://Sur
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[1] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
+            break;
+            case 2://Este
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[0] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
+            break;
+            case 3://Oeste
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[0] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
+            break;
+      }
+}
+
 void printTabla(ofstream &out){
       out << "****************************************" <<endl;
       out << "***NOMBRE      TIPO      VALOR    CTE***" <<endl;
@@ -200,14 +234,14 @@ void printTabla(ofstream &out){
       out << "***************MAPA**************" <<endl;
       for(i = 0; i < dimension_glob; i++){
             for(j = 0; j < dimension_glob; j++){
-                  out << matriz_obstaculos[i][j];
+                  out << matriz_obstaculos[j][i];
             }
             out<<endl;
       }
 }
 
 
-#line 211 "calculadora.c" /* yacc.c:339  */
+#line 245 "calculadora.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -289,7 +323,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 145 "calculadora.y" /* yacc.c:355  */
+#line 179 "calculadora.y" /* yacc.c:355  */
 
       //Tipo union por si en el futuro lo podemos usar
       typedef char tipo_cadena[50];
@@ -307,7 +341,7 @@ union YYSTYPE
       char c_cadena[20];
       bool c_bool;
 
-#line 311 "calculadora.c" /* yacc.c:355  */
+#line 345 "calculadora.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -324,7 +358,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 328 "calculadora.c" /* yacc.c:358  */
+#line 362 "calculadora.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -625,15 +659,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   187,   187,   188,   189,   190,   191,   192,   193,   196,
-     243,   271,   305,   339,   341,   343,   344,   353,   369,   377,
-     384,   391,   398,   406,   409,   410,   411,   425,   426,   427,
-     428,   429,   441,   442,   452,   454,   455,   456,   457,   458,
-     459,   460,   461,   462,   476,   489,   492,   531,   554,   581,
-     608,   609,   612,   613,   614,   616,   617,   624,   636,   648,
-     660,   672,   675,   677,   678,   690,   703,   713,   722,   731,
-     740,   743,   744,   745,   748,   749,   751,   752,   762,   772,
-     782,   793,   796
+       0,   221,   221,   222,   223,   224,   225,   226,   227,   230,
+     277,   305,   339,   373,   375,   377,   378,   387,   403,   411,
+     418,   425,   432,   440,   443,   444,   445,   459,   460,   461,
+     462,   463,   475,   476,   486,   488,   489,   490,   491,   492,
+     493,   494,   495,   496,   510,   523,   526,   565,   588,   615,
+     642,   643,   646,   647,   648,   650,   651,   658,   670,   682,
+     694,   706,   709,   711,   712,   724,   737,   747,   756,   765,
+     774,   777,   778,   779,   782,   783,   785,   786,   790,   794,
+     798,   802,   805
 };
 #endif
 
@@ -1637,13 +1671,13 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 187 "calculadora.y" /* yacc.c:1646  */
+#line 221 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 1643 "calculadora.c" /* yacc.c:1646  */
+#line 1677 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 196 "calculadora.y" /* yacc.c:1646  */
+#line 230 "calculadora.y" /* yacc.c:1646  */
     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var) != 0){
@@ -1691,11 +1725,11 @@ yyreduce:
                                     
                                     reset_flags();
                                     }
-#line 1695 "calculadora.c" /* yacc.c:1646  */
+#line 1729 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 243 "calculadora.y" /* yacc.c:1646  */
+#line 277 "calculadora.y" /* yacc.c:1646  */
     {
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var)!=0){
                                                       if(var->tipo == 3){
@@ -1724,11 +1758,11 @@ yyreduce:
                                                       }
                                                       reset_flags();
       }
-#line 1728 "calculadora.c" /* yacc.c:1646  */
+#line 1762 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 271 "calculadora.y" /* yacc.c:1646  */
+#line 305 "calculadora.y" /* yacc.c:1646  */
     {if(!real_final){
                                                       if(tabla->buscar((yyvsp[-7].c_cadena), var)!=0){
                                                             if(var->tipo == 4){
@@ -1762,11 +1796,11 @@ yyreduce:
                                                 else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
                                                 reset_flags();
                                           }
-#line 1766 "calculadora.c" /* yacc.c:1646  */
+#line 1800 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 305 "calculadora.y" /* yacc.c:1646  */
+#line 339 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var) != 0){
@@ -1801,29 +1835,29 @@ yyreduce:
                                           };
                                     reset_flags();
                                     }
-#line 1805 "calculadora.c" /* yacc.c:1646  */
+#line 1839 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 339 "calculadora.y" /* yacc.c:1646  */
+#line 373 "calculadora.y" /* yacc.c:1646  */
     {reset_flags();}
-#line 1811 "calculadora.c" /* yacc.c:1646  */
+#line 1845 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 341 "calculadora.y" /* yacc.c:1646  */
+#line 375 "calculadora.y" /* yacc.c:1646  */
     {yyerrok;reset_flags();}
-#line 1817 "calculadora.c" /* yacc.c:1646  */
+#line 1851 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 343 "calculadora.y" /* yacc.c:1646  */
+#line 377 "calculadora.y" /* yacc.c:1646  */
     {cout << (yyvsp[-1].c_cadena) <<endl;reset_flags();}
-#line 1823 "calculadora.c" /* yacc.c:1646  */
+#line 1857 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 344 "calculadora.y" /* yacc.c:1646  */
+#line 378 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
@@ -1833,11 +1867,11 @@ yyreduce:
                                     else cout <<(yyvsp[-1].c_real)<<endl;
                               }
                               reset_flags();}
-#line 1837 "calculadora.c" /* yacc.c:1646  */
+#line 1871 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 353 "calculadora.y" /* yacc.c:1646  */
+#line 387 "calculadora.y" /* yacc.c:1646  */
     {
                                     if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 if(cmp){	
@@ -1851,11 +1885,11 @@ yyreduce:
                                     }
                                     reset_flags();
       }
-#line 1855 "calculadora.c" /* yacc.c:1646  */
+#line 1889 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 369 "calculadora.y" /* yacc.c:1646  */
+#line 403 "calculadora.y" /* yacc.c:1646  */
     {
                               if(tabla->buscar((yyvsp[0].c_cadena), var) == 0){
                                     var->tipo=0;
@@ -1864,11 +1898,11 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1868 "calculadora.c" /* yacc.c:1646  */
+#line 1902 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 377 "calculadora.y" /* yacc.c:1646  */
+#line 411 "calculadora.y" /* yacc.c:1646  */
     {if(tabla->buscar((yyvsp[0].c_cadena), var) == 0){
                                     var->tipo=1;
                                     strcpy(var->nombre, (yyvsp[0].c_cadena));
@@ -1876,11 +1910,11 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1880 "calculadora.c" /* yacc.c:1646  */
+#line 1914 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 384 "calculadora.y" /* yacc.c:1646  */
+#line 418 "calculadora.y" /* yacc.c:1646  */
     {if(tabla->buscar((yyvsp[0].c_cadena), var) == 0){
                                     var->tipo=3;
                                     strcpy(var->nombre, (yyvsp[0].c_cadena));
@@ -1888,11 +1922,11 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1892 "calculadora.c" /* yacc.c:1646  */
+#line 1926 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 391 "calculadora.y" /* yacc.c:1646  */
+#line 425 "calculadora.y" /* yacc.c:1646  */
     {if(tabla->buscar((yyvsp[0].c_cadena), var) == 0){
                                     var->tipo=4;
                                     strcpy(var->nombre, (yyvsp[0].c_cadena));
@@ -1900,11 +1934,11 @@ yyreduce:
                                           cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1904 "calculadora.c" /* yacc.c:1646  */
+#line 1938 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 398 "calculadora.y" /* yacc.c:1646  */
+#line 432 "calculadora.y" /* yacc.c:1646  */
     {int temp = var->tipo;
                                     if(tabla->buscar((yyvsp[0].c_cadena), var) == 0){
                                           strcpy(var->nombre, (yyvsp[0].c_cadena));
@@ -1913,29 +1947,29 @@ yyreduce:
                                                 cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, intentando reasignar una constante"<<endl;
                                     }
                               }
-#line 1917 "calculadora.c" /* yacc.c:1646  */
+#line 1951 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 406 "calculadora.y" /* yacc.c:1646  */
+#line 440 "calculadora.y" /* yacc.c:1646  */
     {yyerrok;reset_flags();}
-#line 1923 "calculadora.c" /* yacc.c:1646  */
+#line 1957 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 409 "calculadora.y" /* yacc.c:1646  */
+#line 443 "calculadora.y" /* yacc.c:1646  */
     {real=true;real_final=true;(yyval.c_real)=(yyvsp[0].c_real);}
-#line 1929 "calculadora.c" /* yacc.c:1646  */
+#line 1963 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 410 "calculadora.y" /* yacc.c:1646  */
+#line 444 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_real)=(yyvsp[0].c_entero);}
-#line 1935 "calculadora.c" /* yacc.c:1646  */
+#line 1969 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 411 "calculadora.y" /* yacc.c:1646  */
+#line 445 "calculadora.y" /* yacc.c:1646  */
     {if(tabla->buscar((yyvsp[0].c_cadena), var) == 1){
                                     switch(var->tipo){
                                           case 0: (yyval.c_real)=var->valor.valor_entero;break;
@@ -1950,35 +1984,35 @@ yyreduce:
                                     error_nodef = true;
                                     }
                               }
-#line 1954 "calculadora.c" /* yacc.c:1646  */
+#line 1988 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 425 "calculadora.y" /* yacc.c:1646  */
+#line 459 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_real)=(yyvsp[-1].c_real);}
-#line 1960 "calculadora.c" /* yacc.c:1646  */
+#line 1994 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 426 "calculadora.y" /* yacc.c:1646  */
+#line 460 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)+(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1966 "calculadora.c" /* yacc.c:1646  */
+#line 2000 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 427 "calculadora.y" /* yacc.c:1646  */
+#line 461 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)-(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1972 "calculadora.c" /* yacc.c:1646  */
+#line 2006 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 428 "calculadora.y" /* yacc.c:1646  */
+#line 462 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=(yyvsp[-2].c_real)*(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 1978 "calculadora.c" /* yacc.c:1646  */
+#line 2012 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 429 "calculadora.y" /* yacc.c:1646  */
+#line 463 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar){ 
                                     if(real){
                                           (yyval.c_real)=(float)((yyvsp[-2].c_real)/(yyvsp[0].c_real));
@@ -1991,17 +2025,17 @@ yyreduce:
                               else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl; error_str = true;}
                               
                               }
-#line 1995 "calculadora.c" /* yacc.c:1646  */
+#line 2029 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 441 "calculadora.y" /* yacc.c:1646  */
+#line 475 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)=pow((yyvsp[-2].c_real),(yyvsp[0].c_real));else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2001 "calculadora.c" /* yacc.c:1646  */
+#line 2035 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 442 "calculadora.y" /* yacc.c:1646  */
+#line 476 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) {if(!real){
                                           (yyval.c_real)=(int)(yyvsp[-2].c_real)%(int)(yyvsp[0].c_real);
                                           }
@@ -2012,65 +2046,65 @@ yyreduce:
                                     }
                               else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}
                               }
-#line 2016 "calculadora.c" /* yacc.c:1646  */
+#line 2050 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 452 "calculadora.y" /* yacc.c:1646  */
+#line 486 "calculadora.y" /* yacc.c:1646  */
     {if(!str&&!posVar) (yyval.c_real)= -(yyvsp[0].c_real);else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2022 "calculadora.c" /* yacc.c:1646  */
+#line 2056 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 454 "calculadora.y" /* yacc.c:1646  */
+#line 488 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;(yyval.c_bool)=(yyvsp[0].c_bool);}
-#line 2028 "calculadora.c" /* yacc.c:1646  */
+#line 2062 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 455 "calculadora.y" /* yacc.c:1646  */
+#line 489 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_bool)=(yyvsp[-1].c_bool);}
-#line 2034 "calculadora.c" /* yacc.c:1646  */
+#line 2068 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 456 "calculadora.y" /* yacc.c:1646  */
+#line 490 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) < (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2040 "calculadora.c" /* yacc.c:1646  */
+#line 2074 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 457 "calculadora.y" /* yacc.c:1646  */
+#line 491 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) > (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2046 "calculadora.c" /* yacc.c:1646  */
+#line 2080 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 458 "calculadora.y" /* yacc.c:1646  */
+#line 492 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) <= (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2052 "calculadora.c" /* yacc.c:1646  */
+#line 2086 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 459 "calculadora.y" /* yacc.c:1646  */
+#line 493 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) >= (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2058 "calculadora.c" /* yacc.c:1646  */
+#line 2092 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 460 "calculadora.y" /* yacc.c:1646  */
+#line 494 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) == (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2064 "calculadora.c" /* yacc.c:1646  */
+#line 2098 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 461 "calculadora.y" /* yacc.c:1646  */
+#line 495 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;if(!str&&!posVar) {if((yyvsp[-2].c_real) != (yyvsp[0].c_real))(yyval.c_bool)=1;else (yyval.c_bool)=0;}else {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m no se permiten operaciones con cadenas de caracteres o posiciones"<<endl;error_str = true;}}
-#line 2070 "calculadora.c" /* yacc.c:1646  */
+#line 2104 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 462 "calculadora.y" /* yacc.c:1646  */
+#line 496 "calculadora.y" /* yacc.c:1646  */
     {
                               cmp=true;
                               if(((yyvsp[-2].c_bool)==1||(yyvsp[-2].c_bool)==0)&&((yyvsp[0].c_bool)==1||(yyvsp[0].c_bool)==0))
@@ -2084,11 +2118,11 @@ yyreduce:
                                     cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador AND sólo acepta expresiones tipo lógico" <<endl;
                                     }
                               }
-#line 2088 "calculadora.c" /* yacc.c:1646  */
+#line 2122 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 476 "calculadora.y" /* yacc.c:1646  */
+#line 510 "calculadora.y" /* yacc.c:1646  */
     {cmp=true;
                               if(((yyvsp[-2].c_bool)==1||(yyvsp[-2].c_bool)==0)&&((yyvsp[0].c_bool)==1||(yyvsp[0].c_bool)==0))
                               {     if((yyvsp[-2].c_bool)==1||(yyvsp[0].c_bool)==1)
@@ -2102,17 +2136,17 @@ yyreduce:
                                     cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m: el operador OR sólo acepta expresiones tipo lógico" <<endl;
                                     }    
                               }
-#line 2106 "calculadora.c" /* yacc.c:1646  */
+#line 2140 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 489 "calculadora.y" /* yacc.c:1646  */
+#line 523 "calculadora.y" /* yacc.c:1646  */
     {(yyval.c_bool)=!(yyvsp[0].c_bool);}
-#line 2112 "calculadora.c" /* yacc.c:1646  */
+#line 2146 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 492 "calculadora.y" /* yacc.c:1646  */
+#line 526 "calculadora.y" /* yacc.c:1646  */
     {if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var) != 0){
@@ -2152,11 +2186,11 @@ yyreduce:
                                     
                                     reset_flags();
                                     }
-#line 2156 "calculadora.c" /* yacc.c:1646  */
+#line 2190 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 531 "calculadora.y" /* yacc.c:1646  */
+#line 565 "calculadora.y" /* yacc.c:1646  */
     {
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var)!=0){
                                                       if(var->tipo == 3){
@@ -2180,11 +2214,11 @@ yyreduce:
                                                 else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
                                                 reset_flags();
       }
-#line 2184 "calculadora.c" /* yacc.c:1646  */
+#line 2218 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 554 "calculadora.y" /* yacc.c:1646  */
+#line 588 "calculadora.y" /* yacc.c:1646  */
     {if(!real_final){
                                                       if(tabla->buscar((yyvsp[-7].c_cadena), var)!=0){
                                                             if(var->tipo == 4){
@@ -2211,11 +2245,11 @@ yyreduce:
                                                 else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
                                                 reset_flags();
                                           }
-#line 2215 "calculadora.c" /* yacc.c:1646  */
+#line 2249 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 581 "calculadora.y" /* yacc.c:1646  */
+#line 615 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
                                                 if(tabla->buscar((yyvsp[-3].c_cadena), var) != 0){
@@ -2243,35 +2277,35 @@ yyreduce:
                                           };
                                     reset_flags();
                                     }
-#line 2247 "calculadora.c" /* yacc.c:1646  */
+#line 2281 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 608 "calculadora.y" /* yacc.c:1646  */
+#line 642 "calculadora.y" /* yacc.c:1646  */
     {reset_flags();}
-#line 2253 "calculadora.c" /* yacc.c:1646  */
+#line 2287 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 609 "calculadora.y" /* yacc.c:1646  */
+#line 643 "calculadora.y" /* yacc.c:1646  */
     {yyerrok;reset_flags();}
-#line 2259 "calculadora.c" /* yacc.c:1646  */
+#line 2293 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 612 "calculadora.y" /* yacc.c:1646  */
+#line 646 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2265 "calculadora.c" /* yacc.c:1646  */
+#line 2299 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 616 "calculadora.y" /* yacc.c:1646  */
+#line 650 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2271 "calculadora.c" /* yacc.c:1646  */
+#line 2305 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 617 "calculadora.y" /* yacc.c:1646  */
+#line 651 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(3<(yyvsp[-2].c_real) && (yyvsp[-2].c_real)<11){dimension_glob = (yyvsp[-2].c_real);
                                                                                           posSalida_glob[0]=(yyvsp[-2].c_real)-1;
@@ -2279,11 +2313,11 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION debe estar entre 4 y 10"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2283 "calculadora.c" /* yacc.c:1646  */
+#line 2317 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 624 "calculadora.y" /* yacc.c:1646  */
+#line 658 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
                                                                         if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                                               if(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1]){
@@ -2296,11 +2330,11 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2300 "calculadora.c" /* yacc.c:1646  */
+#line 2334 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 636 "calculadora.y" /* yacc.c:1646  */
+#line 670 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= (yyvsp[-4].c_real) && (yyvsp[-4].c_real) < dimension_glob && 0 <= (yyvsp[-2].c_real) && (yyvsp[-2].c_real) < dimension_glob){
                                                                               if((yyvsp[-4].c_real) != posSalida_glob[0] || (yyvsp[-2].c_real) != posSalida_glob[1]){
@@ -2313,11 +2347,11 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2317 "calculadora.c" /* yacc.c:1646  */
+#line 2351 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 648 "calculadora.y" /* yacc.c:1646  */
+#line 682 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
                                                                         if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                                               if(var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1]){
@@ -2330,11 +2364,11 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2334 "calculadora.c" /* yacc.c:1646  */
+#line 2368 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 660 "calculadora.y" /* yacc.c:1646  */
+#line 694 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= (yyvsp[-4].c_real) && (yyvsp[-4].c_real) < dimension_glob && 0 <= (yyvsp[-2].c_real) && (yyvsp[-2].c_real) < dimension_glob){
                                                                               if((yyvsp[-4].c_real) != posEntrada_glob[0] || (yyvsp[-2].c_real) != posEntrada_glob[1]){
@@ -2347,25 +2381,25 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2351 "calculadora.c" /* yacc.c:1646  */
+#line 2385 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 672 "calculadora.y" /* yacc.c:1646  */
+#line 706 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&(check_tipo_num()==0 || check_tipo_num()==1)){
                                                                         if(0 < (yyvsp[-1].c_real)) pausa_glob = (yyvsp[-1].c_real);
                                                                   }reset_flags();}
-#line 2359 "calculadora.c" /* yacc.c:1646  */
+#line 2393 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 677 "calculadora.y" /* yacc.c:1646  */
+#line 711 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2365 "calculadora.c" /* yacc.c:1646  */
+#line 2399 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 678 "calculadora.y" /* yacc.c:1646  */
+#line 712 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= (yyvsp[-4].c_real) && (yyvsp[-4].c_real) < dimension_glob && 0 <= (yyvsp[-2].c_real) && (yyvsp[-2].c_real) < dimension_glob){
                                                                               if(((yyvsp[-4].c_real) != posSalida_glob[0] || (yyvsp[-2].c_real) != posSalida_glob[1]) && ((yyvsp[-4].c_real) != posEntrada_glob[0] || (yyvsp[-2].c_real) != posEntrada_glob[1])){
@@ -2378,11 +2412,11 @@ yyreduce:
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
                                                                   reset_flags();}
-#line 2382 "calculadora.c" /* yacc.c:1646  */
+#line 2416 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 690 "calculadora.y" /* yacc.c:1646  */
+#line 724 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
                                                       if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                             if((var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])&&(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])){
@@ -2396,161 +2430,136 @@ yyreduce:
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
                                                 reset_flags();
                                                 }
-#line 2400 "calculadora.c" /* yacc.c:1646  */
+#line 2434 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 703 "calculadora.y" /* yacc.c:1646  */
-    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[0]+(yyvsp[-1].c_real) < dimension_glob){
-                                                            posActual[0]=posActual[0]+(yyvsp[-1].c_real);
-                                                      }else{
-                                                            posActual[0]=dimension_glob-1;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
-                                                      }
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
-                                                reset_flags();
-                                          }
-#line 2415 "calculadora.c" /* yacc.c:1646  */
-    break;
-
-  case 67:
-#line 713 "calculadora.y" /* yacc.c:1646  */
+#line 737 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
                                                       if(posActual[1]+(yyvsp[-1].c_real) < dimension_glob){
                                                             posActual[1]=posActual[1]+(yyvsp[-1].c_real);
                                                       }else{
                                                             posActual[1]=dimension_glob-1;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
+                                                reset_flags();
+                                          }
+#line 2449 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 747 "calculadora.y" /* yacc.c:1646  */
+    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
+                                                      if(posActual[0]+(yyvsp[-1].c_real) < dimension_glob){
+                                                            posActual[0]=posActual[0]+(yyvsp[-1].c_real);
+                                                      }else{
+                                                            posActual[0]=dimension_glob-1;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
                                                 reset_flags();}
-#line 2429 "calculadora.c" /* yacc.c:1646  */
+#line 2463 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 722 "calculadora.y" /* yacc.c:1646  */
-    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[1]-(yyvsp[-1].c_real) >= 0){
-                                                            posActual[1]=posActual[0]-(yyvsp[-1].c_real);
-                                                      }else{
-                                                            posActual[1]=0;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
-                                                      }
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
-                                                reset_flags();}
-#line 2443 "calculadora.c" /* yacc.c:1646  */
-    break;
-
-  case 69:
-#line 731 "calculadora.y" /* yacc.c:1646  */
+#line 756 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
                                                       if(posActual[0]-(yyvsp[-1].c_real) >= 0){
                                                             posActual[0]=posActual[0]-(yyvsp[-1].c_real);
                                                       }else{
                                                             posActual[0]=0;
+                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
+                                                      }
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
+                                                reset_flags();}
+#line 2477 "calculadora.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 765 "calculadora.y" /* yacc.c:1646  */
+    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
+                                                      if(posActual[1]-(yyvsp[-1].c_real) >= 0){
+                                                            posActual[1]=posActual[1]-(yyvsp[-1].c_real);
+                                                      }else{
+                                                            posActual[1]=0;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
-#line 2457 "calculadora.c" /* yacc.c:1646  */
+#line 2491 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 740 "calculadora.y" /* yacc.c:1646  */
+#line 774 "calculadora.y" /* yacc.c:1646  */
     {matriz_obstaculos[posActual[0]][posActual[1]] = 1;
                                                 cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
                                                 reset_flags();}
-#line 2465 "calculadora.c" /* yacc.c:1646  */
+#line 2499 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 743 "calculadora.y" /* yacc.c:1646  */
+#line 777 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2471 "calculadora.c" /* yacc.c:1646  */
+#line 2505 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 748 "calculadora.y" /* yacc.c:1646  */
+#line 782 "calculadora.y" /* yacc.c:1646  */
     {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
-#line 2477 "calculadora.c" /* yacc.c:1646  */
+#line 2511 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 749 "calculadora.y" /* yacc.c:1646  */
+#line 783 "calculadora.y" /* yacc.c:1646  */
     {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];}
-#line 2483 "calculadora.c" /* yacc.c:1646  */
+#line 2517 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 751 "calculadora.y" /* yacc.c:1646  */
+#line 785 "calculadora.y" /* yacc.c:1646  */
     {}
-#line 2489 "calculadora.c" /* yacc.c:1646  */
+#line 2523 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 752 "calculadora.y" /* yacc.c:1646  */
+#line 786 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[0]+(yyvsp[-1].c_real) < dimension_glob){
-                                                            if((matriz_obstaculos[posActual[0]+(int)(yyvsp[-1].c_real)][posActual[1]] == 0))
-                                                                  posActual[0]=posActual[0]+(yyvsp[-1].c_real);
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
-                                                      }
+                                                      moverse((int)(yyvsp[-1].c_real), 1);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
                                                 reset_flags();}
-#line 2504 "calculadora.c" /* yacc.c:1646  */
+#line 2532 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 762 "calculadora.y" /* yacc.c:1646  */
+#line 790 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[1]+(yyvsp[-1].c_real) < dimension_glob){
-                                                            if(matriz_obstaculos[posActual[0]][posActual[1]+(int)(yyvsp[-1].c_real)] == 0)
-                                                                  posActual[1]=posActual[1]+(yyvsp[-1].c_real);
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al ESTE!"<<endl;
-                                                      }
+                                                      moverse((int)(yyvsp[-1].c_real), 2);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
                                                 reset_flags();}
-#line 2519 "calculadora.c" /* yacc.c:1646  */
+#line 2541 "calculadora.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 772 "calculadora.y" /* yacc.c:1646  */
+#line 794 "calculadora.y" /* yacc.c:1646  */
     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[1]-(yyvsp[-1].c_real) >= 0){
-                                                            if(matriz_obstaculos[posActual[0]][posActual[1]-(int)(yyvsp[-1].c_real)] == 0)
-                                                                  posActual[1]=posActual[0]-(yyvsp[-1].c_real);
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al OESTE!"<<endl;
-                                                      }
+                                                      moverse((int)(yyvsp[-1].c_real), 3);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
-                                                reset_flags();}
-#line 2534 "calculadora.c" /* yacc.c:1646  */
-    break;
-
-  case 80:
-#line 782 "calculadora.y" /* yacc.c:1646  */
-    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
-                                                      if(posActual[0]-(yyvsp[-1].c_real) >= 0){
-                                                            if(matriz_obstaculos[posActual[0]-(int)(yyvsp[-1].c_real)][posActual[1]] == 0)
-                                                                  posActual[0]=posActual[0]-(yyvsp[-1].c_real);
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-
-                                                      }else{
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al NORTE!"<<endl;
-                                                      }
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
 #line 2550 "calculadora.c" /* yacc.c:1646  */
     break;
 
+  case 80:
+#line 798 "calculadora.y" /* yacc.c:1646  */
+    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&(yyvsp[-1].c_real)>=0){
+                                                      moverse((int)(yyvsp[-1].c_real), 0);
+                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
+                                                reset_flags();}
+#line 2559 "calculadora.c" /* yacc.c:1646  */
+    break;
 
-#line 2554 "calculadora.c" /* yacc.c:1646  */
+
+#line 2563 "calculadora.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2778,7 +2787,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 799 "calculadora.y" /* yacc.c:1906  */
+#line 808 "calculadora.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[]){

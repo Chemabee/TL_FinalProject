@@ -79,7 +79,7 @@ EJEMPLOS
         norte 3
         este 2
         norte 2
-        oeste 2
+        oeste 4
     finejemplo
 
     ejemplo EJEMPLO_1               # Ejemplo 1

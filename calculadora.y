@@ -83,15 +83,36 @@ bool insertar(tipo_datoTS *var, bool init, bool cte){
       return tabla->insertar(var);
 }
 
-bool moverse(int pasos, string direccion){
+bool moverse(int pasos, int direccion){
+      bool exit = false;
       switch(direccion){
-            case "N":
+            case 0://Norte
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[1] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;}
+                  }
             break;
-            case "S";
+            case 1://Sur
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[1] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
             break;
-            case "E":
+            case 2://Este
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[0] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
             break;
-            case "O":
+            case 3://Oeste
+                  for(i = 0;i < pasos && !exit;i++){
+                        if(posActual[0] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
+                        else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                  }
             break;
       }
 }
@@ -148,7 +169,7 @@ void printTabla(ofstream &out){
       out << "***************MAPA**************" <<endl;
       for(i = 0; i < dimension_glob; i++){
             for(j = 0; j < dimension_glob; j++){
-                  out << matriz_obstaculos[i][j];
+                  out << matriz_obstaculos[j][i];
             }
             out<<endl;
       }
@@ -714,38 +735,38 @@ bloque_obstaculos:      {}
                                                 reset_flags();
                                                 }
       |bloque_obstaculos SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[0]+$3 < dimension_glob){
-                                                            posActual[0]=posActual[0]+$3;
+                                                      if(posActual[1]+$3 < dimension_glob){
+                                                            posActual[1]=posActual[1]+$3;
                                                       }else{
-                                                            posActual[0]=dimension_glob-1;
+                                                            posActual[1]=dimension_glob-1;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
                                                 reset_flags();
                                           }
       |bloque_obstaculos ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[1]+$3 < dimension_glob){
-                                                            posActual[1]=posActual[1]+$3;
+                                                      if(posActual[0]+$3 < dimension_glob){
+                                                            posActual[0]=posActual[0]+$3;
                                                       }else{
-                                                            posActual[1]=dimension_glob-1;
+                                                            posActual[0]=dimension_glob-1;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_obstaculos OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[1]-$3 >= 0){
-                                                            posActual[1]=posActual[0]-$3;
+                                                      if(posActual[0]-$3 >= 0){
+                                                            posActual[0]=posActual[0]-$3;
                                                       }else{
-                                                            posActual[1]=0;
+                                                            posActual[0]=0;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_obstaculos NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[0]-$3 >= 0){
-                                                            posActual[0]=posActual[0]-$3;
+                                                      if(posActual[1]-$3 >= 0){
+                                                            posActual[1]=posActual[1]-$3;
                                                       }else{
-                                                            posActual[0]=0;
+                                                            posActual[1]=0;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
@@ -763,48 +784,19 @@ bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob
       ;
 bloque_ejemplos_anidado:      {}
       |bloque_ejemplos_anidado SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[0]+$3 < dimension_glob){
-                                                            if((matriz_obstaculos[posActual[0]+(int)$3][posActual[1]] == 0))
-                                                                  posActual[0]=posActual[0]+$3;
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            posActual[0]=dimension_glob-1;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
-                                                      }
+                                                      moverse((int)$3, 1);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[1]+$3 < dimension_glob){
-                                                            if(matriz_obstaculos[posActual[0]][posActual[1]+(int)$3] == 0)
-                                                                  posActual[1]=posActual[1]+$3;
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            posActual[1]=dimension_glob-1;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al ESTE!"<<endl;
-                                                      }
+                                                      moverse((int)$3, 2);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[1]-$3 >= 0){
-                                                            if(matriz_obstaculos[posActual[0]][posActual[1]-(int)$3] == 0)
-                                                                  posActual[1]=posActual[0]-$3;
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-                                                      }else{
-                                                            posActual[1]=0;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al OESTE!"<<endl;
-                                                      }
+                                                      moverse((int)$3, 3);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(posActual[0]-$3 >= 0){
-                                                            if(matriz_obstaculos[posActual[0]-(int)$3][posActual[1]] == 0)
-                                                                  posActual[0]=posActual[0]-$3;
-                                                            else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;
-
-                                                      }else{
-                                                            posActual[0]=0;
-                                                            cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte al NORTE!"<<endl;
-                                                      }
+                                                      moverse((int)$3, 0);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado asignacion_sin_ctes
