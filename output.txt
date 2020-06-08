@@ -1,33 +1,26 @@
-****************************************
-***NOMBRE      TIPO      VALOR    CTE***
-****************************************
-**n            Int          NI      NO
-**x            Int          NI      NO
-**y            Int          NI      NO
-**f            Float        NI      NO
-**cad            String       Soy Ejemplo 3      NO
-**p1            Position     <0,6>      NO
-**p2            Position     <6,4>      NO
-**D            Int          7     SI
-**INICIO            Position     <5,6>     SI
-**FIN            Position     <0,2>     SI
-**P            Float        0.4     SI
-**MSG_OBS            String       OBSTACULOS     SI
-*********************************
-*******Variables Globales********
-** DIMENSION: 7
-** POS_ENTRADA: <5,6>
-** POS_SALIDA: <0,2>
-** PAUSA: 0.4
-** POS_ACTUAL: <5,6>
-*********************************
-*******NI = No Inicializado******
-*********************************
-***************MAPA**************
-1000000
-1000000
-0000000
-0000000
-0000000
-0000000
-0000000
+#include <iostream>
+#include <allegro5/allegro.h>
+#include <stdio.h>
+#include "entorno.h"
+using namespace std;
+int main(int argc, char** argv){
+entornoIniciar (10);
+entornoPonerEntrada(0,0,0.5);
+entornoPonerSalida(9,9);
+entornoPonerEntrada(5,6,0.5);
+entornoPonerSalida(0,2);
+entornoPonerSalida(0,6);
+entornoMostrarMensaje("OBSTACULOS");
+entornoMostrarMensaje("<0,2>");
+entornoPonerObstaculo(0,2);
+entornoMostrarMensaje("<0,6>");
+entornoMostrarMensaje("OBSTACULOS");
+entornoMostrarMensaje("<0,6>");
+entornoPonerObstaculo(0,0);
+entornoPonerObstaculo(0,1);
+entornoMostrarMensaje("Soy Ejemplo 0");
+entornoMostrarMensaje("Soy Ejemplo 1");
+entornoMostrarMensaje("Soy Ejemplo 2");
+entornoMostrarMensaje("Soy Ejemplo 3");
+return 0
+}

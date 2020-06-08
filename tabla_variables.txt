@@ -1,0 +1,33 @@
+****************************************
+***NOMBRE      TIPO      VALOR    CTE***
+****************************************
+**n            Int          NI      NO
+**x            Int          NI      NO
+**y            Int          NI      NO
+**f            Float        NI      NO
+**cad            String       Soy Ejemplo 3      NO
+**p1            Position     <0,6>      NO
+**p2            Position     <6,4>      NO
+**D            Int          7     SI
+**INICIO            Position     <5,6>     SI
+**FIN            Position     <0,2>     SI
+**P            Float        0.4     SI
+**MSG_OBS            String       OBSTACULOS     SI
+*********************************
+*******Variables Globales********
+** DIMENSION: 7
+** POS_ENTRADA: <5,6>
+** POS_SALIDA: <0,6>
+** PAUSA: 0.4
+** POS_ACTUAL: <5,6>
+*********************************
+*******NI = No Inicializado******
+*********************************
+***************MAPA**************
+1 0 0 0 0 0 0 
+1 0 0 0 0 0 0 
+1 0 0 0 0 0 0 
+0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 

@@ -83,7 +83,7 @@ int Tabla::buscar(tipo_cadena nombre, tipo_datoTS *identificador){
                             if(act->dato.tipo == 3){
                                 strcpy((*identificador).valor.valor_cad, act->dato.valor.valor_cad);
                             }
-                            else{//Maybe needs to be fixed soon...
+                            else{
                                 if (act->dato.tipo == 4)
                                 {
                                     (*identificador).valor.valor_pos[0] = act->dato.valor.valor_pos[0];

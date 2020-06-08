@@ -20,6 +20,8 @@ bool str = false;
 bool error_str = false;
 bool posVar = false;
 
+bool fileInicializado = false;
+
 int dimension_glob = 10;
 int posEntrada_glob[2] = {0, 0};
 int posSalida_glob[2] = {9, 9};
@@ -34,6 +36,9 @@ int matriz_obstaculos[10][10];
 
 Tabla* tabla;
 tipo_datoTS* var;
+
+//Archivo final cpp
+std::ofstream finalFile;
 
 //elementos externos al analizador sintácticos por haber sido declarados en el analizador léxico      			
 extern int n_lineas;
@@ -83,37 +88,45 @@ bool insertar(tipo_datoTS *var, bool init, bool cte){
       return tabla->insertar(var);
 }
 
+void initFile(){
+      finalFile<<"#include <iostream>"<<endl;
+      finalFile<<"#include <allegro5/allegro.h>"<<endl;
+      finalFile<<"#include <stdio.h>"<<endl;
+      finalFile<<"#include \"entorno.h\""<<endl;
+      finalFile<<"using namespace std;"<<endl;
+      finalFile<<"int main(int argc, char** argv){"<<endl;
+      finalFile<<"entornoIniciar ("<<dimension_glob<<");"<<endl;
+      finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
+	finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
+      fileInicializado = true;
+}
+
 bool moverse(int pasos, int direccion){
       bool exit = false;
-      switch(direccion){
-            case 0://Norte
-                  for(i = 0;i < pasos && !exit;i++){
+      for(i = 0;i < pasos && !exit;i++){
+            switch(direccion){
+                  case 0://Norte
                         if(posActual[1] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;exit=true;}
                         else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
                         else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;}
-                  }
-            break;
-            case 1://Sur
-                  for(i = 0;i < pasos && !exit;i++){
+                  break;
+                  case 1://Sur
                         if(posActual[1] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
                         else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
                         else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
-                  }
-            break;
-            case 2://Este
-                  for(i = 0;i < pasos && !exit;i++){
+                  break;
+                  case 2://Este
                         if(posActual[0] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
                         else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
                         else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
-                  }
-            break;
-            case 3://Oeste
-                  for(i = 0;i < pasos && !exit;i++){
+                  break;
+                  case 3://Oeste
                         if(posActual[0] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;exit=true;}
                         else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
                         else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
-                  }
-            break;
+                  break;
+            }
+            if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;}
       }
 }
 
@@ -169,7 +182,7 @@ void printTabla(ofstream &out){
       out << "***************MAPA**************" <<endl;
       for(i = 0; i < dimension_glob; i++){
             for(j = 0; j < dimension_glob; j++){
-                  out << matriz_obstaculos[j][i];
+                  out << matriz_obstaculos[j][i]<<" ";
             }
             out<<endl;
       }
@@ -374,25 +387,27 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
       
       |error '\n' {yyerrok;reset_flags();}       
 	;
-escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();}
+escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}}
       |ESCRIBIR expr '\n'     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
+                                          if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<var->valor.valor_cad<<"\");"<<endl;}
                                     }else if(posVar){
                                           cout <<"<"<< var->valor.valor_pos[0] <<","<<var->valor.valor_pos[1]<<">"<<endl;
+                                          if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<"<"<< var->valor.valor_pos[0] <<","<<var->valor.valor_pos[1]<<">"<<"\");"<<endl;}
                                     }
-                                    else cout <<$2<<endl;
+                                    else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout <<$2<<endl;}
                               }
                               reset_flags();}
       |ESCRIBIR expr_logica '\n' {
                                     if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 if(cmp){	
                                                       if($2)	
-                                                            cout<<"true";	
-                                                      else cout<<"false";	
+                                                            {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"true\");"<<endl;}cout<<"true";}	
+                                                      else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"false\");"<<endl;}cout<<"false";}	
                                                 }	
                                                 else	
-                                                      cout<<$2;	
+                                                      {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout<<$2;}	
                                                 cout<<endl;
                                     }
                                     reset_flags();
@@ -647,7 +662,7 @@ bloque_definiciones: {}
       |declaracion '\n' bloque_definiciones
       |asignacion bloque_definiciones
       ;
-bloque_configuracion:   {}
+bloque_configuracion:   {initFile();}
       |DIMENSION expr bloque_configuracion '\n'                   {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(3<$2 && $2<11){dimension_glob = $2;
                                                                                           posSalida_glob[0]=$2-1;
@@ -661,6 +676,7 @@ bloque_configuracion:   {}
                                                                                     if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
                                                                                           posEntrada_glob[0] = var->valor.valor_pos[0];
                                                                                           posEntrada_glob[1] = var->valor.valor_pos[1];
+                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;   
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
                                                                         }
@@ -673,6 +689,7 @@ bloque_configuracion:   {}
                                                                                     if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
                                                                                           posEntrada_glob[0] = $4;
                                                                                           posEntrada_glob[1] = $6;
+                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
                                                                         }
@@ -685,6 +702,7 @@ bloque_configuracion:   {}
                                                                                     if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
                                                                                           posSalida_glob[0] = var->valor.valor_pos[0];
                                                                                           posSalida_glob[1] = var->valor.valor_pos[1];
+                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;   
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
                                                                         }
@@ -697,6 +715,7 @@ bloque_configuracion:   {}
                                                                                     if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
                                                                                           posSalida_glob[0] = $4;
                                                                                           posSalida_glob[1] = $6;
+                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
                                                                         }
@@ -708,11 +727,12 @@ bloque_configuracion:   {}
                                                                   }reset_flags();}
       |bloque_configuracion asignacion_sin_ctes
       ;
-bloque_obstaculos:      {}
+bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n' {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
                                                                               if(($4 != posSalida_glob[0] || $6 != posSalida_glob[1]) && ($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1])){
                                                                                     matriz_obstaculos[(int)$4][(int)$6] = 1;
+                                                                                    finalFile<<"entornoPonerObstaculo("<<$4<<","<<$6<<");"<<endl;
                                                                                     cout<<"OBSTACULO colocado en <"<<$4<<","<<$6<<">"<<endl;/* TODO */
                                                                                     posActual[0] = $4;
                                                                                     posActual[1] = $6;
@@ -725,6 +745,7 @@ bloque_obstaculos:      {}
                                                       if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                             if((var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])&&(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])){
                                                                   matriz_obstaculos[var->valor.valor_pos[0]][var->valor.valor_pos[1]] = 1;
+                                                                  finalFile<<"entornoPonerObstaculo("<<(int)var->valor.valor_pos[0]<<","<<(int)var->valor.valor_pos[1]<<");"<<endl;
                                                                   cout<<"OBSTACULO colocado en <"<<var->valor.valor_pos[0]<<","<<var->valor.valor_pos[1]<<">"<<endl; /*TODO*/
                                                                   posActual[0] = var->valor.valor_pos[0];
                                                                   posActual[1] = var->valor.valor_pos[1];  
@@ -772,6 +793,7 @@ bloque_obstaculos:      {}
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_obstaculos OBSTACULO '\n'         {matriz_obstaculos[posActual[0]][posActual[1]] = 1;
+                                                finalFile<<"entornoPonerObstaculo("<<posActual[0]<<","<<posActual[1]<<");"<<endl;
                                                 cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
                                                 reset_flags();}
       |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' {}
@@ -811,36 +833,33 @@ int main(int argc, char *argv[]){
      tabla = (Tabla*)malloc(sizeof(Tabla));
      var = (tipo_datoTS*)malloc(sizeof(tipo_datoTS));
      n_lineas = 0;
-     if (argc != 3) {
-		cout <<"error en los argumentos"<<endl;
-            cout <<endl<<"******************************************************"<<endl;
-            cout <<"*      Calculadora de expresiones aritméticas        *"<<endl;
-            cout <<"*                                                    *"<<endl;
-            cout <<"*      1)con el prompt LISTO>                        *"<<endl;
-            cout <<"*        teclea una expresión, por ej. 1+2<ENTER>    *"<<endl;
-            cout <<"*        Este programa indicará                      *"<<endl;
-            cout <<"*        si es gramaticalmente correcto              *"<<endl;
-            cout <<"*      2)para terminar el programa                   *"<<endl;
-            cout <<"*        teclear SALIR<ENTER>                        *"<<endl;
-            cout <<"*      3)si se comete algun error en la expresión    *"<<endl;
-            cout <<"*        se mostrará un mensaje y la ejecución       *"<<endl;
-            cout <<"*        del programa finaliza                       *"<<endl;
-            cout <<"******************************************************"<<endl<<endl<<endl;
-            yyparse();
-            cout <<"****************************************************"<<endl;
-            cout <<"*                 ADIOS!!!!                        *"<<endl;
-            cout <<"****************************************************"<<endl;
-	}else {
+     if(argc == 3) {
      		yyin=fopen(argv[1],"rt");
+            finalFile.open(argv[2], std::ofstream::trunc);
      		n_lineas = 0;
        	yyparse();
             fclose(yyin);
-
-            std::ofstream ofs (argv[2], std::ofstream::trunc);
+            finalFile<<"return 0"<<endl;
+            finalFile<<"}"<<endl;
+            
+            std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);
             printTabla(ofs);
             ofs.close();
 
          	return 0;
 	}
+      else{
+            yyin=fopen(argv[1],"rt");
+            finalFile.open("output.cpp", std::ofstream::trunc);
+     		n_lineas = 0;
+       	yyparse();
+            fclose(yyin);
+
+            std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);
+            printTabla(ofs);
+            ofs.close();
+
+         	return 0;
+      }
      return 0;
 }
