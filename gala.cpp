@@ -15,6 +15,8 @@ entornoMostrarMensaje("<0,6>");
 entornoMostrarMensaje("OBSTACULOS");
 entornoMostrarMensaje("<0,6>");
 entornoMostrarMensaje("BBB");
+entornoTerminar();
+entornoIniciar(7);
 entornoPonerEntrada(6,5,0.5);
 entornoPonerSalida(2,0);
 entornoPonerSalida(6,0);
@@ -87,5 +89,8 @@ entornoPonerFigura(6,0,0.4);
 entornoPonerFiguraSalida(6,0);
 entornoMostrarMensaje ("  ¡ Lo conseguiste !    ");
 entornoMostrarMensaje ("  ¡ Lo conseguiste !    ");
+entornoMostrarMensajeFin ("  ¡ Fin !    ");
+entornoTerminar();
+entornoPausa(1);
 return 0;
 }

@@ -76,8 +76,8 @@ int check_tipo_num(){
 }
 
 void printVictoria(){
-      if(posSalida_glob[0]==posActual[0] && posSalida_glob[1] == posActual[1]) finalFile<<"  ¡ Lo conseguiste !    "<<endl;
-      else finalFile<<"  ¡ Fin !    "<<endl;
+      if(posSalida_glob[0]==posActual[0] && posSalida_glob[1] == posActual[1]) finalFile<<"entornoMostrarMensaje (\"  ¡ Lo conseguiste !    \");"<<endl;
+      else finalFile<<"entornoMostrarMensaje (\"  ¡ Mala suerte !    \");"<<endl;
 }
 
 void yyerror(const char* s){         /*    llamada por cada error sintactico de yacc */
@@ -103,8 +103,8 @@ void initFile(){
       finalFile<<"using namespace std;"<<endl;
       finalFile<<"int main(int argc, char** argv){"<<endl;
       finalFile<<"entornoIniciar ("<<dimension_glob<<");"<<endl;
-      finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
-	finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
+      finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
+	finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;
       fileInicializado = true;
 }
 
@@ -114,26 +114,26 @@ bool moverse(int pasos, int direccion){
             switch(direccion){
                   case 0://Norte
                         if(posActual[1] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
-                        else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]-1<<","<<posActual[0]<<");"<<endl;}
+                        else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;}
                   break;
                   case 1://Sur
                         if(posActual[1] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
-                        else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]+1<<","<<posActual[0]<<");"<<endl;}
+                        else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
                   case 2://Este
                         if(posActual[0] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
-                        else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]+1<<");"<<endl;}
+                        else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
                   case 3://Oeste
                         if(posActual[0] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;}
-                        else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;};
+                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]-1<<");"<<endl;}
+                        else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
             }
-            if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;printVictoria();finEjemplo=true;}
+            if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;finalFile<<"entornoPonerFiguraSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;printVictoria();finEjemplo=true;}
       }
 }
 
@@ -673,7 +673,9 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
       |DIMENSION expr bloque_configuracion '\n'                   {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(3<$2 && $2<11){dimension_glob = $2;
                                                                                           posSalida_glob[0]=$2-1;
-                                                                                          posSalida_glob[1]=$2-1;}
+                                                                                          posSalida_glob[1]=$2-1;
+                                                                                          finalFile<<"entornoTerminar();"<<endl;
+                                                                                          finalFile<<"entornoIniciar("<<dimension_glob<<");"<<endl;}
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION debe estar entre 4 y 10"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de DIMENSION erróneo"<<endl;};
                                                                   reset_flags();}
@@ -683,7 +685,7 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
                                                                                     if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
                                                                                           posEntrada_glob[0] = var->valor.valor_pos[0];
                                                                                           posEntrada_glob[1] = var->valor.valor_pos[1];
-                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
+                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;   
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
                                                                         }
@@ -696,7 +698,7 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
                                                                                     if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
                                                                                           posEntrada_glob[0] = $4;
                                                                                           posEntrada_glob[1] = $6;
-                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
+                                                                                          finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA debe estar al borde del tablero"<<endl;
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de ENTRADA no puede coincidir con la SALIDA"<<endl;
                                                                         }
@@ -709,7 +711,7 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
                                                                                     if(var->valor.valor_pos[0] == 0 || var->valor.valor_pos[0] == dimension_glob-1 || var->valor.valor_pos[1] == 0 || var->valor.valor_pos[1] == dimension_glob-1){
                                                                                           posSalida_glob[0] = var->valor.valor_pos[0];
                                                                                           posSalida_glob[1] = var->valor.valor_pos[1];
-                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
+                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;   
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
                                                                         }
@@ -722,7 +724,7 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
                                                                                     if($4 == 0 || $4 == dimension_glob-1 || $6 == 0 || $6 == dimension_glob-1){
                                                                                           posSalida_glob[0] = $4;
                                                                                           posSalida_glob[1] = $6;
-                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;
+                                                                                          finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;
                                                                                     }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA debe estar al borde del tablero"<<endl;
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de SALIDA no puede coincidir con la ENTRADA"<<endl;
                                                                         }
@@ -739,7 +741,7 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                                         if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
                                                                               if(($4 != posSalida_glob[0] || $6 != posSalida_glob[1]) && ($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1])){
                                                                                     matriz_obstaculos[(int)$4][(int)$6] = 1;
-                                                                                    finalFile<<"entornoPonerObstaculo("<<$4<<","<<$6<<");"<<endl;
+                                                                                    finalFile<<"entornoPonerObstaculo("<<$6<<","<<$4<<");"<<endl;
                                                                                     cout<<"OBSTACULO colocado en <"<<$4<<","<<$6<<">"<<endl;/* TODO */
                                                                                     posActual[0] = $4;
                                                                                     posActual[1] = $6;
@@ -752,7 +754,7 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                       if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                             if((var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])&&(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])){
                                                                   matriz_obstaculos[var->valor.valor_pos[0]][var->valor.valor_pos[1]] = 1;
-                                                                  finalFile<<"entornoPonerObstaculo("<<(int)var->valor.valor_pos[0]<<","<<(int)var->valor.valor_pos[1]<<");"<<endl;
+                                                                  finalFile<<"entornoPonerObstaculo("<<(int)var->valor.valor_pos[1]<<","<<(int)var->valor.valor_pos[0]<<");"<<endl;
                                                                   cout<<"OBSTACULO colocado en <"<<var->valor.valor_pos[0]<<","<<var->valor.valor_pos[1]<<">"<<endl; /*TODO*/
                                                                   posActual[0] = var->valor.valor_pos[0];
                                                                   posActual[1] = var->valor.valor_pos[1];  
@@ -800,7 +802,7 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_obstaculos OBSTACULO '\n'         {matriz_obstaculos[posActual[0]][posActual[1]] = 1;
-                                                finalFile<<"entornoPonerObstaculo("<<posActual[0]<<","<<posActual[1]<<");"<<endl;
+                                                finalFile<<"entornoPonerObstaculo("<<posActual[1]<<","<<posActual[0]<<");"<<endl;
                                                 cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
                                                 reset_flags();}
       |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' {}
@@ -809,27 +811,27 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       ;
 
 bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
-                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
-                        finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;}
-      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {printVictoria();}
+                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
+                        finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;}
+      |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {printVictoria();finEjemplo=false;}
       ;
 bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
-                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[0]<<","<<posEntrada_glob[1]<<","<<pausa_glob<<");"<<endl;
-                        finalFile<<"entornoPonerSalida("<<posSalida_glob[0]<<","<<posSalida_glob[1]<<");"<<endl;}
+                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
+                        finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;}
       |bloque_ejemplos_anidado SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      moverse((int)$3, 1);
+                                                      if(!finEjemplo)moverse((int)$3, 1);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      moverse((int)$3, 2);
+                                                      if(!finEjemplo)moverse((int)$3, 2);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      moverse((int)$3, 3);
+                                                      if(!finEjemplo)moverse((int)$3, 3);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      moverse((int)$3, 0);
+                                                      if(!finEjemplo)moverse((int)$3, 0);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}
       |bloque_ejemplos_anidado asignacion_sin_ctes
@@ -850,7 +852,10 @@ int main(int argc, char *argv[]){
      		n_lineas = 0;
        	yyparse();
             fclose(yyin);
-            finalFile<<"return 0"<<endl;
+            finalFile<<"entornoMostrarMensajeFin (\"  ¡ Fin !    \");"<<endl;	
+            finalFile<<"entornoTerminar();"<<endl;
+            finalFile<<"entornoPausa(1);"<<endl;
+            finalFile<<"return 0;"<<endl;
             finalFile<<"}"<<endl;
             
             std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);

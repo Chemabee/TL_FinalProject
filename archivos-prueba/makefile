@@ -1,6 +1,6 @@
 #fichero Makefile
 
-FUENTE = ./gala.cpp
+FUENTE = ./output.cpp
 
 fin: prueba
 	./prueba 

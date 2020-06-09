@@ -2,7 +2,8 @@ NAME = calculadora
 OBJ = $(NAME).o lexico.o
 
 ejecutar: $(NAME)
-	@./$(NAME) input.txt output.txt
+	@./$(NAME) input.txt gala.cpp
+	@cp gala.cpp entorno/
 
 $(NAME) : $(OBJ)     #segunda fase de la traducción. Generación del código ejecutable 
 	g++ -o$(NAME) $(OBJ)
