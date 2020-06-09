@@ -66,6 +66,19 @@ OBSTACULOS
     escribir p1
     escribir MSG_OBS
     escribir p1
+
+    si 3>4
+    entonces
+    escribir "IF"
+    sino
+    escribir "ELSE"
+    finsi
+    si 3<4
+    entonces
+    escribir "IF"
+    sino
+    escribir "ELSE"
+    finsi
     
     obstaculo <0,0>
     sur 1
@@ -81,33 +94,4 @@ EJEMPLOS
         norte 2
         oeste 4
     finejemplo
-
-    ejemplo EJEMPLO_1               # Ejemplo 1
-        cad="Soy Ejemplo 1"
-        escribir cad
-        oeste 4
-        norte 3
-        este 2
-        norte 2
-        oeste 2
-    finejemplo 
-
-    ejemplo EJEMPLO_2               # Ejemplo 2
-        cad="Soy Ejemplo 2"
-        escribir cad
-        norte 1
-        oeste 2
-        sur 1
-        oeste 3
-        norte 3
-        este 4
-        norte 2
-        oeste 3
-    finejemplo
-
-    ejemplo EJEMPLO_3               # Ejemplo 3
-        cad="Soy Ejemplo 3"
-        escribir cad
-        oeste D                     # Err. Sem.: movimiento fuera de los límites
-    finejemplo   
     

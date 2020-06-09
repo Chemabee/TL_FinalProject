@@ -22,6 +22,8 @@ bool posVar = false;
 
 bool errorFichero = false;
 
+bool ejecutar = true;
+
 bool fileInicializado = false;
 bool finEjemplo = false;
 
@@ -397,8 +399,8 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
       
       |error '\n' {yyerrok;reset_flags();}       
 	;
-escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}}
-      |ESCRIBIR expr '\n'     {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
+escribir:ESCRIBIR CADENA '\n' {if(ejecutar){cout << $2 <<endl;reset_flags();if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}}}
+      |ESCRIBIR expr '\n'     {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
                                           if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<var->valor.valor_cad<<"\");"<<endl;}
@@ -408,8 +410,8 @@ escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();if(fileInicializa
                                     }
                                     else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout <<$2<<endl;}
                               }
-                              reset_flags();}
-      |ESCRIBIR expr_logica '\n' {
+                              reset_flags();}}
+      |ESCRIBIR expr_logica '\n' {if(ejecutar){
                                     if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 if(cmp){	
                                                       if($2)	
@@ -420,7 +422,7 @@ escribir:ESCRIBIR CADENA '\n' {cout << $2 <<endl;reset_flags();if(fileInicializa
                                                       {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout<<$2;}	
                                                 cout<<endl;
                                     }
-                                    reset_flags();
+                                    reset_flags();}
       }
       ;
 
@@ -548,7 +550,7 @@ expr_logica: BOOL                 {cmp=true;$$=$1;}
        |NOT expr_logica         {$$=!$2;}
        ;
 
-asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
+asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(ejecutar){if(!error_str&&!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha){
                                                 
                                                 if(tabla->buscar($1, var) != 0){
                                                       if(var->tipo == check_tipo_num()){
@@ -585,9 +587,9 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
                                                 
                                           };
                                     
-                                    reset_flags();
+                                    reset_flags();}
                                     }
-      |VARIABLE '=' CADENA '\n'           {
+      |VARIABLE '=' CADENA '\n'           {if(ejecutar){
                                                 if(tabla->buscar($1, var)!=0){
                                                       if(var->tipo == 3){
                                                             strcpy(var->nombre, $1);
@@ -608,9 +610,9 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
                                                       }
                                                 }
                                                 else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
-                                                reset_flags();
+                                                reset_flags();}
       }
-      |VARIABLE '=' '<'expr ',' expr '>' '\n'   {if(!real_final){
+      |VARIABLE '=' '<'expr ',' expr '>' '\n'   {if(ejecutar){if(!real_final){
                                                       if(tabla->buscar($1, var)!=0){
                                                             if(var->tipo == 4){
                                                                   strcpy(var->nombre, $1);
@@ -634,10 +636,10 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
                                                       else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
                                                 }
                                                 else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, las coordenadas de la posición deben ser valores enteros"<<endl;
-                                                reset_flags();
+                                                reset_flags();}
                                           }
 
-      |VARIABLE '=' expr_logica '\n'     	{if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
+      |VARIABLE '=' expr_logica '\n'     	{if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 
                                                 if(tabla->buscar($1, var) != 0){
                                                       if(var->tipo == check_tipo_num()){
@@ -662,7 +664,7 @@ asignacion_sin_ctes:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!err
                                                 }
                                                 else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, variable no inicializada en el bloque DEFINICIONES."<<endl;}
                                           };
-                                    reset_flags();
+                                    reset_flags();}
                                     }
       |escribir   {reset_flags();}
       |error '\n' {yyerrok;reset_flags();}       
@@ -740,20 +742,20 @@ bloque_configuracion:   {if(!fileInicializado)initFile();}
       |bloque_configuracion asignacion_sin_ctes
       ;
 bloque_obstaculos:      {if(!fileInicializado)initFile();}
-      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n' {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
+      |bloque_obstaculos OBSTACULO '<'expr ',' expr '>' '\n' {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0){
                                                                         if(0 <= $4 && $4 < dimension_glob && 0 <= $6 && $6 < dimension_glob){
                                                                               if(($4 != posSalida_glob[0] || $6 != posSalida_glob[1]) && ($4 != posEntrada_glob[0] || $6 != posEntrada_glob[1])){
                                                                                     matriz_obstaculos[(int)$4][(int)$6] = 1;
                                                                                     finalFile<<"entornoPonerObstaculo("<<$6<<","<<$4<<");"<<endl;
-                                                                                    cout<<"OBSTACULO colocado en <"<<$4<<","<<$6<<">"<<endl;/* TODO */
+                                                                                    cout<<"OBSTACULO colocado en <"<<$4<<","<<$6<<">"<<endl;
                                                                                     posActual[0] = $4;
                                                                                     posActual[1] = $6;
                                                                               }else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO no puede coincidir con la ENTRADA o SALIDA"<<endl;
                                                                         }
                                                                         else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
                                                                   }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
-                                                                  reset_flags();}
-      |bloque_obstaculos OBSTACULO expr '\n'    {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
+                                                                  reset_flags();}}
+      |bloque_obstaculos OBSTACULO expr '\n'    {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==4){
                                                       if(0<=var->valor.valor_pos[0] && var->valor.valor_pos[0] < dimension_glob && 0 <= var->valor.valor_pos[1] && var->valor.valor_pos[1] < dimension_glob){
                                                             if((var->valor.valor_pos[0] != posEntrada_glob[0] || var->valor.valor_pos[1] != posEntrada_glob[1])&&(var->valor.valor_pos[0] != posSalida_glob[0] || var->valor.valor_pos[1] != posSalida_glob[1])){
                                                                   matriz_obstaculos[var->valor.valor_pos[0]][var->valor.valor_pos[1]] = 1;
@@ -765,9 +767,9 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                       }
                                                       else cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO debe estar dentro del tablero"<<endl;
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor de OBSTACULO erróneo"<<endl;};
-                                                reset_flags();
+                                                reset_flags();}
                                                 }
-      |bloque_obstaculos SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+      |bloque_obstaculos SUR expr '\n'          {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[1]+$3 < dimension_glob){
                                                             posActual[1]=posActual[1]+$3;
                                                       }else{
@@ -775,9 +777,9 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
-                                                reset_flags();
+                                                reset_flags();}
                                           }
-      |bloque_obstaculos ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+      |bloque_obstaculos ESTE expr '\n'         {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[0]+$3 < dimension_glob){
                                                             posActual[0]=posActual[0]+$3;
                                                       }else{
@@ -785,8 +787,8 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_obstaculos OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                reset_flags();}}
+      |bloque_obstaculos OESTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[0]-$3 >= 0){
                                                             posActual[0]=posActual[0]-$3;
                                                       }else{
@@ -794,8 +796,8 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_obstaculos NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                reset_flags();}}
+      |bloque_obstaculos NORTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[1]-$3 >= 0){
                                                             posActual[1]=posActual[1]-$3;
                                                       }else{
@@ -803,13 +805,13 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_obstaculos OBSTACULO '\n'         {matriz_obstaculos[posActual[0]][posActual[1]] = 1;
+                                                reset_flags();}}
+      |bloque_obstaculos OBSTACULO '\n'         {if(ejecutar){matriz_obstaculos[posActual[0]][posActual[1]] = 1;
                                                 finalFile<<"entornoPonerObstaculo("<<posActual[1]<<","<<posActual[0]<<");"<<endl;
                                                 cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
-                                                reset_flags();}
+                                                reset_flags();}}
       |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' {}
-      |bloque_obstaculos condicional
+      |bloque_obstaculos condicional_obstaculos
       |bloque_obstaculos asignacion_sin_ctes
       ;
 
@@ -840,9 +842,11 @@ bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=pos
       |bloque_ejemplos_anidado asignacion_sin_ctes
       ;
 
-condicional:IF expr_logica '\n' THEN '\n' bloque_obstaculos ELSE '\n' bloque_obstaculos ENDIF '\n'
+condicional_obstaculos:IF expr_logica '\n' {ejecutar = $2;} THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
       ;
-
+cierre_condicional_obstaculos: ENDIF '\n' {ejecutar = true;}
+      |ELSE '\n' {if(!ejecutar)ejecutar = true; else ejecutar = false;} bloque_obstaculos ENDIF '\n' {ejecutar = true;}
+      ;
 %%
 
 int main(int argc, char *argv[]){

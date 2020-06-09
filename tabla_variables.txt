@@ -5,7 +5,7 @@
 **x            Int          NI      NO
 **y            Int          NI      NO
 **f            Float        NI      NO
-**cad            String       Soy Ejemplo 3      NO
+**cad            String       Soy Ejemplo 0      NO
 **p1            Position     <0,6>      NO
 **p2            Position     <6,4>      NO
 **D            Int          7     SI
@@ -19,7 +19,7 @@
 ** POS_ENTRADA: <5,6>
 ** POS_SALIDA: <0,6>
 ** PAUSA: 0.4
-** POS_ACTUAL: <0,6>
+** POS_ACTUAL: <1,1>
 *********************************
 *******NI = No Inicializado******
 *********************************
