@@ -20,6 +20,8 @@ bool str = false;
 bool error_str = false;
 bool posVar = false;
 
+bool errorFichero = false;
+
 bool fileInicializado = false;
 bool finEjemplo = false;
 
@@ -83,6 +85,7 @@ void printVictoria(){
 void yyerror(const char* s){         /*    llamada por cada error sintactico de yacc */
 	cout << "Error sintáctico en la línea \033[1;31m"<<n_lineas<<"\033[0m"<<endl;	
       reset_flags();
+      errorFichero = true;
 } 
 
 bool insertar(tipo_datoTS *var, bool init, bool cte){
@@ -857,6 +860,9 @@ int main(int argc, char *argv[]){
             finalFile<<"entornoPausa(1);"<<endl;
             finalFile<<"return 0;"<<endl;
             finalFile<<"}"<<endl;
+
+            finalFile.close();
+            if(errorFichero) remove(argv[2]);
             
             std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);
             printTabla(ofs);
@@ -866,11 +872,12 @@ int main(int argc, char *argv[]){
 	}
       else{
             yyin=fopen(argv[1],"rt");
-            finalFile.open("output.cpp", std::ofstream::trunc);
+            finalFile.open("gala.cpp", std::ofstream::trunc);
      		n_lineas = 0;
        	yyparse();
             fclose(yyin);
 
+            if(errorFichero) remove("gala.cpp");
             std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);
             printTabla(ofs);
             ofs.close();
