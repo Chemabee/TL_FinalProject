@@ -93,23 +93,35 @@ Gramática
    78                        | bloque_ejemplos_anidado OESTE expr '\n'
    79                        | bloque_ejemplos_anidado NORTE expr '\n'
    80                        | bloque_ejemplos_anidado asignacion_sin_ctes
+   81                        | bloque_ejemplos_anidado condicional_ejemplos
 
-   81 $@1: %empty
+   82 $@1: %empty
 
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
 
-   83 cierre_condicional_obstaculos: ENDIF '\n'
+   84 cierre_condicional_obstaculos: ENDIF '\n'
 
-   84 $@2: %empty
+   85 $@2: %empty
 
-   85 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF '\n'
+   86 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF '\n'
+
+   87 $@3: %empty
+
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+   89 cierre_condicional_ejemplos: ENDIF '\n'
+
+   90 $@4: %empty
+
+   91 cierre_condicional_ejemplos: ELSE '\n' $@4 bloque_ejemplos_anidado ENDIF '\n'
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 '\n' (10) 2 3 4 5 7 8 9 10 11 13 14 15 16 22 45 46 47 48 50 52 55 56
-    57 58 59 60 63 64 65 66 67 68 69 70 74 76 77 78 79 82 83 85
+    57 58 59 60 63 64 65 66 67 68 69 70 74 76 77 78 79 83 84 86 88
+    89 91
 '%' (37) 32
 '(' (40) 26 35
 ')' (41) 26 35
@@ -145,10 +157,10 @@ EJEMPLO (276) 74
 FINEJEMPLO (277) 74
 REPITE (278) 70
 FINREPITE (279) 70
-IF (280) 82
-THEN (281) 82
-ELSE (282) 85
-ENDIF (283) 83 85
+IF (280) 83 88
+THEN (281) 83 88
+ELSE (282) 86 91
+ENDIF (283) 84 86 89 91
 REAL (284) 23
 INT (285) 17
 FLOAT (286) 18
@@ -182,7 +194,7 @@ expr (60)
     58 59 60 63 64 65 66 67 68 70 76 77 78 79
 expr_logica (61)
     en la izquierda: 34 35 36 37 38 39 40 41 42 43 44, en la derecha:
-    11 16 35 42 43 44 48 82
+    11 16 35 42 43 44 48 83 88
 asignacion_sin_ctes (62)
     en la izquierda: 45 46 47 48 49 50, en la derecha: 61 72 80
 bloque_definiciones (63)
@@ -192,20 +204,28 @@ bloque_configuracion (64)
     56 57 58 59 60 61
 bloque_obstaculos (65)
     en la izquierda: 62 63 64 65 66 67 68 69 70 71 72, en la derecha:
-    2 3 4 5 63 64 65 66 67 68 69 70 71 72 82 85
+    2 3 4 5 63 64 65 66 67 68 69 70 71 72 83 86
 bloque_ejemplos (66)
     en la izquierda: 73 74, en la derecha: 2 3 4 5 74
 bloque_ejemplos_anidado (67)
-    en la izquierda: 75 76 77 78 79 80, en la derecha: 74 76 77 78
-    79 80
+    en la izquierda: 75 76 77 78 79 80 81, en la derecha: 74 76 77
+    78 79 80 81 88 91
 condicional_obstaculos (68)
-    en la izquierda: 82, en la derecha: 71
+    en la izquierda: 83, en la derecha: 71
 $@1 (69)
-    en la izquierda: 81, en la derecha: 82
+    en la izquierda: 82, en la derecha: 83
 cierre_condicional_obstaculos (70)
-    en la izquierda: 83 85, en la derecha: 82
+    en la izquierda: 84 86, en la derecha: 83
 $@2 (71)
-    en la izquierda: 84, en la derecha: 85
+    en la izquierda: 85, en la derecha: 86
+condicional_ejemplos (72)
+    en la izquierda: 88, en la derecha: 81
+$@3 (73)
+    en la izquierda: 87, en la derecha: 88
+cierre_condicional_ejemplos (74)
+    en la izquierda: 89 91, en la derecha: 88
+$@4 (75)
+    en la izquierda: 90, en la derecha: 91
 
 
 Estado 0
@@ -1633,7 +1653,7 @@ Estado 111
 
 Estado 112
 
-   82 condicional_obstaculos: IF . expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF . expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
 
     BOOL      desplazar e ir al estado 17
     ENTERO    desplazar e ir al estado 18
@@ -1990,7 +2010,7 @@ Estado 137
 
    42 expr_logica: expr_logica . AND expr_logica
    43            | expr_logica . OR expr_logica
-   82 condicional_obstaculos: IF expr_logica . '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica . '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
 
     OR    desplazar e ir al estado 62
     AND   desplazar e ir al estado 63
@@ -2303,9 +2323,9 @@ Estado 159
 
 Estado 160
 
-   82 condicional_obstaculos: IF expr_logica '\n' . $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' . $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
 
-    $default  reduce usando la regla 81 ($@1)
+    $default  reduce usando la regla 82 ($@1)
 
     $@1  ir al estado 174
 
@@ -2457,7 +2477,7 @@ Estado 173
 
 Estado 174
 
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 . THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 . THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
 
     THEN  desplazar e ir al estado 185
 
@@ -2582,7 +2602,7 @@ Estado 184
 
 Estado 185
 
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 THEN . '\n' bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 THEN . '\n' bloque_obstaculos cierre_condicional_obstaculos
 
     '\n'  desplazar e ir al estado 195
 
@@ -2696,7 +2716,7 @@ Estado 194
 
 Estado 195
 
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' . bloque_obstaculos cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' . bloque_obstaculos cierre_condicional_obstaculos
 
     $default  reduce usando la regla 62 (bloque_obstaculos)
 
@@ -2746,6 +2766,7 @@ Estado 201
    78                        | bloque_ejemplos_anidado . OESTE expr '\n'
    79                        | bloque_ejemplos_anidado . NORTE expr '\n'
    80                        | bloque_ejemplos_anidado . asignacion_sin_ctes
+   81                        | bloque_ejemplos_anidado . condicional_ejemplos
 
     error       desplazar e ir al estado 97
     VARIABLE    desplazar e ir al estado 98
@@ -2755,9 +2776,11 @@ Estado 201
     ESTE        desplazar e ir al estado 207
     OESTE       desplazar e ir al estado 208
     FINEJEMPLO  desplazar e ir al estado 209
+    IF          desplazar e ir al estado 210
 
-    escribir             ir al estado 103
-    asignacion_sin_ctes  ir al estado 210
+    escribir              ir al estado 103
+    asignacion_sin_ctes   ir al estado 211
+    condicional_ejemplos  ir al estado 212
 
 
 Estado 202
@@ -2772,7 +2795,7 @@ Estado 202
    70                  | bloque_obstaculos . REPITE expr '\n' bloque_obstaculos FINREPITE '\n'
    71                  | bloque_obstaculos . condicional_obstaculos
    72                  | bloque_obstaculos . asignacion_sin_ctes
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos . cierre_condicional_obstaculos
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos . cierre_condicional_obstaculos
 
     error      desplazar e ir al estado 97
     OBSTACULO  desplazar e ir al estado 105
@@ -2784,13 +2807,13 @@ Estado 202
     OESTE      desplazar e ir al estado 110
     REPITE     desplazar e ir al estado 111
     IF         desplazar e ir al estado 112
-    ELSE       desplazar e ir al estado 211
-    ENDIF      desplazar e ir al estado 212
+    ELSE       desplazar e ir al estado 213
+    ENDIF      desplazar e ir al estado 214
 
     escribir                       ir al estado 103
     asignacion_sin_ctes            ir al estado 113
     condicional_obstaculos         ir al estado 114
-    cierre_condicional_obstaculos  ir al estado 213
+    cierre_condicional_obstaculos  ir al estado 215
 
 
 Estado 203
@@ -2799,7 +2822,7 @@ Estado 203
 
     $default  reduce usando la regla 73 (bloque_ejemplos)
 
-    bloque_ejemplos  ir al estado 214
+    bloque_ejemplos  ir al estado 216
 
 
 Estado 204
@@ -2819,7 +2842,7 @@ Estado 205
     '-'       desplazar e ir al estado 23
     '('       desplazar e ir al estado 45
 
-    expr  ir al estado 215
+    expr  ir al estado 217
 
 
 Estado 206
@@ -2832,7 +2855,7 @@ Estado 206
     '-'       desplazar e ir al estado 23
     '('       desplazar e ir al estado 45
 
-    expr  ir al estado 216
+    expr  ir al estado 218
 
 
 Estado 207
@@ -2845,7 +2868,7 @@ Estado 207
     '-'       desplazar e ir al estado 23
     '('       desplazar e ir al estado 45
 
-    expr  ir al estado 217
+    expr  ir al estado 219
 
 
 Estado 208
@@ -2858,45 +2881,68 @@ Estado 208
     '-'       desplazar e ir al estado 23
     '('       desplazar e ir al estado 45
 
-    expr  ir al estado 218
+    expr  ir al estado 220
 
 
 Estado 209
 
    74 bloque_ejemplos: bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO . '\n'
 
-    '\n'  desplazar e ir al estado 219
+    '\n'  desplazar e ir al estado 221
 
 
 Estado 210
+
+   88 condicional_ejemplos: IF . expr_logica '\n' $@3 THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+    BOOL      desplazar e ir al estado 17
+    ENTERO    desplazar e ir al estado 18
+    VARIABLE  desplazar e ir al estado 19
+    REAL      desplazar e ir al estado 21
+    NOT       desplazar e ir al estado 22
+    '-'       desplazar e ir al estado 23
+    '('       desplazar e ir al estado 24
+
+    expr         ir al estado 43
+    expr_logica  ir al estado 222
+
+
+Estado 211
 
    80 bloque_ejemplos_anidado: bloque_ejemplos_anidado asignacion_sin_ctes .
 
     $default  reduce usando la regla 80 (bloque_ejemplos_anidado)
 
 
-Estado 211
-
-   85 cierre_condicional_obstaculos: ELSE . '\n' $@2 bloque_obstaculos ENDIF '\n'
-
-    '\n'  desplazar e ir al estado 220
-
-
 Estado 212
 
-   83 cierre_condicional_obstaculos: ENDIF . '\n'
+   81 bloque_ejemplos_anidado: bloque_ejemplos_anidado condicional_ejemplos .
 
-    '\n'  desplazar e ir al estado 221
+    $default  reduce usando la regla 81 (bloque_ejemplos_anidado)
 
 
 Estado 213
 
-   82 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos .
+   86 cierre_condicional_obstaculos: ELSE . '\n' $@2 bloque_obstaculos ENDIF '\n'
 
-    $default  reduce usando la regla 82 (condicional_obstaculos)
+    '\n'  desplazar e ir al estado 223
 
 
 Estado 214
+
+   84 cierre_condicional_obstaculos: ENDIF . '\n'
+
+    '\n'  desplazar e ir al estado 224
+
+
+Estado 215
+
+   83 condicional_obstaculos: IF expr_logica '\n' $@1 THEN '\n' bloque_obstaculos cierre_condicional_obstaculos .
+
+    $default  reduce usando la regla 83 (condicional_obstaculos)
+
+
+Estado 216
 
     2 lista_instrucciones: DEFINICIONES '\n' bloque_definiciones CONFIGURACION '\n' bloque_configuracion OBSTACULOS '\n' bloque_obstaculos EJEMPLOS '\n' bloque_ejemplos .
    74 bloque_ejemplos: bloque_ejemplos . EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n'
@@ -2906,7 +2952,7 @@ Estado 214
     $default  reduce usando la regla 2 (lista_instrucciones)
 
 
-Estado 215
+Estado 217
 
    27 expr: expr . '+' expr
    28     | expr . '-' expr
@@ -2922,10 +2968,10 @@ Estado 215
     '/'   desplazar e ir al estado 58
     '%'   desplazar e ir al estado 59
     '^'   desplazar e ir al estado 60
-    '\n'  desplazar e ir al estado 222
+    '\n'  desplazar e ir al estado 225
 
 
-Estado 216
+Estado 218
 
    27 expr: expr . '+' expr
    28     | expr . '-' expr
@@ -2941,10 +2987,10 @@ Estado 216
     '/'   desplazar e ir al estado 58
     '%'   desplazar e ir al estado 59
     '^'   desplazar e ir al estado 60
-    '\n'  desplazar e ir al estado 223
+    '\n'  desplazar e ir al estado 226
 
 
-Estado 217
+Estado 219
 
    27 expr: expr . '+' expr
    28     | expr . '-' expr
@@ -2960,10 +3006,10 @@ Estado 217
     '/'   desplazar e ir al estado 58
     '%'   desplazar e ir al estado 59
     '^'   desplazar e ir al estado 60
-    '\n'  desplazar e ir al estado 224
+    '\n'  desplazar e ir al estado 227
 
 
-Estado 218
+Estado 220
 
    27 expr: expr . '+' expr
    28     | expr . '-' expr
@@ -2979,70 +3025,97 @@ Estado 218
     '/'   desplazar e ir al estado 58
     '%'   desplazar e ir al estado 59
     '^'   desplazar e ir al estado 60
-    '\n'  desplazar e ir al estado 225
+    '\n'  desplazar e ir al estado 228
 
 
-Estado 219
+Estado 221
 
    74 bloque_ejemplos: bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' .
 
     $default  reduce usando la regla 74 (bloque_ejemplos)
 
 
-Estado 220
-
-   85 cierre_condicional_obstaculos: ELSE '\n' . $@2 bloque_obstaculos ENDIF '\n'
-
-    $default  reduce usando la regla 84 ($@2)
-
-    $@2  ir al estado 226
-
-
-Estado 221
-
-   83 cierre_condicional_obstaculos: ENDIF '\n' .
-
-    $default  reduce usando la regla 83 (cierre_condicional_obstaculos)
-
-
 Estado 222
+
+   42 expr_logica: expr_logica . AND expr_logica
+   43            | expr_logica . OR expr_logica
+   88 condicional_ejemplos: IF expr_logica . '\n' $@3 THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+    OR    desplazar e ir al estado 62
+    AND   desplazar e ir al estado 63
+    '\n'  desplazar e ir al estado 229
+
+
+Estado 223
+
+   86 cierre_condicional_obstaculos: ELSE '\n' . $@2 bloque_obstaculos ENDIF '\n'
+
+    $default  reduce usando la regla 85 ($@2)
+
+    $@2  ir al estado 230
+
+
+Estado 224
+
+   84 cierre_condicional_obstaculos: ENDIF '\n' .
+
+    $default  reduce usando la regla 84 (cierre_condicional_obstaculos)
+
+
+Estado 225
 
    79 bloque_ejemplos_anidado: bloque_ejemplos_anidado NORTE expr '\n' .
 
     $default  reduce usando la regla 79 (bloque_ejemplos_anidado)
 
 
-Estado 223
+Estado 226
 
    76 bloque_ejemplos_anidado: bloque_ejemplos_anidado SUR expr '\n' .
 
     $default  reduce usando la regla 76 (bloque_ejemplos_anidado)
 
 
-Estado 224
+Estado 227
 
    77 bloque_ejemplos_anidado: bloque_ejemplos_anidado ESTE expr '\n' .
 
     $default  reduce usando la regla 77 (bloque_ejemplos_anidado)
 
 
-Estado 225
+Estado 228
 
    78 bloque_ejemplos_anidado: bloque_ejemplos_anidado OESTE expr '\n' .
 
     $default  reduce usando la regla 78 (bloque_ejemplos_anidado)
 
 
-Estado 226
+Estado 229
 
-   85 cierre_condicional_obstaculos: ELSE '\n' $@2 . bloque_obstaculos ENDIF '\n'
+   88 condicional_ejemplos: IF expr_logica '\n' . $@3 THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+    $default  reduce usando la regla 87 ($@3)
+
+    $@3  ir al estado 231
+
+
+Estado 230
+
+   86 cierre_condicional_obstaculos: ELSE '\n' $@2 . bloque_obstaculos ENDIF '\n'
 
     $default  reduce usando la regla 62 (bloque_obstaculos)
 
-    bloque_obstaculos  ir al estado 227
+    bloque_obstaculos  ir al estado 232
 
 
-Estado 227
+Estado 231
+
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 . THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+    THEN  desplazar e ir al estado 233
+
+
+Estado 232
 
    63 bloque_obstaculos: bloque_obstaculos . OBSTACULO '<' expr ',' expr '>' '\n'
    64                  | bloque_obstaculos . OBSTACULO expr '\n'
@@ -3054,7 +3127,7 @@ Estado 227
    70                  | bloque_obstaculos . REPITE expr '\n' bloque_obstaculos FINREPITE '\n'
    71                  | bloque_obstaculos . condicional_obstaculos
    72                  | bloque_obstaculos . asignacion_sin_ctes
-   85 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos . ENDIF '\n'
+   86 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos . ENDIF '\n'
 
     error      desplazar e ir al estado 97
     OBSTACULO  desplazar e ir al estado 105
@@ -3066,22 +3139,150 @@ Estado 227
     OESTE      desplazar e ir al estado 110
     REPITE     desplazar e ir al estado 111
     IF         desplazar e ir al estado 112
-    ENDIF      desplazar e ir al estado 228
+    ENDIF      desplazar e ir al estado 234
 
     escribir                ir al estado 103
     asignacion_sin_ctes     ir al estado 113
     condicional_obstaculos  ir al estado 114
 
 
-Estado 228
+Estado 233
 
-   85 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF . '\n'
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 THEN . '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
 
-    '\n'  desplazar e ir al estado 229
+    '\n'  desplazar e ir al estado 235
 
 
-Estado 229
+Estado 234
 
-   85 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF '\n' .
+   86 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF . '\n'
 
-    $default  reduce usando la regla 85 (cierre_condicional_obstaculos)
+    '\n'  desplazar e ir al estado 236
+
+
+Estado 235
+
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 THEN '\n' . bloque_ejemplos_anidado cierre_condicional_ejemplos
+
+    $default  reduce usando la regla 75 (bloque_ejemplos_anidado)
+
+    bloque_ejemplos_anidado  ir al estado 237
+
+
+Estado 236
+
+   86 cierre_condicional_obstaculos: ELSE '\n' $@2 bloque_obstaculos ENDIF '\n' .
+
+    $default  reduce usando la regla 86 (cierre_condicional_obstaculos)
+
+
+Estado 237
+
+   76 bloque_ejemplos_anidado: bloque_ejemplos_anidado . SUR expr '\n'
+   77                        | bloque_ejemplos_anidado . ESTE expr '\n'
+   78                        | bloque_ejemplos_anidado . OESTE expr '\n'
+   79                        | bloque_ejemplos_anidado . NORTE expr '\n'
+   80                        | bloque_ejemplos_anidado . asignacion_sin_ctes
+   81                        | bloque_ejemplos_anidado . condicional_ejemplos
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 THEN '\n' bloque_ejemplos_anidado . cierre_condicional_ejemplos
+
+    error     desplazar e ir al estado 97
+    VARIABLE  desplazar e ir al estado 98
+    ESCRIBIR  desplazar e ir al estado 3
+    NORTE     desplazar e ir al estado 205
+    SUR       desplazar e ir al estado 206
+    ESTE      desplazar e ir al estado 207
+    OESTE     desplazar e ir al estado 208
+    IF        desplazar e ir al estado 210
+    ELSE      desplazar e ir al estado 238
+    ENDIF     desplazar e ir al estado 239
+
+    escribir                     ir al estado 103
+    asignacion_sin_ctes          ir al estado 211
+    condicional_ejemplos         ir al estado 212
+    cierre_condicional_ejemplos  ir al estado 240
+
+
+Estado 238
+
+   91 cierre_condicional_ejemplos: ELSE . '\n' $@4 bloque_ejemplos_anidado ENDIF '\n'
+
+    '\n'  desplazar e ir al estado 241
+
+
+Estado 239
+
+   89 cierre_condicional_ejemplos: ENDIF . '\n'
+
+    '\n'  desplazar e ir al estado 242
+
+
+Estado 240
+
+   88 condicional_ejemplos: IF expr_logica '\n' $@3 THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos .
+
+    $default  reduce usando la regla 88 (condicional_ejemplos)
+
+
+Estado 241
+
+   91 cierre_condicional_ejemplos: ELSE '\n' . $@4 bloque_ejemplos_anidado ENDIF '\n'
+
+    $default  reduce usando la regla 90 ($@4)
+
+    $@4  ir al estado 243
+
+
+Estado 242
+
+   89 cierre_condicional_ejemplos: ENDIF '\n' .
+
+    $default  reduce usando la regla 89 (cierre_condicional_ejemplos)
+
+
+Estado 243
+
+   91 cierre_condicional_ejemplos: ELSE '\n' $@4 . bloque_ejemplos_anidado ENDIF '\n'
+
+    $default  reduce usando la regla 75 (bloque_ejemplos_anidado)
+
+    bloque_ejemplos_anidado  ir al estado 244
+
+
+Estado 244
+
+   76 bloque_ejemplos_anidado: bloque_ejemplos_anidado . SUR expr '\n'
+   77                        | bloque_ejemplos_anidado . ESTE expr '\n'
+   78                        | bloque_ejemplos_anidado . OESTE expr '\n'
+   79                        | bloque_ejemplos_anidado . NORTE expr '\n'
+   80                        | bloque_ejemplos_anidado . asignacion_sin_ctes
+   81                        | bloque_ejemplos_anidado . condicional_ejemplos
+   91 cierre_condicional_ejemplos: ELSE '\n' $@4 bloque_ejemplos_anidado . ENDIF '\n'
+
+    error     desplazar e ir al estado 97
+    VARIABLE  desplazar e ir al estado 98
+    ESCRIBIR  desplazar e ir al estado 3
+    NORTE     desplazar e ir al estado 205
+    SUR       desplazar e ir al estado 206
+    ESTE      desplazar e ir al estado 207
+    OESTE     desplazar e ir al estado 208
+    IF        desplazar e ir al estado 210
+    ENDIF     desplazar e ir al estado 245
+
+    escribir              ir al estado 103
+    asignacion_sin_ctes   ir al estado 211
+    condicional_ejemplos  ir al estado 212
+
+
+Estado 245
+
+   91 cierre_condicional_ejemplos: ELSE '\n' $@4 bloque_ejemplos_anidado ENDIF . '\n'
+
+    '\n'  desplazar e ir al estado 246
+
+
+Estado 246
+
+   91 cierre_condicional_ejemplos: ELSE '\n' $@4 bloque_ejemplos_anidado ENDIF '\n' .
+
+    $default  reduce usando la regla 91 (cierre_condicional_ejemplos)

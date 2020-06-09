@@ -69,15 +69,14 @@ OBSTACULOS
 
     si 3>4
     entonces
-    escribir "IF"
-    sino
-    escribir "ELSE"
-    finsi
     si 3<4
     entonces
-    escribir "IF"
+    escribir "1"
     sino
-    escribir "ELSE"
+    escribir "2"
+    finsi
+    sino
+    escribir "3"
     finsi
     
     obstaculo <0,0>

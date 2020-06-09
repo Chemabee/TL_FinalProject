@@ -821,31 +821,38 @@ bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob
       |bloque_ejemplos EJEMPLO VARIABLE '\n' bloque_ejemplos_anidado FINEJEMPLO '\n' {printVictoria();finEjemplo=false;}
       ;
 bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
-                        finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
-                        finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;}
-      |bloque_ejemplos_anidado SUR expr '\n'          {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                              finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
+                              finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;}
+      |bloque_ejemplos_anidado SUR expr '\n'          {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(!finEjemplo)moverse((int)$3, 1);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_ejemplos_anidado ESTE expr '\n'         {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                reset_flags();}}
+      |bloque_ejemplos_anidado ESTE expr '\n'         {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(!finEjemplo)moverse((int)$3, 2);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_ejemplos_anidado OESTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                reset_flags();}}
+      |bloque_ejemplos_anidado OESTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(!finEjemplo)moverse((int)$3, 3);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
-                                                reset_flags();}
-      |bloque_ejemplos_anidado NORTE expr '\n'        {if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                reset_flags();}}
+      |bloque_ejemplos_anidado NORTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(!finEjemplo)moverse((int)$3, 0);
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
-                                                reset_flags();}
+                                                reset_flags();}}
       |bloque_ejemplos_anidado asignacion_sin_ctes
+      |bloque_ejemplos_anidado condicional_ejemplos
       ;
 
 condicional_obstaculos:IF expr_logica '\n' {ejecutar = $2;} THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
       ;
 cierre_condicional_obstaculos: ENDIF '\n' {ejecutar = true;}
       |ELSE '\n' {if(!ejecutar)ejecutar = true; else ejecutar = false;} bloque_obstaculos ENDIF '\n' {ejecutar = true;}
+      ;
+
+condicional_ejemplos:IF expr_logica '\n' {ejecutar = $2;} THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+      ;
+cierre_condicional_ejemplos: ENDIF '\n' {ejecutar = true;}
+      |ELSE '\n' {if(!ejecutar)ejecutar = true; else ejecutar = false;} bloque_ejemplos_anidado ENDIF '\n' {ejecutar = true;}
       ;
 %%
 
