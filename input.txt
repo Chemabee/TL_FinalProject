@@ -67,16 +67,23 @@ OBSTACULOS
     escribir MSG_OBS
     escribir p1
 
+    repite 3
+      este 1
+      obstaculo
+      norte 1
+      obstaculo
+      oeste 1
+      obstaculo
+      sur 1
+      obstaculo
+      escribir "hola"
+    finrepite
+
     si 3>4
     entonces
-    si 3<4
-    entonces
-    escribir "1"
+    escribir "si"
     sino
-    escribir "2"
-    finsi
-    sino
-    escribir "3"
+    escribir "sino"
     finsi
     
     obstaculo <0,0>

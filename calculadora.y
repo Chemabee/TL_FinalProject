@@ -5,6 +5,7 @@
 #include "tabla.c"
 #include "string.h"
 #include <stdio.h>
+#include <map> 
  
 
 using namespace std;
@@ -23,6 +24,8 @@ bool posVar = false;
 bool errorFichero = false;
 
 bool ejecutar = true;
+
+bool bucle = false;
 
 bool fileInicializado = false;
 bool finEjemplo = false;
@@ -49,6 +52,26 @@ std::ofstream finalFile;
 extern int n_lineas;
 extern int yylex();
 extern FILE* yyin, yyout;
+
+struct dato_vector_bucle {
+      //NORTE: 0; SUR: 1; ESTE: 2; OESTE: 3; OBSTACULO: 4; ESCRIBIR: 5
+      int tipo_instruccion;
+
+      /**
+      * 0 = entero
+      * 1 = real
+      * 2 = logico (bool)
+      * 3 = cadena de caracteres
+      * 4 = posicion
+      **/
+      int tipo;
+      tipo_valor dato;
+};
+
+struct vector_instruciones_bucle{
+      map<int, dato_vector_bucle> instrucciones;
+      int repeticiones;
+} vect;
 
 
 //definición de procedimientos auxiliares
@@ -139,6 +162,15 @@ bool moverse(int pasos, int direccion){
                   break;
             }
             if(posActual[0] == posSalida_glob[0] && posActual[1] == posSalida_glob[1]) {cout << "\033[1;33mHas encontrado la salida en \033[0m"<< "\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m!!"<<endl;exit=true;finalFile<<"entornoPonerFiguraSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;printVictoria();finEjemplo=true;}
+      }
+}
+
+void doLoop(){
+      for(i = 1; i<vect.repeticiones;i++){
+            for(j = 0;j<vect.instrucciones.size();j++){
+                  dato_vector_bucle temp = vect.instrucciones.find(j)->second;
+                  cout<<"tipo: "<<temp.tipo_instruccion<<"; parametro: "<<temp.tipo<<endl;
+            }
       }
 }
 
@@ -399,27 +431,90 @@ asignacion:VARIABLE '=' expr '\n'     	{if(!error_str&&!error_mod&&!error_log&&!
       
       |error '\n' {yyerrok;reset_flags();}       
 	;
-escribir:ESCRIBIR CADENA '\n' {if(ejecutar){cout << $2 <<endl;reset_flags();if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}}}
+escribir:ESCRIBIR CADENA '\n' {if(ejecutar){
+                                          cout << $2 <<endl;
+                                          reset_flags();
+                                          if(fileInicializado){
+                                                finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}
+                                          }
+                                          if(bucle){
+                                                dato_vector_bucle d;
+                                                d.tipo_instruccion = 5;
+                                                d.tipo = 3;
+                                                strcpy(d.dato.valor_cad,$2);
+                                                vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                          }
+                              }
       |ESCRIBIR expr '\n'     {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                     if(str){
                                           cout << var->valor.valor_cad <<endl;
                                           if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<var->valor.valor_cad<<"\");"<<endl;}
+                                          if(bucle){
+                                                dato_vector_bucle d;
+                                                d.tipo_instruccion = 5;
+                                                d.tipo = 3;
+                                                strcpy(d.dato.valor_cad, var->valor.valor_cad);
+                                                vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                          }
                                     }else if(posVar){
                                           cout <<"<"<< var->valor.valor_pos[0] <<","<<var->valor.valor_pos[1]<<">"<<endl;
                                           if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<"<"<< var->valor.valor_pos[0] <<","<<var->valor.valor_pos[1]<<">"<<"\");"<<endl;}
+                                          if(bucle){
+                                                dato_vector_bucle d;
+                                                d.tipo_instruccion = 5;
+                                                d.tipo = 4;
+                                                d.dato.valor_pos[0] = var->valor.valor_pos[0];
+                                                d.dato.valor_pos[1] = var->valor.valor_pos[1];
+                                                vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                          }
                                     }
-                                    else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout <<$2<<endl;}
+                                    else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}
+                                          cout <<$2<<endl;
+                                          if(bucle){
+                                                dato_vector_bucle d;
+                                                d.tipo_instruccion = 5;
+                                                d.tipo = 1;
+                                                d.dato.valor_real = $2;
+                                                vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                          }
+                                    }
                               }
                               reset_flags();}}
       |ESCRIBIR expr_logica '\n' {if(ejecutar){
                                     if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str){
                                                 if(cmp){	
                                                       if($2)	
-                                                            {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"true\");"<<endl;}cout<<"true";}	
-                                                      else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"false\");"<<endl;}cout<<"false";}	
+                                                            {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"true\");"<<endl;}cout<<"true";
+                                                                  if(bucle){
+                                                                        dato_vector_bucle d;
+                                                                        d.tipo_instruccion = 5;
+                                                                        d.tipo = 3;
+                                                                        strcpy(d.dato.valor_cad, "true");
+                                                                        vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                                  }
+                                                            }	
+                                                      else {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\"false\");"<<endl;}
+                                                            cout<<"false";
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 5;
+                                                                  d.tipo = 3;
+                                                                  strcpy(d.dato.valor_cad, "false");
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
+                                                      }	
                                                 }	
                                                 else	
-                                                      {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}cout<<$2;}	
+                                                      {if(fileInicializado){finalFile<<"entornoMostrarMensaje(\""<<$2<<"\");"<<endl;}
+                                                      cout<<$2;
+                                                      if(bucle){
+                                                            dato_vector_bucle d;
+                                                            d.tipo_instruccion = 5;
+                                                            d.tipo = 1;
+                                                            d.dato.valor_real = $2;
+                                                            vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                      }
+                                                }	
                                                 cout<<endl;
                                     }
                                     reset_flags();}
@@ -772,6 +867,13 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos SUR expr '\n'          {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[1]+$3 < dimension_glob){
                                                             posActual[1]=posActual[1]+$3;
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 1;
+                                                                  d.tipo = 0;
+                                                                  d.dato.valor_entero = $3;
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
                                                       }else{
                                                             posActual[1]=dimension_glob-1;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
@@ -782,6 +884,13 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos ESTE expr '\n'         {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[0]+$3 < dimension_glob){
                                                             posActual[0]=posActual[0]+$3;
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 2;
+                                                                  d.tipo = 0;
+                                                                  d.dato.valor_entero = $3;
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
                                                       }else{
                                                             posActual[0]=dimension_glob-1;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;
@@ -791,6 +900,13 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos OESTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[0]-$3 >= 0){
                                                             posActual[0]=posActual[0]-$3;
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 3;
+                                                                  d.tipo = 0;
+                                                                  d.dato.valor_entero = $3;
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
                                                       }else{
                                                             posActual[0]=0;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
@@ -800,17 +916,37 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
       |bloque_obstaculos NORTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
                                                       if(posActual[1]-$3 >= 0){
                                                             posActual[1]=posActual[1]-$3;
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 0;
+                                                                  d.tipo = 0;
+                                                                  d.dato.valor_entero = $3;
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
                                                       }else{
                                                             posActual[1]=0;
                                                             cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;
                                                       }
                                                 }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
                                                 reset_flags();}}
-      |bloque_obstaculos OBSTACULO '\n'         {if(ejecutar){matriz_obstaculos[posActual[0]][posActual[1]] = 1;
-                                                finalFile<<"entornoPonerObstaculo("<<posActual[1]<<","<<posActual[0]<<");"<<endl;
-                                                cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
-                                                reset_flags();}}
-      |bloque_obstaculos REPITE expr '\n' bloque_obstaculos FINREPITE '\n' {}
+      |bloque_obstaculos OBSTACULO '\n'         {if(ejecutar){
+                                                            matriz_obstaculos[posActual[0]][posActual[1]] = 1;
+                                                            finalFile<<"entornoPonerObstaculo("<<posActual[1]<<","<<posActual[0]<<");"<<endl;
+                                                            cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
+                                                            if(bucle){
+                                                                  dato_vector_bucle d;
+                                                                  d.tipo_instruccion = 4;
+                                                                  vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                            }
+                                                            reset_flags();}
+                                                }
+      |bloque_obstaculos REPITE expr '\n' {if(!bucle){
+                                                bucle = true;
+                                                vect.repeticiones=$3;
+                                          }
+
+
+      } bloque_obstaculos FINREPITE '\n' {doLoop();vect.instrucciones.clear();bucle=false;}
       |bloque_obstaculos condicional_obstaculos
       |bloque_obstaculos asignacion_sin_ctes
       ;
@@ -843,16 +979,16 @@ bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=pos
       |bloque_ejemplos_anidado condicional_ejemplos
       ;
 
-condicional_obstaculos:IF expr_logica '\n' {ejecutar = $2;} THEN '\n' bloque_obstaculos cierre_condicional_obstaculos
+condicional_obstaculos:IF expr_logica '\n' THEN '\n' {if(ejecutar)ejecutar = $2;} bloque_obstaculos cierre_condicional_obstaculos
       ;
 cierre_condicional_obstaculos: ENDIF '\n' {ejecutar = true;}
-      |ELSE '\n' {if(!ejecutar)ejecutar = true; else ejecutar = false;} bloque_obstaculos ENDIF '\n' {ejecutar = true;}
+      |ELSE '\n' {ejecutar=!ejecutar;} bloque_obstaculos ENDIF '\n' {ejecutar = true;}
       ;
 
-condicional_ejemplos:IF expr_logica '\n' {ejecutar = $2;} THEN '\n' bloque_ejemplos_anidado cierre_condicional_ejemplos
+condicional_ejemplos:IF expr_logica '\n' THEN '\n' {if(ejecutar)ejecutar = $2;} bloque_ejemplos_anidado cierre_condicional_ejemplos
       ;
 cierre_condicional_ejemplos: ENDIF '\n' {ejecutar = true;}
-      |ELSE '\n' {if(!ejecutar)ejecutar = true; else ejecutar = false;} bloque_ejemplos_anidado ENDIF '\n' {ejecutar = true;}
+      |ELSE '\n' {ejecutar=!ejecutar;} bloque_ejemplos_anidado ENDIF '\n' {ejecutar = true;}
       ;
 %%
 
@@ -883,7 +1019,10 @@ int main(int argc, char *argv[]){
 	}
       else{
             yyin=fopen(argv[1],"rt");
-            finalFile.open("gala.cpp", std::ofstream::trunc);
+            string fileName = argv[1];
+            string newFileName = fileName.substr(0,fileName.find_last_of('.'))+".cpp";
+            
+            finalFile.open(newFileName.c_str(), std::ofstream::trunc);
      		n_lineas = 0;
        	yyparse();
             fclose(yyin);
