@@ -30,6 +30,8 @@ bool bucle = false;
 bool fileInicializado = false;
 bool finEjemplo = false;
 
+int condicionalAnidado[2] = {0, 0};
+
 int dimension_glob = 10;
 int posEntrada_glob[2] = {0, 0};
 int posSalida_glob[2] = {9, 9};
@@ -1149,16 +1151,16 @@ bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=pos
       |bloque_ejemplos_anidado condicional_ejemplos
       ;
 
-condicional_obstaculos:IF expr_logica '\n' THEN '\n' {if(ejecutar)ejecutar = $2;} bloque_obstaculos cierre_condicional_obstaculos
+condicional_obstaculos:IF expr_logica '\n' THEN '\n' {condicionalAnidado[0]++;if(ejecutar || (condicionalAnidado[0] <= condicionalAnidado[1])){ejecutar=$2;condicionalAnidado[1]=condicionalAnidado[0];}} bloque_obstaculos cierre_condicional_obstaculos
       ;
-cierre_condicional_obstaculos: ENDIF '\n' {ejecutar = true;}
-      |ELSE '\n' {ejecutar=!ejecutar;} bloque_obstaculos ENDIF '\n' {ejecutar = true;}
+cierre_condicional_obstaculos: ENDIF '\n' {ejecutar = condicionalAnidado[0] == 1;condicionalAnidado[0]--;}
+      |ELSE '\n' {if(condicionalAnidado[0] == condicionalAnidado[1]){ejecutar = !ejecutar;}} bloque_obstaculos ENDIF '\n' {ejecutar = condicionalAnidado[0] == 1;condicionalAnidado[0]--;}
       ;
 
-condicional_ejemplos:IF expr_logica '\n' THEN '\n' {if(ejecutar)ejecutar = $2;} bloque_ejemplos_anidado cierre_condicional_ejemplos
+condicional_ejemplos:IF expr_logica '\n' THEN '\n' {condicionalAnidado[0]++;if(ejecutar || (condicionalAnidado[0] <= condicionalAnidado[1])){ejecutar=$2;condicionalAnidado[1]=condicionalAnidado[0];}} bloque_ejemplos_anidado cierre_condicional_ejemplos
       ;
-cierre_condicional_ejemplos: ENDIF '\n' {ejecutar = true;}
-      |ELSE '\n' {ejecutar=!ejecutar;} bloque_ejemplos_anidado ENDIF '\n' {ejecutar = true;}
+cierre_condicional_ejemplos: ENDIF '\n' {ejecutar = condicionalAnidado[0] == 1;condicionalAnidado[0]--;}
+      |ELSE '\n' {if(condicionalAnidado[0] == condicionalAnidado[1]){ejecutar = !ejecutar;}} bloque_ejemplos_anidado ENDIF '\n' {ejecutar = condicionalAnidado[0] == 1;condicionalAnidado[0]--;}
       ;
 %%
 
@@ -1197,6 +1199,13 @@ int main(int argc, char *argv[]){
        	yyparse();
             fclose(yyin);
 
+            finalFile<<"entornoMostrarMensajeFin (\"  ¡ Fin !    \");"<<endl;	
+            finalFile<<"entornoTerminar();"<<endl;
+            finalFile<<"entornoPausa(1);"<<endl;
+            finalFile<<"return 0;"<<endl;
+            finalFile<<"}"<<endl;
+
+            finalFile.close();
             if(errorFichero) remove("gala.cpp");
             std::ofstream ofs ("tabla_variables.txt", std::ofstream::trunc);
             printTabla(ofs);

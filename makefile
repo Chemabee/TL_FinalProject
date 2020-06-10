@@ -17,4 +17,4 @@ lex.yy.c: lexico.l	#obtenemos el analizador léxico en C
 	flex lexico.l
 
 clean : 
-	rm  -f *.o *.output $(NAME).c $(NAME).h $(NAME) *.cpp
+	rm  -f *.o *.output $(NAME).c $(NAME).h $(NAME) *.cpp *.txt

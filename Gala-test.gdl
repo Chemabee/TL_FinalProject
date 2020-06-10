@@ -53,6 +53,19 @@ OBSTACULOS
     escribir MSG_OBS
     
     # Si cambiamos de dirección, asumiremos que estábamos en la posición <0,0>
+
+    si 1<2
+    entonces
+      escribir "1"
+      si 1>2
+    entonces
+      escribir "3"
+    sino
+      escribir "2"
+    finsi
+    sino
+      escribir "4"
+    finsi
     
     obstaculo p1
     repite 3
@@ -105,6 +118,18 @@ EJEMPLOS
         este 2
         norte 2
         oeste 2
+        si 1<2
+        entonces
+          escribir "1"
+            si 1>2
+            entonces
+              escribir "2"
+            sino
+              escribir "3"
+          finsi
+        sino
+          escribir "4"
+        finsi
     finejemplo 
 
     ejemplo EJEMPLO_2               # Ejemplo 2
