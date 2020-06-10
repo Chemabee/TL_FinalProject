@@ -1,10 +1,6 @@
 NAME = calculadora
 OBJ = $(NAME).o lexico.o
 
-ejecutar: $(NAME)
-	@./$(NAME) input.txt gala.cpp
-	@cp gala.cpp entorno/
-
 $(NAME) : $(OBJ)     #segunda fase de la traducción. Generación del código ejecutable 
 	g++ -o$(NAME) $(OBJ)
 
@@ -21,4 +17,4 @@ lex.yy.c: lexico.l	#obtenemos el analizador léxico en C
 	flex lexico.l
 
 clean : 
-	rm  -f *.o *.output $(NAME).c $(NAME).h $(NAME) 
+	rm  -f *.o *.output $(NAME).c $(NAME).h $(NAME) *.cpp
