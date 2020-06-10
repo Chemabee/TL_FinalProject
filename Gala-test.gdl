@@ -135,14 +135,12 @@ EJEMPLOS
     ejemplo EJEMPLO_2               # Ejemplo 2
         cad="Soy Ejemplo 2"
         escribir cad
-        norte 1
-        oeste 2
-        sur 1
-        oeste 3
-        norte 3
-        este 4
-        norte 2
-        oeste 3
+    repite 2
+      oeste 1
+      norte 1
+      este 1
+      sur 1
+    finrepite
     finejemplo
 
     ejemplo EJEMPLO_3               # Ejemplo 3
