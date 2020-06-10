@@ -170,6 +170,81 @@ void doLoop(){
             for(j = 0;j<vect.instrucciones.size();j++){
                   dato_vector_bucle temp = vect.instrucciones.find(j)->second;
                   cout<<"tipo: "<<temp.tipo_instruccion<<"; parametro: "<<temp.tipo<<endl;
+
+                  switch(temp.tipo_instruccion){
+                        case 0://Norte
+                              if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&temp.dato.valor_entero>=0){
+                                    if(posActual[1]-temp.dato.valor_entero >= 0){
+                                          posActual[1]=posActual[1]-temp.dato.valor_entero;
+                                    }else{
+                                          posActual[1]=0;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;
+                                    }
+                              }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
+                              reset_flags();
+                        break;
+                        case 1://Sur
+                              if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&temp.dato.valor_entero>=0){
+                                    if(posActual[1]+temp.dato.valor_entero < dimension_glob){
+                                          posActual[1]=posActual[1]+temp.dato.valor_entero;
+                                    }else{
+                                          posActual[1]=dimension_glob-1;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;
+                                    }
+                              }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
+                              reset_flags();
+                        break;
+                        case 2://Este
+                              if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&temp.dato.valor_entero>=0){
+                                    if(posActual[0]+temp.dato.valor_entero < dimension_glob){
+                                          posActual[0]=posActual[0]+temp.dato.valor_entero;
+                                    }else{
+                                          posActual[0]=dimension_glob-1;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;
+                                    }
+                              }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
+                              reset_flags();
+                        break;
+                        case 3://Oeste
+                              if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&temp.dato.valor_entero>=0){
+                                    if(posActual[0]-temp.dato.valor_entero >= 0){
+                                          posActual[0]=posActual[0]-temp.dato.valor_entero;
+                                    }else{
+                                          posActual[0]=0;
+                                          cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;
+                                    }
+                              }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
+                              reset_flags();
+                        break;
+                        case 4://Obstaculo
+                              matriz_obstaculos[posActual[0]][posActual[1]] = 1;
+                              finalFile<<"entornoPonerObstaculo("<<posActual[1]<<","<<posActual[0]<<");"<<endl;
+                              cout<<"OBSTACULO colocado en <"<<posActual[0]<<","<<posActual[1]<<">"<<endl; /*TODO*/;
+                              reset_flags();
+                        break;
+                        case 5://Escribir
+                              if(fileInicializado){
+                                    switch(temp.tipo){
+                                          case 0:
+                                                finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_entero<<"\");"<<endl;
+                                          break;
+                                          case 1: 
+                                                finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_real<<"\");"<<endl;
+                                          break;
+                                          case 2:
+                                                finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_logico<<"\");"<<endl;
+                                          break;
+                                          case 3:
+                                                finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_cad<<"\");"<<endl;
+                                          break;
+                                          case 4:
+                                                finalFile<<"entornoMostrarMensaje(\"<"<<temp.dato.valor_pos[0]<<","<<temp.dato.valor_pos[1]<<">\");"<<endl;
+                                          break;
+                                    }
+                              }
+                              reset_flags();
+                        break;
+                  }
             }
       }
 }
