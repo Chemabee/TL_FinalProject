@@ -123,6 +123,10 @@ EJEMPLOS
     ejemplo EJEMPLO_3               # Ejemplo 3
         cad="Soy Ejemplo 3"
         escribir cad
-        oeste D                     # Err. Sem.: movimiento fuera de los límites
+        oeste 4                     
+        norte 4
+        sur 1
+        oeste 1
+        norte 1
     finejemplo   
     

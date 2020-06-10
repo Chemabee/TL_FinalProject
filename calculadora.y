@@ -138,26 +138,26 @@ void initFile(){
 
 bool moverse(int pasos, int direccion){
       bool exit = false;
-      for(i = 0;i < pasos && !exit;i++){
+      for(int i = 0;i < pasos && !exit;i++){
             switch(direccion){
                   case 0://Norte
                         if(posActual[1] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al NORTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]-1<<","<<posActual[0]<<");"<<endl;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]-1] == 1) {cout<<"N - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finEjemplo=true;finalFile<<"entornoPonerChoque("<<posActual[1]-1<<","<<posActual[0]<<");"<<endl;}
                         else {posActual[1] = posActual[1]-1;cout << "N\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;}
                   break;
                   case 1://Sur
-                        if(posActual[1] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]+1<<","<<posActual[0]<<");"<<endl;}
+                        if(posActual[1] + 1 >= dimension_glob) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al SUR!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]][posActual[1]+1] == 1) {cout<<"S - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finEjemplo=true;finalFile<<"entornoPonerChoque("<<posActual[1]+1<<","<<posActual[0]<<");"<<endl;}
                         else {posActual[1] = posActual[1]+1; cout << "S\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
                   case 2://Este
-                        if(posActual[0] + 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]+1<<");"<<endl;}
+                        if(posActual[0] + 1 >= dimension_glob) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al ESTE!"<<endl;exit=true;}
+                        else if(matriz_obstaculos[posActual[0]+1][posActual[1]] == 1) {cout<<"E - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finEjemplo=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]+1<<");"<<endl;}
                         else {posActual[0] = posActual[0]+1; cout << "E\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
                   case 3://Oeste
                         if(posActual[0] - 1 < 0) {cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, no puedes moverte tanto al OESTE!"<<endl;exit=true;}
-                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]-1<<");"<<endl;}
+                        else if(matriz_obstaculos[posActual[0]-1][posActual[1]] == 1) {cout<<"O - Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, te has dado contra un OBSTACULO!"<<endl;exit=true;finEjemplo=true;finalFile<<"entornoPonerChoque("<<posActual[1]<<","<<posActual[0]-1<<");"<<endl;}
                         else {posActual[0] = posActual[0]-1; cout << "O\033[1;32m<"<<posActual[0]<<","<<posActual[1]<<">"<<"\033[0m"<<endl;finalFile<<"entornoPonerFigura("<<posActual[1]<<","<<posActual[0]<<","<<pausa_glob<<");"<<endl;};
                   break;
             }
@@ -165,9 +165,9 @@ bool moverse(int pasos, int direccion){
       }
 }
 
-void doLoop(){
-      for(i = 1; i<vect.repeticiones;i++){
-            for(j = 0;j<vect.instrucciones.size();j++){
+void doLoop_obstaculos(){
+      for(int i = 1; i<vect.repeticiones;i++){
+            for(int j = 0;j<vect.instrucciones.size() && !finEjemplo;j++){
                   dato_vector_bucle temp = vect.instrucciones.find(j)->second;
                   cout<<"tipo: "<<temp.tipo_instruccion<<"; parametro: "<<temp.tipo<<endl;
 
@@ -249,6 +249,54 @@ void doLoop(){
       }
 }
 
+void doLoop_ejemplos(){
+      for(int i = 1; i<vect.repeticiones;i++){
+            for(int j = 0;j<vect.instrucciones.size();j++){
+                  dato_vector_bucle temp = vect.instrucciones.find(j)->second;
+                  if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&temp.dato.valor_entero>=0){
+                        if(!finEjemplo){
+                              switch(temp.tipo_instruccion){
+                                    case 0: //Norte
+                                          moverse(temp.dato.valor_entero, 0);
+                                    break;
+                                    case 1: //Sur
+                                          moverse(temp.dato.valor_entero, 1);
+                                    break;
+                                    case 2: //Este
+                                          moverse(temp.dato.valor_entero, 2);
+                                    break;
+                                    case 3: //Oeste
+                                          moverse(temp.dato.valor_entero, 3);
+                                    break;
+                                    case 5: //Escribir
+                                          if(fileInicializado){
+                                                switch(temp.tipo){
+                                                      case 0:
+                                                            finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_entero<<"\");"<<endl;
+                                                      break;
+                                                      case 1: 
+                                                            finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_real<<"\");"<<endl;
+                                                      break;
+                                                      case 2:
+                                                            finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_logico<<"\");"<<endl;
+                                                      break;
+                                                      case 3:
+                                                            finalFile<<"entornoMostrarMensaje(\""<<temp.dato.valor_cad<<"\");"<<endl;
+                                                      break;
+                                                      case 4:
+                                                            finalFile<<"entornoMostrarMensaje(\"<"<<temp.dato.valor_pos[0]<<","<<temp.dato.valor_pos[1]<<">\");"<<endl;
+                                                      break;
+                                                }
+                                          }
+                                    break;
+                              }
+                        }
+                  }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte erróneo"<<endl;};
+                  reset_flags();
+            }
+      }
+}
+
 void printTabla(ofstream &out){
       out << "****************************************" <<endl;
       out << "***NOMBRE      TIPO      VALOR    CTE***" <<endl;
@@ -299,8 +347,8 @@ void printTabla(ofstream &out){
       out << "*******NI = No Inicializado******" <<endl;
       out << "*********************************" <<endl;
       out << "***************MAPA**************" <<endl;
-      for(i = 0; i < dimension_glob; i++){
-            for(j = 0; j < dimension_glob; j++){
+      for(int i = 0; i < dimension_glob; i++){
+            for(int j = 0; j < dimension_glob; j++){
                   out << matriz_obstaculos[j][i]<<" ";
             }
             out<<endl;
@@ -1019,9 +1067,7 @@ bloque_obstaculos:      {if(!fileInicializado)initFile();}
                                                 bucle = true;
                                                 vect.repeticiones=$3;
                                           }
-
-
-      } bloque_obstaculos FINREPITE '\n' {doLoop();vect.instrucciones.clear();bucle=false;}
+      } bloque_obstaculos FINREPITE '\n' {doLoop_obstaculos();vect.instrucciones.clear();bucle=false;}
       |bloque_obstaculos condicional_obstaculos
       |bloque_obstaculos asignacion_sin_ctes
       ;
@@ -1034,23 +1080,72 @@ bloque_ejemplos:  {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob
 bloque_ejemplos_anidado:      {posActual[0]=posEntrada_glob[0]; posActual[1]=posEntrada_glob[1];
                               finalFile<<"entornoPonerEntrada("<<posEntrada_glob[1]<<","<<posEntrada_glob[0]<<","<<pausa_glob<<");"<<endl;
                               finalFile<<"entornoPonerSalida("<<posSalida_glob[1]<<","<<posSalida_glob[0]<<");"<<endl;}
-      |bloque_ejemplos_anidado SUR expr '\n'          {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(!finEjemplo)moverse((int)$3, 1);
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
-                                                reset_flags();}}
-      |bloque_ejemplos_anidado ESTE expr '\n'         {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(!finEjemplo)moverse((int)$3, 2);
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
-                                                reset_flags();}}
-      |bloque_ejemplos_anidado OESTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(!finEjemplo)moverse((int)$3, 3);
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
-                                                reset_flags();}}
-      |bloque_ejemplos_anidado NORTE expr '\n'        {if(ejecutar){if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
-                                                      if(!finEjemplo)moverse((int)$3, 0);
-                                                }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
-                                                reset_flags();}}
+      |bloque_ejemplos_anidado SUR expr '\n'          {if(ejecutar){
+                                                            if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                                  if(!finEjemplo){
+                                                                        moverse((int)$3, 1);
+                                                                        if(bucle){
+                                                                              dato_vector_bucle d;
+                                                                              d.tipo_instruccion = 1;
+                                                                              d.tipo = 0;
+                                                                              d.dato.valor_entero = $3;
+                                                                              vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                                        }
+                                                                  }
+                                                            }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al SUR erróneo"<<endl;};
+                                                      reset_flags();}
+                                                      }
+      |bloque_ejemplos_anidado ESTE expr '\n'         {if(ejecutar){
+                                                            if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                                  if(!finEjemplo){
+                                                                        moverse((int)$3, 2);
+                                                                        if(bucle){
+                                                                              dato_vector_bucle d;
+                                                                              d.tipo_instruccion = 2;
+                                                                              d.tipo = 0;
+                                                                              d.dato.valor_entero = $3;
+                                                                              vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                                        }
+                                                                  }
+                                                      }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al ESTE erróneo"<<endl;};
+                                                      reset_flags();}
+                                                      }
+      |bloque_ejemplos_anidado OESTE expr '\n'        {if(ejecutar){
+                                                            if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                                  if(!finEjemplo){
+                                                                        moverse((int)$3, 3);
+                                                                        if(bucle){
+                                                                              dato_vector_bucle d;
+                                                                              d.tipo_instruccion = 3;
+                                                                              d.tipo = 0;
+                                                                              d.dato.valor_entero = $3;
+                                                                              vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                                        }
+                                                                  }
+                                                      }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al OESTE erróneo"<<endl;};
+                                                      reset_flags();}
+                                                      }
+      |bloque_ejemplos_anidado NORTE expr '\n'        {if(ejecutar){
+                                                            if(!error_mod&&!error_log&&!error_nodef&&!error_bool_derecha&&!error_str&&check_tipo_num()==0&&$3>=0){
+                                                                  if(!finEjemplo){
+                                                                        moverse((int)$3, 0);
+                                                                        if(bucle){
+                                                                              dato_vector_bucle d;
+                                                                              d.tipo_instruccion = 0;
+                                                                              d.tipo = 0;
+                                                                              d.dato.valor_entero = $3;
+                                                                              vect.instrucciones.insert({vect.instrucciones.size(),d});
+                                                                        }
+                                                                  }
+                                                      }else{cout<<"Error semántico en la linea \033[1;31m"<<n_lineas<<"\033[0m, valor para moverte al NORTE erróneo"<<endl;};
+                                                      reset_flags();}
+                                                      }
       |bloque_ejemplos_anidado asignacion_sin_ctes
+      |bloque_ejemplos_anidado REPITE expr '\n' {if(!bucle){
+                                                bucle = true;
+                                                vect.repeticiones=$3;
+                                          }
+      } bloque_ejemplos_anidado FINREPITE '\n' {doLoop_ejemplos();vect.instrucciones.clear();bucle=false;}
       |bloque_ejemplos_anidado condicional_ejemplos
       ;
 
